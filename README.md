@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Overview
+
+This is a Next.js + React web application that allows individuals to create and run a trivia game.
+
+## Features
+ - Create categories and questions for a trivia game
+
 ## Getting Started
 
 First, run the development server:
