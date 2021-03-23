@@ -1,9 +1,12 @@
 ## Overview
 
-This is a Next.js + React web application that allows individuals to create and run a trivia game.
+This is a Next.js + React web application that allows individuals to create and run a trivia game. It is meant as a basic structure for running any kind of question and answer based play between one game runner and a varying number of players or teams.
 
 ## Features
- - Create categories and questions for a trivia game
+ - Batch uploading of trivia questions via CSV file
+ - Server which handles remote player sign-on from any IP
+ - Database storage of past questions, categories, and games
+ - Intuitive UI which allows for easy editing and gameplay
 
 ## Getting Started
 
