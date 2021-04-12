@@ -188,3 +188,7 @@ box-sizing: border-box
    padding-top: 0px;
 
 }
+
+.questionOverview p{
+   width: 100%;
+}
