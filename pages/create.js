@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import styles from "../styles/Create.module.css";
+import Create from '../components/Create';
 
-export default function Create() {
-  useEffect(()=>{
-    const script = document.createElement("script");
-    script.src = "C:\Users\Corrie\trivia-creator\components\create.js";
-    document.body.appendChild(script);
-    return ()=>{document.body.removeChild(script)};
-  },[])
 
+export default function CreatePage() {
   const title =
     "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
   const desc =
     "Trivia creator allows you to host trivia nights with your friends!";
-  //Module parse failed: Unexpected character '�' (1:0)
   //You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
   //getting error above trying to change this
   // const image = require(`../public/testBrain.jpg`);
@@ -41,58 +34,9 @@ export default function Create() {
         <meta content={desc} name="twitter:description" />
         <meta content={image} name="twitter:image" />
         <meta content={url} name="twitter:url" /> */}
-        <link rel="stylesheet" href="../styles/create.css"></link>
       </Head>
 
-      <div className={styles.secret}>
-        <div id={styles.upper}>
-          <div id={styles.menu}>
-            <p>Menu</p>
-          </div>
-          <div id={styles.start}>
-            <p>Start Game</p>
-          </div>
-        </div>
-
-        <div id={styles.lower}>
-          <div id={styles.upload}>
-            <p>Upload</p>
-          </div>
-          <div id={styles.bigRec}>
-            <div className={styles.bars}>
-              <div className={styles.bar}>
-                <div className={styles.triangle}></div>
-                <p>Round 1</p>
-              </div>
-
-              <div className={styles.bar}>
-                <div className={styles.triangle}></div>
-                <p>Round 2</p>
-              </div>
-              <div className={styles.bar}>
-                <div className={styles.triangle}></div>
-                <p>Round 3</p>
-              </div>
-
-              <div className={styles.bar}>
-                <div className={styles.triangle}></div>
-                <p>Round 4</p>
-              </div>
-
-              <div className={styles.bar}>
-                <div className={styles.triangle}></div>
-                <p>Round 5</p>
-              </div>
-            </div>
-
-            <p id={styles.logo}>it's a trivia&trade;</p>
-          </div>
-        </div>
-      </div>
-      <script>
-
-
-      </script>
+      <Create />
     </React.Fragment>
   );
 }
