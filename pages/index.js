@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Home from '../components/Home';
 
 
-export default function Home() {
+export default function HomePage() {
   const title = "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
 const desc =
 'Trivia creator allows you to host trivia nights with your friends!';
-//Module parse failed: Unexpected character '�' (1:0)
 //You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
 //getting error above trying to change this
 // const image = require(`../public/testBrain.jpg`);
@@ -35,9 +35,7 @@ const robots = 'index, follow';
         <meta content={image} name="twitter:image" />
         <meta content={url} name="twitter:url" /> */}
       </Head>
-      <div>
-        <h1>HEY GUYS</h1>
-      </div>
+      <Home />
     </React.Fragment>
   )
   // return (
