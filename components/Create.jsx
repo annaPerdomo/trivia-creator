@@ -1,36 +1,50 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Create.module.css";
+const {
+  secret,
+  upper,
+  menu,
+  start,
+  lower,
+  upload,
+  bigRec,
+  bars,
+  bar,
+  selected,
+  triangle,
+  logo,
+} = styles;
 
 export default function Create() {
+
   const [currentRound, setCurrentRound] = useState(null);
-  console.log({currentRound})
 
   return (
-    <div className={styles.secret}>
-      <div id={styles.upper}>
-        <div id={styles.menu}>
+    <div className={secret}>
+      <div id={upper}>
+        <div id={menu}>
           <p>Menu</p>
         </div>
-        <div id={styles.start}>
+        <div id={start}>
           <p>Start Game</p>
         </div>
       </div>
 
-      <div id={styles.lower}>
-        <div id={styles.upload}>
+      <div id={lower}>
+        <div id={upload}>
           <p>Upload</p>
         </div>
-        <div id={styles.bigRec}>
-          <div className={styles.bars}>
+        <div id={bigRec}>
+          <div className={bars}>
             {currentRound === 1 ? (
               <React.Fragment>
-                <div className={styles.bar} className={`${styles.bar} ${styles.selected}`}  onClick={() => setCurrentRound(null)}>
+                <div className={bar} className={`${bar} ${selected}`}  onClick={() => setCurrentRound(null)}>
                   <div
-                    className={`${styles.triangle} ${styles.selected}`}
+                    className={`${triangle} ${selected}`}
                   ></div>
                   <p>Round 1</p>
                 </div>
-                <div className={styles.questionOverview}>
+                <div>
                   <div>
                     <p>
                       1. What is the flattest state in the Union?
@@ -44,35 +58,35 @@ export default function Create() {
                 </div>
               </React.Fragment>
             ) : (
-              <div className={styles.bar} onClick={() => setCurrentRound(1)}>
+              <div className={bar} onClick={() => setCurrentRound(1)}>
                 <div
-                  className={styles.triangle}
+                  className={triangle}
                 ></div>
                 <p>Round 1</p>
               </div>
             )}
 
-            <div className={styles.bar}>
-              <div className={styles.triangle}></div>
+            <div className={bar}>
+              <div className={triangle}></div>
               <p>Round 2</p>
             </div>
-            <div className={styles.bar}>
-              <div className={styles.triangle}></div>
+            <div className={bar}>
+              <div className={triangle}></div>
               <p>Round 3</p>
             </div>
 
-            <div className={styles.bar}>
-              <div className={styles.triangle}></div>
+            <div className={bar}>
+              <div className={triangle}></div>
               <p>Round 4</p>
             </div>
 
-            <div className={styles.bar}>
-              <div className={styles.triangle}></div>
+            <div className={bar}>
+              <div className={triangle}></div>
               <p>Round 5</p>
             </div>
           </div>
 
-          <p id={styles.logo}>it's a trivia&trade;</p>
+          <p id={logo}>it's a trivia&trade;</p>
         </div>
       </div>
     </div>
