@@ -1,22 +1,26 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from "../styles/Home.module.css";
 const {
   buttonContainer,
   buttonSection,
-  homePageButtons,
+  container,
   divider,
+  homePageButtons,
   welcomeBanner,
 } = styles;
 
 export default function Home() {
   return (
-    <div>
+    <div className={container}>
       <div className={welcomeBanner}>
         <h1>Welcome to Trivia DeathMatch&trade;</h1>
       </div>
       <div className={buttonContainer}>
         <div className={buttonSection}>
-          <button className={homePageButtons}>Create A Game</button>
+          <Link href="/create">
+            <button className={homePageButtons}>Create A Game</button>
+          </Link>
         </div>
         <div className={divider}></div>
         <div className={buttonSection}>
@@ -26,5 +30,3 @@ export default function Home() {
     </div>
   );
 }
-
-

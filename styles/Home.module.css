@@ -1,3 +1,6 @@
+.container {
+  height: 100vh;
+}
 .welcomeBanner {
   position: relative;
   margin: auto;
@@ -9,7 +12,7 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
-  height: 90vh;
+  height: 95vh;
 }
 
 .divider {
