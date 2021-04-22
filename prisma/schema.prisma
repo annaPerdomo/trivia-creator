@@ -9,3 +9,56 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model TriviaGame {
+  id           Int        @default(autoincrement()) @id
+  createdAt    DateTime   @default(now())
+  playedAt     DateTime?
+  hostId       Int?
+  rounds       Round[]
+}
+
+model Round {
+  id           Int        @default(autoincrement()) @id
+  trivia       TriviaGame @relation(fields: [triviaId], references: [id])
+  triviaId     Int
+  questions    Question[]
+  roundNumber  Int
+}
+
+model Question {
+  id             Int        @default(autoincrement()) @id
+  round          Round      @relation(fields: [roundId], references: [id])
+  roundId        Int
+  content        String?
+  type           String?
+  correctAnswer  String?
+  questionNumber Int
+}
+
+model Answer {
+  id            Int        @default(autoincrement()) @id
+  questionId    Int
+  teamId        Int
+  content       String?
+  isCorrect     Boolean     @default(false)
+  submittedAt   DateTime    @default(now())
+}
+
+model Team {
+  id            Int       @default(autoincrement()) @id
+  teamName      String?
+  members       String[]
+  @@map(name: "teams")
+}
+
+
+model User {
+  id            Int       @default(autoincrement()) @id
+  name          String?
+  email         String?   @unique
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "users")
+}
+
