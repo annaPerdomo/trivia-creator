@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import Create from '../components/create/Create';
+import Create from '../components/Create/Create';
 import prisma from '../lib/prisma.ts';
 
 
