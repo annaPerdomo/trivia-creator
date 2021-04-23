@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Create from '../components/create/Create';
+import prisma from '../lib/prisma.ts';
 
 
 export default function CreatePage() {
@@ -40,3 +41,16 @@ export default function CreatePage() {
     </React.Fragment>
   );
 }
+
+export async function getStaticProps() {
+  const test = await prisma.question.findMany({
+    where: {
+      triviaId: 1,
+    }
+  });
+  console.log('❗️❗️', {test});
+  return {
+    props: { test }, // will be passed to the page component as props
+  }
+}
+
