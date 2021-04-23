@@ -5,9 +5,21 @@ import Question from "./Question";
 const {} = styles;
 
 export default function Questions(props) {
-   return (
-     <div id={styles.questions}>
-     {props.arr.map((item, index) => (<Question key={index} num={index+1} text={item}/>))}
-     </div>
-     )
+  const { currentRound, questions } = props;
+  const currentRoundQuestions = questions.filter(
+    (questionData) => questionData.roundNum === currentRound
+  );
+  return (
+    <div id={styles.questions}>
+      {props.arr.map((questionNum, index) => (
+        <Question
+          key={index}
+          num={index + 1}
+          currentQuestion={currentRoundQuestions.filter(
+            (questionData) => questionData.questionNum === index + 1
+          )}
+        />
+      ))}
+    </div>
+  );
 }

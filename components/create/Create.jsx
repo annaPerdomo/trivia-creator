@@ -12,12 +12,12 @@ const {
 } = styles;
 
 
-export default function Create() {
+export default function Create({ questions }) {
   const [currentRound, setCurrentRound] = useState(null);
 
-  function barClick(i){
-    if (currentRound === i){
-      setCurrentRound(null)
+  function barClick(i) {
+    if (currentRound === i) {
+      setCurrentRound(null);
     } else {
       setCurrentRound(i);
     }
@@ -36,13 +36,17 @@ export default function Create() {
       </div>
       <div id={bigRec}>
         <div id={bars}>
-          {[1,2,3,4,5].map((i)=>
+          {[1, 2, 3, 4, 5].map((i) => (
             <Bar
-              onClick={()=>{barClick(i)}}
+              currentRound={currentRound}
+              questions={questions}
+              onClick={() => {
+                barClick(i);
+              }}
               selected={currentRound === i ? true : false}
               num={i}
             />
-          )}
+          ))}
         </div>
 
         <p id={logo}>it's a trivia&trade;</p>

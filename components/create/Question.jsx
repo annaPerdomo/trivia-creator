@@ -9,30 +9,32 @@ const {
    questionDetails
 } = styles;
 
-export default function Question({ text, num }) {
+export default function Question({ num, currentQuestion }) {
+  console.log({ currentQuestion });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
-   if (!isModalOpen) {
+    if (!isModalOpen) {
       setIsModalOpen(true);
-   }
-  }
+    }
+  };
   const closeModal = () => {
-     setIsModalOpen(false)
-  }
+    setIsModalOpen(false);
+  };
   return (
-    <div
-      className={question}
-      onClick={openModal}
-    >
-      {num}. {text}
+    <div className={question} onClick={openModal}>
+      {num}. {currentQuestion?.[0]?.content ? currentQuestion?.[0]?.content : 'N/A'}
       {isModalOpen ? (
         <div className={questionDetails}>
           <AddQuestionModal selector="#modal">
-            <AddQuestionForm closeModal={closeModal}/>
+            <AddQuestionForm closeModal={closeModal} />
           </AddQuestionModal>
         </div>
       ) : (
-        <div>{`[Where the answer will be if there is one]`}</div>
+        <div>{`[${
+          currentQuestion?.[0]?.correctAnswer
+            ? currentQuestion?.[0].correctAnswer
+            : 'No correct answer yet'
+        }]`}</div>
       )}
     </div>
   );

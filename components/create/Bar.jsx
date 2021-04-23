@@ -22,7 +22,13 @@ export default function Bar(props) {
         <p>{props.num}</p>
         <p>Round</p>
       </div>
-      {props.selected ? <Questions arr={qs} /> : null}
+      {props.selected ? (
+        <Questions
+          arr={[1, 2, 3, 4, 5]}
+          currentRound={props.currentRound}
+          questions={props.questions}
+        />
+      ) : null}
     </div>
   );
 }
