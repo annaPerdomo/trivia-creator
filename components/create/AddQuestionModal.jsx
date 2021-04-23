@@ -10,5 +10,5 @@ export default function AddQuestionModal({ children, selector }) {
     setMounted(true)
   }, [selector])
 
-  return mounted ? createPortal(children, ref.current) : null
+  return mounted ? createPortal(children, ref.current) : null;
 }

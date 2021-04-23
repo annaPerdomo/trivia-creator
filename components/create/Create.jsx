@@ -36,7 +36,6 @@ export default function Create() {
       </div>
       <div id={bigRec}>
         <div id={bars}>
-          {/* should be the roundNumbers being mapped */}
           {[1,2,3,4,5].map((i)=>
             <Bar
               onClick={()=>{barClick(i)}}

@@ -45,7 +45,7 @@ export default function CreatePage() {
 export async function getStaticProps() {
   const test = await prisma.question.findMany({
     where: {
-      triviaId: 1,
+      triviaId: 3,
     }
   });
   console.log('❗️❗️', {test});

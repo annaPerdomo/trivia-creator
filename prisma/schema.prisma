@@ -35,7 +35,7 @@ model Question {
   trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
   triviaId       Int
   roundNum       Int
-  questionNumber Int
+  questionNum    Int?
   content        String?
   type           String?
   correctAnswer  String?

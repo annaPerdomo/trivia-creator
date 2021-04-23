@@ -18,6 +18,24 @@ export default function Question({ text, num }) {
   const closeModal = () => {
      setIsModalOpen(false)
   }
+  const submitQuestion = async (e) => {
+     e.preventDefault();
+     const data = {
+      triviaId: 2,
+      roundNum: 1,
+      questionNum: 2,
+      content: 'Who is the best partner in the world?',
+      type: 'text',
+      correctAnswer: 'Daniel'
+   }
+   await fetch('http://localhost:3000/api/post/questions', {
+      method: 'PUT',
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+  }
   return (
     <div
       className={question}
@@ -29,7 +47,7 @@ export default function Question({ text, num }) {
           <AddQuestionModal selector="#modal">
             <div className={backdrop}>
               <div className={modal}>
-                <div>
+               <form>
                    <div>
                      <label for="question">Question</label>
                      <input type="text" name="question"></input>
@@ -38,13 +56,16 @@ export default function Question({ text, num }) {
                      <label for="answer">Answer</label>
                      <input type="text" name="answer"></input>
                    </div>
-                </div>
+
                 <div>
                   <button type="button" onClick={closeModal}>
                      Close Modal
                   </button>
-                  <button>Submit Question</button>
                 </div>
+                <div>
+                  <button onClick={submitQuestion}>Submit Question</button>
+                </div>
+               </form>
               </div>
             </div>
           </AddQuestionModal>
