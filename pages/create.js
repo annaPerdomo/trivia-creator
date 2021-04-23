@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import Create from '../components/Create';
+import Create from '../components/create/Create';
 
 
 export default function CreatePage() {

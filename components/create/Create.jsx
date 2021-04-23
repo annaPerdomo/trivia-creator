@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styles from "../styles/Create.module.css";
-import Bar from "./create/Bar.jsx";
-
+import styles from "../../styles/Create.module.css";
+import Bar from "./Bar.jsx";
 const {
   create,
   title,
@@ -37,6 +36,7 @@ export default function Create() {
       </div>
       <div id={bigRec}>
         <div id={bars}>
+          {/* should be the roundNumbers being mapped */}
           {[1,2,3,4,5].map((i)=>
             <Bar
               onClick={()=>{barClick(i)}}
