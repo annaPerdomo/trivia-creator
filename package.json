@@ -9,6 +9,7 @@
     "start-app": "next build && next start"
   },
   "dependencies": {
+    "@prisma/client": "^2.21.2",
     "next": "^10.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1"
