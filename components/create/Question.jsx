@@ -9,35 +9,42 @@ const {
 } = styles;
 
 export default function Question({ text, num }) {
-  const [open, setOpen] = useState(false);
-  console.log({ text });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+   if (!isModalOpen) {
+      setIsModalOpen(true);
+   }
+  }
+  const closeModal = () => {
+     setIsModalOpen(false)
+  }
   return (
     <div
       className={question}
-      onClick={() => {
-        setOpen(!open);
-      }}
+      onClick={openModal}
     >
       {num}. {text}
-      {open ? (
+      {isModalOpen ? (
         <div className={questionDetails}>
           <AddQuestionModal selector="#modal">
             <div className={backdrop}>
               <div className={modal}>
-                <p>
-                  This modal is rendered using{' '}
-                  <a
-                    href="https://reactjs.org/docs/portals.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    portals
-                  </a>
-                  .
-                </p>
-                <button type="button" onClick={() => setOpen(!open)}>
-                  Close Modal
-                </button>
+                <div>
+                   <div>
+                     <label for="question">Question</label>
+                     <input type="text" name="question"></input>
+                   </div>
+                   <div>
+                     <label for="answer">Answer</label>
+                     <input type="text" name="answer"></input>
+                   </div>
+                </div>
+                <div>
+                  <button type="button" onClick={closeModal}>
+                     Close Modal
+                  </button>
+                  <button>Submit Question</button>
+                </div>
               </div>
             </div>
           </AddQuestionModal>
