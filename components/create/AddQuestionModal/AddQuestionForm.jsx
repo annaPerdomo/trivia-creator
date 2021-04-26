@@ -24,36 +24,36 @@ export default function AddQuestionForm({closeModal}) {
  }
   return (
     <div className={backdrop}>
-    <div className={modal}>
-     <form>
-         <div>
-           <label for="question">Question: </label>
-           <input type="text" name="question"></input>
-         </div>
-         <div>
-           <label for="answer">Answer: </label>
-           <input type="text" name="answer"></input>
-         </div>
-         <div>
-           <label for="type-select">Type: </label>
-           <select name="type" id="type-select">
-             <option value="">--Please choose one--</option>
-             <option value="text">Text</option>
-             <option value="visual">Visual</option>
-             <option value="audio">Audio</option>
-           </select>
-         </div>
+      <div className={modal}>
+        <form>
+          <div>
+            <label for="question">Question: </label>
+            <input type="text" name="question"></input>
+          </div>
+          <div>
+            <label for="answer">Answer: </label>
+            <input type="text" name="answer"></input>
+          </div>
+          <div>
+            <label for="type-select">Type: </label>
+            <select name="type" id="type-select">
+              <option value="">--Please choose one--</option>
+              <option value="text">Text</option>
+              <option value="visual">Visual</option>
+              <option value="audio">Audio</option>
+            </select>
+          </div>
 
-      <div>
-        <button type="button" onClick={closeModal}>
-           Cancel
-        </button>
+          <div>
+            <button type="button" onClick={closeModal}>
+              Cancel
+            </button>
+          </div>
+          <div>
+            <button onClick={submitQuestion}>Submit Question</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <button onClick={submitQuestion}>Submit Question</button>
-      </div>
-     </form>
     </div>
-  </div>
-  )
+  );
 }
