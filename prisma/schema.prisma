@@ -9,3 +9,65 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model TriviaGame {
+  id           Int         @default(autoincrement()) @id
+  createdAt    DateTime    @default(now()) @map(name: "created_at")
+  playedAt     DateTime?   @map(name: "played_at")
+  hostId       Int?
+  roundAmount  Int
+  questions    Question[]
+  // rounds       Round[]
+}
+
+// model Round {
+//   id           Int          @default(autoincrement()) @id
+//   trivia       TriviaGame   @relation(fields: [triviaId], references: [id])
+//   triviaId     Int
+//   questions    Question[]
+//   roundNumber  Int
+// }
+
+model Question {
+  id             Int        @default(autoincrement()) @id
+  // round          Round      @relation(fields: [roundId], references: [id])
+  // roundId        Int
+  trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
+  triviaId       Int
+  roundNum       Int
+  questionNum    Int?
+  content        String?
+  type           String?
+  correctAnswer  String?
+  answers        Answer[]
+}
+
+model Answer {
+  id            Int         @default(autoincrement()) @id
+  question      Question    @relation(fields: [questionId], references: [id])
+  questionId    Int
+  teamId        Int
+  content       String?
+  isCorrect     Boolean     @default(false)
+  submittedAt   DateTime    @default(now())
+}
+
+model Team {
+  id            Int         @default(autoincrement()) @id
+  teamName      String?
+  members       User[]
+  @@map(name: "teams")
+}
+
+
+model User {
+  id            Int         @default(autoincrement()) @id
+  firstName     String?
+  lastName      String?
+  email         String?     @unique
+  createdAt     DateTime?    @default(now()) @map(name: "created_at")
+  updatedAt     DateTime?   @updatedAt @map(name: "updated_at")
+  teams         Team[]
+  @@map(name: "users")
+}
+

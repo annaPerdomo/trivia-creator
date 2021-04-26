@@ -1,9 +1,10 @@
 import React from "react";
 import Head from "next/head";
-import Create from '../components/Create';
+import Create from '../components/Create/Create';
+import prisma from '../lib/prisma.ts';
 
 
-export default function CreatePage() {
+export default function CreatePage({questions}) {
   const title =
     "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
   const desc =
@@ -14,7 +15,7 @@ export default function CreatePage() {
   const url = "www.notsure.help";
   const keywords = "trivia";
   const robots = "index, follow";
-
+  console.log('create page props', questions)
   return (
     <React.Fragment>
       <Head>
@@ -36,7 +37,20 @@ export default function CreatePage() {
         <meta content={url} name="twitter:url" /> */}
       </Head>
 
-      <Create />
+      <Create questions={questions}/>
     </React.Fragment>
   );
 }
+
+export async function getServerSideProps() {
+  const questions = await prisma.question.findMany({
+    where: {
+      triviaId: 3,
+    }
+  });
+  //console.log('❗️❗️', {questions});
+  return {
+    props: { questions }, // will be passed to the page component as props
+  }
+}
+

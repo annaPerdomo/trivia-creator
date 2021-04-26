@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start-app": "next build && next start"
+    "start-app": "next build && next start",
+    "update-db-schema": "npx prisma db push --preview-feature",
+    "show-db": "npx prisma studio"
   },
   "dependencies": {
+    "@prisma/client": "^2.21.2",
     "next": "^10.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1"

@@ -4,13 +4,31 @@ import Questions from "./Questions";
 import qs from "./testQuestions.js";
 
 export default function Bar(props) {
-   return (
-     <div className={styles.barContainer}>
-    <div className={props.selected ? `${styles.bar} ${styles.selected}` : styles.bar}  onClick={props.onClick}>
-      <div className={props.selected ? `${styles.triangle} ${styles.selected}` :styles.triangle}></div>
-      <p>{props.num}</p><p>Round</p>
+  return (
+    <div className={styles.barContainer}>
+      <div
+        className={
+          props.selected ? `${styles.bar} ${styles.selected}` : styles.bar
+        }
+        onClick={props.onClick}
+      >
+        <div
+          className={
+            props.selected
+              ? `${styles.triangle} ${styles.selected}`
+              : styles.triangle
+          }
+        ></div>
+        <p>{props.num}</p>
+        <p>Round</p>
+      </div>
+      {props.selected ? (
+        <Questions
+          arr={[1, 2, 3, 4, 5]}
+          currentRound={props.currentRound}
+          questions={props.questions}
+        />
+      ) : null}
     </div>
-    {props.selected ? <Questions arr={qs}/> : null}
-    </div>
-  )
+  );
 }
