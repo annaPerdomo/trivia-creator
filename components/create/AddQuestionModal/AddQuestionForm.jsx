@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { setInfo } from '../../../redux/actions/main';
 import styles from '../../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-export default function AddQuestionForm({closeModal}) {
+function AddQuestionForm(props) {
+  const [newName, setName] = useState("")
+  const {closeModal, setInfo} = props;
   const submitQuestion = async (e) => {
     console.log({e})
     e.preventDefault();
@@ -27,8 +31,13 @@ export default function AddQuestionForm({closeModal}) {
       <div className={modal}>
         <form>
           <div>
-            <label for="question">Question: </label>
-            <input type="text" name="question"></input>
+            <label for="question">Question or Name: </label>
+            <input
+              type="text"
+              name="question"
+              value={newName}
+              onChange={(e) => setName(e.target.value)}
+            ></input>
           </div>
           <div>
             <label for="answer">Answer: </label>
@@ -50,10 +59,21 @@ export default function AddQuestionForm({closeModal}) {
             </button>
           </div>
           <div>
-            <button onClick={submitQuestion}>Submit Question</button>
+            {/* <button onClick={submitQuestion}>Submit Question</button> */}
+            <button onClick={() => setInfo(newName)}>Submit Question</button>
           </div>
         </form>
       </div>
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return { name: state.main.name }
+ }
+
+ const mapDispatchToProps = {
+   setInfo
+ }
+
+ export default connect(mapStateToProps, mapDispatchToProps)(AddQuestionForm)
