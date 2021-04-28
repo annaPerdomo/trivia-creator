@@ -6,12 +6,6 @@ export default function Modal({ children, selector }) {
   const ref = useRef();
   const [mounted, setMounted] = useState(false);
   const isModalOpen = useSelector(state => state.modal.isModalOpen);
-  const modalType = useSelector(state => state.modal.modalType);
-
-  // useEffect(() => {
-  //   ref.current = document.querySelector(selector);
-  //   setMounted(true);
-  // }, [selector]);
 
   useEffect(() => {
     ref.current = document.querySelector(selector);

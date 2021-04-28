@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { connect } from "react-redux";
-import styles from '../../../styles/Create.module.css';
+import {closeQuestionModal} from '../../redux/actions/ModalActions';
+import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm({closeModal}) {
+function AddQuestionForm() {
   const dispatch = useDispatch();
   const [newName, setName] = useState("");
   const submitQuestion = async (e) => {
@@ -26,6 +27,9 @@ function AddQuestionForm({closeModal}) {
   //    },
   //    body: JSON.stringify(data)
   //  })
+ }
+ const closeModal = () => {
+   dispatch(closeQuestionModal());
  }
   return (
     <div className={backdrop}>

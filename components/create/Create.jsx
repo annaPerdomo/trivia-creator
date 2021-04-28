@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import styles from "../../styles/Create.module.css";
 import Bar from "./Bar.jsx";
+import Modal from '../Modal/Modal';
+import AddQuestionForm from './AddQuestionForm';
 const {
   create,
   title,
@@ -48,13 +50,16 @@ export default function Create({ questions }) {
                 barClick(i);
               }}
               selected={currentRound === i ? true : false}
-              num={i}
+              roundNum={i}
             />
           ))}
         </div>
 
         <p id={logo}>it's a trivia&trade;</p>
       </div>
+      <Modal selector="#modal">
+        <AddQuestionForm />
+      </Modal>
     </div>
   );
 }

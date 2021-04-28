@@ -5,16 +5,17 @@ import Question from "./Question";
 const {} = styles;
 
 export default function Questions(props) {
-  const { currentRound, questions } = props;
+  const { currentRound, questions, questionNumberList } = props;
   const currentRoundQuestions = questions.filter(
     (questionData) => questionData.roundNum === currentRound
   );
   return (
     <div id={styles.questions}>
-      {props.arr.map((questionNum, index) => (
+      {questionNumberList.map((questionNum, index) => (
         <Question
           key={index}
-          num={index + 1}
+          questionNum={index + 1}
+          currentRound={currentRound}
           currentQuestion={currentRoundQuestions.filter(
             (questionData) => questionData.questionNum === index + 1
           )}
