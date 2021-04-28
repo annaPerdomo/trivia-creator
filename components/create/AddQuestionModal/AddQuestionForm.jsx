@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux'
 import { connect } from "react-redux";
 import { setInfo } from '../../../redux/actions/main';
 import styles from '../../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm(props) {
-  const [newName, setName] = useState("")
-  const {closeModal, setInfo} = props;
+function AddQuestionForm({closeModal}) {
+  const dispatch = useDispatch();
+  const [newName, setName] = useState("");
   const submitQuestion = async (e) => {
-    console.log({e})
     e.preventDefault();
+    dispatch(setInfo(newName))
   //   const data = {
   //    triviaId: 2,
   //    roundNum: 1,
@@ -59,8 +60,7 @@ function AddQuestionForm(props) {
             </button>
           </div>
           <div>
-            {/* <button onClick={submitQuestion}>Submit Question</button> */}
-            <button onClick={() => setInfo(newName)}>Submit Question</button>
+            <button onClick={submitQuestion}>Submit Question</button>
           </div>
         </form>
       </div>
@@ -68,12 +68,16 @@ function AddQuestionForm(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return { name: state.main.name }
- }
+export default AddQuestionForm;
 
- const mapDispatchToProps = {
-   setInfo
- }
+//The code below is needed if you aren't using useSelector and useDispatch because it maps the state and the function to dispatch
+// const mapStateToProps = state => {
+//   return { name: state.main.name }
+//  }
 
- export default connect(mapStateToProps, mapDispatchToProps)(AddQuestionForm)
+//  const mapDispatchToProps = {
+//    setInfo
+//  }
+
+//  export default connect(mapStateToProps, mapDispatchToProps)(AddQuestionForm);
+
