@@ -1,10 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import Create from '../components/Create/Create';
-import prisma from '../lib/prisma.ts';
+//import prisma from '../lib/prisma.ts';
+import { useDispatch } from 'react-redux'
+import Link from 'next/link'
 
 
-export default function CreatePage({questions}) {
+export default function CreatePage(props) {
+  let {questions} = props;
   const title =
     "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
   const desc =
@@ -16,6 +19,7 @@ export default function CreatePage({questions}) {
   const keywords = "trivia";
   const robots = "index, follow";
   console.log('create page props', questions)
+  questions = [{}];
   return (
     <React.Fragment>
       <Head>
@@ -42,15 +46,15 @@ export default function CreatePage({questions}) {
   );
 }
 
-export async function getServerSideProps() {
-  const questions = await prisma.question.findMany({
-    where: {
-      triviaId: 3,
-    }
-  });
-  //console.log('❗️❗️', {questions});
-  return {
-    props: { questions }, // will be passed to the page component as props
-  }
-}
+// export async function getServerSideProps() {
+//   const questions = await prisma.question.findMany({
+//     where: {
+//       triviaId: 3,
+//     }
+//   });
+//   //console.log('❗️❗️', {questions});
+//   return {
+//     props: { questions }, // will be passed to the page component as props
+//   }
+// }
 

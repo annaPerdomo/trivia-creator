@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux'
+import Link from 'next/link'
 import styles from "../../styles/Create.module.css";
 import Bar from "./Bar.jsx";
 const {
@@ -29,7 +31,9 @@ export default function Create({ questions }) {
         <p>Create</p>
       </div>
       <div id={start}>
-        <p>Start Game</p>
+        <Link href="/wait">
+          <p>Start Game</p>
+        </Link>
       </div>
       <div id={upload}>
         <p>Upload</p>

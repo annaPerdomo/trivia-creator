@@ -1,1 +1,5 @@
 export const SET_NAME = "SET_NAME";
+export const TICK = 'TICK'
+export const INCREMENT = 'INCREMENT'
+export const DECREMENT = 'DECREMENT'
+export const RESET = 'RESET'
