@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { connect } from "react-redux";
-import { setInfo } from '../../../redux/actions/main';
 import styles from '../../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
@@ -10,7 +9,8 @@ function AddQuestionForm({closeModal}) {
   const [newName, setName] = useState("");
   const submitQuestion = async (e) => {
     e.preventDefault();
-    dispatch(setInfo(newName))
+    //dispatch(setInfo(newName))
+
   //   const data = {
   //    triviaId: 2,
   //    roundNum: 1,
