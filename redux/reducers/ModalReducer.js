@@ -1,3 +1,5 @@
+import * as types from "../types";
+
 const ModalReducer = (
   state = {
     isModalOpen: false,
@@ -6,14 +8,14 @@ const ModalReducer = (
     questionNum: null
   }, {type, payload}) => {
     switch (type) {
-      case type.OPEN_QUESTION_MODAL:
+      case types.OPEN_QUESTION_MODAL:
         return {
           isModalOpen: true,
           modalType: 'questionModal',
           roundNum: payload.roundNum,
           questionNum: payload.questionNum
         }
-      case type.CLOSE_QUESTION_MODAL:
+      case types.CLOSE_QUESTION_MODAL:
         return {
           isModalOpen: false,
           modalType: null,

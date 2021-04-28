@@ -74,10 +74,8 @@ export default AddQuestionForm;
 // const mapStateToProps = state => {
 //   return { name: state.main.name }
 //  }
-
 //  const mapDispatchToProps = {
 //    setInfo
 //  }
-
 //  export default connect(mapStateToProps, mapDispatchToProps)(AddQuestionForm);
 
