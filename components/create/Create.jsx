@@ -18,6 +18,13 @@ const {
 
 export default function Create({ questions }) {
   const [currentRound, setCurrentRound] = useState(null);
+  const [triviaQuestions, setTriviaQuestions] = useState(null);
+
+  useEffect(() => {
+    if (questions && !triviaQuestions) {
+      setTriviaQuestions(questions);
+    }
+  }, [])
 
   function barClick(i) {
     if (currentRound === i) {
@@ -25,6 +32,11 @@ export default function Create({ questions }) {
     } else {
       setCurrentRound(i);
     }
+  }
+  const displayNewTriviaQuestion = (newQuestionData) => {
+   const triviaQuestionsCopy = triviaQuestions.slice();
+   triviaQuestionsCopy.push(newQuestionData);
+   setTriviaQuestions(triviaQuestionsCopy);
   }
 
   return (
@@ -45,7 +57,7 @@ export default function Create({ questions }) {
           {[1, 2, 3, 4, 5].map((i) => (
             <Bar
               currentRound={currentRound}
-              questions={questions}
+              questions={triviaQuestions}
               onClick={() => {
                 barClick(i);
               }}
@@ -58,7 +70,9 @@ export default function Create({ questions }) {
         <p id={logo}>it's a trivia&trade;</p>
       </div>
       <Modal selector="#modal">
-        <AddQuestionForm />
+        <AddQuestionForm
+          displayNewTriviaQuestion={displayNewTriviaQuestion}
+        />
       </Modal>
     </div>
   );

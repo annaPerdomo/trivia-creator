@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { connect } from "react-redux";
 import {closeQuestionModal, createTriviaQuestion} from '../../redux/actions/CreateGameActions';
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm() {
+function AddQuestionForm({displayNewTriviaQuestion}) {
   const dispatch = useDispatch();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const roundNum = useSelector(state => state.createGame.roundNum);
+  const questionNum = useSelector(state => state.createGame.questionNum);
   const submitQuestion = async (e) => {
     e.preventDefault();
-    dispatch(createTriviaQuestion(question, answer));
+    const newQuestionData = {
+      content: question,
+      correctAnswer: answer,
+      id: Number(`${roundNum}${questionNum}`),
+      triviaId: 3,
+      type: "text",
+      roundNum,
+      questionNum
+    }
+    displayNewTriviaQuestion(newQuestionData);
+    dispatch(createTriviaQuestion(newQuestionData));
  }
  const closeModal = () => {
    dispatch(closeQuestionModal());

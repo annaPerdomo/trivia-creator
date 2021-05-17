@@ -11,7 +11,6 @@ const {
 } = styles;
 
 export default function Question({ questionNum, currentQuestion, currentRound }) {
-  console.log({questionNum, currentQuestion})
   const dispatch = useDispatch();
   const isAddQuestionModalOpen = useSelector(state => state.createGame.isAddQuestionModalOpen);
   const openModal = () => {
