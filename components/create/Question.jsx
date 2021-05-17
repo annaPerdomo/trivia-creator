@@ -13,9 +13,9 @@ const {
 export default function Question({ questionNum, currentQuestion, currentRound }) {
   console.log({questionNum, currentQuestion})
   const dispatch = useDispatch();
-  const isModalOpen = useSelector(state => state.createGame.isModalOpen);
+  const isAddQuestionModalOpen = useSelector(state => state.createGame.isAddQuestionModalOpen);
   const openModal = () => {
-    if (!isModalOpen) {
+    if (!isAddQuestionModalOpen) {
       dispatch(openQuestionModal({roundNum: currentRound, questionNum}));
     }
   };

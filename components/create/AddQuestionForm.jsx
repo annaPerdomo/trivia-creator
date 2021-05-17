@@ -1,32 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { connect } from "react-redux";
-import {closeQuestionModal} from '../../redux/actions/CreateGameActions';
+import {closeQuestionModal, createTriviaQuestion} from '../../redux/actions/CreateGameActions';
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm({currentRound}) {
+function AddQuestionForm() {
   const dispatch = useDispatch();
-  const [newName, setName] = useState("");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const submitQuestion = async (e) => {
     e.preventDefault();
-    //dispatch(setInfo(newName));
-
-  //   const data = {
-  //    triviaId: 2,
-  //    roundNum: currentRound,
-  //    questionNum: 2,
-  //    content: 'Who is the best partner in the world?',
-  //    type: 'text',
-  //    correctAnswer: 'Daniel'
-  // }
-  // await fetch('http://localhost:3000/api/post/questions', {
-  //    method: 'PUT',
-  //    headers: {
-  //       'Content-Type': 'application/json'
-  //    },
-  //    body: JSON.stringify(data)
-  //  })
+    dispatch(createTriviaQuestion(question, answer));
  }
  const closeModal = () => {
    dispatch(closeQuestionModal());
@@ -36,17 +21,22 @@ function AddQuestionForm({currentRound}) {
       <div className={modal}>
         <form>
           <div>
-            <label for="question">Question or Name: </label>
+            <label for="question">Question: </label>
             <input
               type="text"
               name="question"
-              value={newName}
-              onChange={(e) => setName(e.target.value)}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
             ></input>
           </div>
           <div>
             <label for="answer">Answer: </label>
-            <input type="text" name="answer"></input>
+            <input
+              type="text"
+              name="answer"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+              ></input>
           </div>
           <div>
             <label for="type-select">Type: </label>

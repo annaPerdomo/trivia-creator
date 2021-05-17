@@ -58,9 +58,7 @@ export default function Create({ questions }) {
         <p id={logo}>it's a trivia&trade;</p>
       </div>
       <Modal selector="#modal">
-        <AddQuestionForm
-          currentRound={currentRound}
-        />
+        <AddQuestionForm />
       </Modal>
     </div>
   );
