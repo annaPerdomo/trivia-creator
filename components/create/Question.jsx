@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import styles from "../../styles/Create.module.css";
-import {openQuestionModal, closeQuestionModal} from '../../redux/actions/ModalActions';
+import {openQuestionModal, closeQuestionModal} from '../../redux/actions/CreateGameActions';
 import {useDispatch, useSelector} from 'react-redux';
 const {
    backdrop,
@@ -13,7 +13,7 @@ const {
 export default function Question({ questionNum, currentQuestion, currentRound }) {
   console.log({questionNum, currentQuestion})
   const dispatch = useDispatch();
-  const isModalOpen = useSelector(state => state.modal.isModalOpen);
+  const isModalOpen = useSelector(state => state.createGame.isModalOpen);
   const openModal = () => {
     if (!isModalOpen) {
       dispatch(openQuestionModal({roundNum: currentRound, questionNum}));

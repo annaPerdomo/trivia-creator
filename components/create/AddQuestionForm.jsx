@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux'
 import { connect } from "react-redux";
-import {closeQuestionModal} from '../../redux/actions/ModalActions';
+import {closeQuestionModal} from '../../redux/actions/CreateGameActions';
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm() {
+function AddQuestionForm({currentRound}) {
   const dispatch = useDispatch();
   const [newName, setName] = useState("");
   const submitQuestion = async (e) => {
     e.preventDefault();
-    //dispatch(setInfo(newName))
+    //dispatch(setInfo(newName));
 
   //   const data = {
   //    triviaId: 2,
-  //    roundNum: 1,
+  //    roundNum: currentRound,
   //    questionNum: 2,
   //    content: 'Who is the best partner in the world?',
   //    type: 'text',

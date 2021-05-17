@@ -1,8 +1,8 @@
-import ModalReducer from './ModalReducer';
+import CreateGameReducer from './CreateGameReducer';
 import { combineReducers } from 'redux'
 
 const reducers = {
-  modal: ModalReducer,
+  createGame: CreateGameReducer,
 }
 
 export default combineReducers(reducers)

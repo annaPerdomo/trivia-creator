@@ -8,3 +8,7 @@ export const openQuestionModal = ({ roundNum, questionNum }) => (dispatch) => {
 };
 
 export const closeQuestionModal = () => ({ type: types.CLOSE_QUESTION_MODAL });
+
+export const createTriviaQuestion = () => (dispatch, getState) => {
+
+}

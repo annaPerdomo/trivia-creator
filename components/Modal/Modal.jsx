@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 export default function Modal({ children, selector }) {
   const ref = useRef();
   const [mounted, setMounted] = useState(false);
-  const isModalOpen = useSelector(state => state.modal.isModalOpen);
+  const isAddQuestionModalOpen = useSelector(
+    (state) => state.createGame.isAddQuestionModalOpen
+  );
 
   useEffect(() => {
     ref.current = document.querySelector(selector);
-    setMounted(isModalOpen);
-  }, [isModalOpen])
+    setMounted(isAddQuestionModalOpen);
+  }, [isAddQuestionModalOpen]);
 
   return mounted ? createPortal(children, ref.current) : null;
 }

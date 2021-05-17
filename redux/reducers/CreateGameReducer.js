@@ -1,8 +1,8 @@
 import * as types from "../types";
 
-const ModalReducer = (
+const CreateGameReducer = (
   state = {
-    isModalOpen: false,
+    isAddQuestionModalOpen: false,
     modalType: null,
     roundNum: null,
     questionNum: null
@@ -10,14 +10,14 @@ const ModalReducer = (
     switch (type) {
       case types.OPEN_QUESTION_MODAL:
         return {
-          isModalOpen: true,
+          isAddQuestionModalOpen: true,
           modalType: 'questionModal',
           roundNum: payload.roundNum,
           questionNum: payload.questionNum
         }
       case types.CLOSE_QUESTION_MODAL:
         return {
-          isModalOpen: false,
+          isAddQuestionModalOpen: false,
           modalType: null,
           roundNum: null,
           questionNum: null
@@ -27,4 +27,4 @@ const ModalReducer = (
     }
 }
 
-export default ModalReducer;
+export default CreateGameReducer;
