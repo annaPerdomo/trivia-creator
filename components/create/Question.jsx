@@ -15,7 +15,14 @@ export default function Question({ questionNum, currentQuestion, currentRound })
   const isAddQuestionModalOpen = useSelector(state => state.createGame.isAddQuestionModalOpen);
   const openModal = () => {
     if (!isAddQuestionModalOpen) {
-      dispatch(openQuestionModal({roundNum: currentRound, questionNum}));
+      dispatch(
+        openQuestionModal({
+          roundNum: currentRound,
+          questionNum,
+          questionId:  currentQuestion?.[0]?.id,
+          // isUpdatingQuestion: currentQuestion?.[0]?.id ? true : false,
+        })
+      );
     }
   };
   return (

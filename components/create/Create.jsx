@@ -47,7 +47,7 @@ export default function Create({ questions }) {
    triviaQuestionsCopy.push(newQuestionData);
    setTriviaQuestions(triviaQuestionsCopy);
   }
-
+  console.log(triviaQuestions)
   return (
     <div id={create}>
       <div id={title}>

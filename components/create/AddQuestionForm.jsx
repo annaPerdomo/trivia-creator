@@ -11,18 +11,19 @@ function AddQuestionForm({displayNewTriviaQuestion}) {
   const [answer, setAnswer] = useState("");
   const roundNum = useSelector(state => state.createGame.roundNum);
   const questionNum = useSelector(state => state.createGame.questionNum);
+  const triviaId = useSelector(state => state.createGame.triviaId);
+  const questionId = useSelector(state => state.createGame.questionId);
   const submitQuestion = async (e) => {
     e.preventDefault();
     const newQuestionData = {
       content: question,
       correctAnswer: answer,
-      id: Number(`${roundNum}${questionNum}`),
-      triviaId: 3,
-      type: "text",
+      questionId,
+      questionNum,
       roundNum,
-      questionNum
+      triviaId,
+      type: "text",
     }
-    displayNewTriviaQuestion(newQuestionData);
     dispatch(createTriviaQuestion(newQuestionData));
  }
  const closeModal = () => {
