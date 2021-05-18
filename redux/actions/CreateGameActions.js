@@ -6,11 +6,17 @@ export const setTriviaId = (triviaId) => ({
 });
 
 export const openQuestionModal =
-  ({ roundNum, questionNum, questionId }) =>
+  ({ roundNum, questionNum, questionId, currentQuestion, currentAnswer }) =>
   (dispatch) => {
     dispatch({
       type: types.OPEN_QUESTION_MODAL,
-      payload: { roundNum, questionNum, questionId },
+      payload: {
+        roundNum,
+        questionNum,
+        questionId,
+        currentQuestion,
+        currentAnswer,
+      },
     });
   };
 
@@ -21,8 +27,13 @@ export const addTriviaQuestionToState = (newQuestion) => ({
   payload: newQuestion
 });
 
+export const addEditedQuestionToState = (editedQuestion) => ({
+  type: types.SET_EDITED_QUESTION,
+  payload: editedQuestion,
+});
+
 export const clearTriviaQuestionsFromState = () => ({
-  type: types.UNSET_NEW_QUESTION,
+  type: types.UNSET_QUESTIONS,
 });
 
 export const createTriviaQuestion =
@@ -36,6 +47,7 @@ export const createTriviaQuestion =
         },
         body: JSON.stringify(newQuestionData)
       })
+      //dispatch triviaID and question
       dispatch(closeQuestionModal());
     } else if (!newQuestionData.questionId) {
       const newQuestion = await fetch('http://localhost:3000/api/create/questions', {
@@ -49,10 +61,17 @@ export const createTriviaQuestion =
       dispatch(addTriviaQuestionToState(newQuestionBody))
       dispatch(closeQuestionModal());
     } else {
-      const editedQuestion = await fetch('http://localhost:3000/api/update/questions')
+      const editedQuestion = await fetch('http://localhost:3000/api/update/questions', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newQuestionData),
+      })
+      const editedQuestionBody = await editedQuestion.json();
+      console.log('EDITED QUESTION', {editedQuestionBody});
+      dispatch(addEditedQuestionToState(editedQuestionBody))
       dispatch(closeQuestionModal());
     }
-
-    // grab new id from db and dispatch it here
 
   };

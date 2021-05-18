@@ -19,8 +19,9 @@ export default function Question({ questionNum, currentQuestion, currentRound })
         openQuestionModal({
           roundNum: currentRound,
           questionNum,
-          questionId:  currentQuestion?.[0]?.id,
-          // isUpdatingQuestion: currentQuestion?.[0]?.id ? true : false,
+          questionId: currentQuestion?.[0]?.id,
+          currentQuestion: currentQuestion?.[0]?.content,
+          currentAnswer: currentQuestion?.[0]?.correctAnswer,
         })
       );
     }

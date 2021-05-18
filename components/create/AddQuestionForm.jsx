@@ -5,10 +5,12 @@ import {closeQuestionModal, createTriviaQuestion} from '../../redux/actions/Crea
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
-function AddQuestionForm({displayNewTriviaQuestion}) {
+function AddQuestionForm() {
   const dispatch = useDispatch();
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const currentQuestion = useSelector(state => state.createGame.currentQuestion);
+  const currentAnswer = useSelector(state => state.createGame.currentAnswer);
+  const [question, setQuestion] = useState(currentQuestion ? currentQuestion : "");
+  const [answer, setAnswer] = useState(currentAnswer ? currentAnswer :  "");
   const roundNum = useSelector(state => state.createGame.roundNum);
   const questionNum = useSelector(state => state.createGame.questionNum);
   const triviaId = useSelector(state => state.createGame.triviaId);

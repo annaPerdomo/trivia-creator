@@ -20,7 +20,6 @@ export default async function handle(req, res) {
         trivia: { connect: { id: triviaId } },
       },
     });
-    console.log('newQuestion', JSON.stringify(newQuestion))
     res.json(newQuestion);
   } catch (err) {
     if (err) console.log(err);

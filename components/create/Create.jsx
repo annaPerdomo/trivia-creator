@@ -5,7 +5,7 @@ import styles from "../../styles/Create.module.css";
 import Bar from "./Bar.jsx";
 import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
-import {addTriviaQuestionToState, clearTriviaQuestionsFromState, setTriviaId} from '../../redux/actions/CreateGameActions';
+import {clearTriviaQuestionsFromState, setTriviaId} from '../../redux/actions/CreateGameActions';
 const {
   create,
   title,
@@ -22,6 +22,7 @@ export default function Create({ questions }) {
   const [currentRound, setCurrentRound] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useSelector(state => state.createGame.newQuestion);
+  const editedQuestion = useSelector(state => state.createGame.editedQuestion);
   useEffect(() => {
     if (questions && !triviaQuestions) {
       setTriviaQuestions(questions);
@@ -31,9 +32,18 @@ export default function Create({ questions }) {
   useEffect(() => {
     if (newQuestion) {
       displayNewTriviaQuestion(newQuestion);
-      dispatch(clearTriviaQuestionsFromState());
+    } else if (editedQuestion) {
+      displayEditedTriviaQuestion(editedQuestion);
     }
-  }, [newQuestion])
+    dispatch(clearTriviaQuestionsFromState());
+  }, [newQuestion, editedQuestion])
+
+  // useEffect(() => {
+  //   if (editedQuestion) {
+  //     displayEditedTriviaQuestion(editedQuestion);
+  //   }
+  //   dispatch(clearTriviaQuestionsFromState());
+  // }, [editedQuestion])
 
   function barClick(i) {
     if (currentRound === i) {
@@ -46,6 +56,20 @@ export default function Create({ questions }) {
    const triviaQuestionsCopy = triviaQuestions.slice();
    triviaQuestionsCopy.push(newQuestionData);
    setTriviaQuestions(triviaQuestionsCopy);
+  }
+  const displayEditedTriviaQuestion = (editedQuestion) => {
+    const {id, type, content, correctAnswer} = editedQuestion;
+    const triviaQuestionsCopy = triviaQuestions.slice();
+    triviaQuestionsCopy.map(triviaQuestion => {
+      if (triviaQuestion.id === id) {
+        triviaQuestion.type = type;
+        triviaQuestion.content = content,
+        triviaQuestion.correctAnswer = correctAnswer;
+      }
+      return triviaQuestion;
+    })
+    console.log('done mapping', {triviaQuestionsCopy});
+
   }
   console.log(triviaQuestions)
   return (
@@ -79,9 +103,7 @@ export default function Create({ questions }) {
         <p id={logo}>it's a trivia&trade;</p>
       </div>
       <Modal selector="#modal">
-        <AddQuestionForm
-          displayNewTriviaQuestion={displayNewTriviaQuestion}
-        />
+        <AddQuestionForm />
       </Modal>
     </div>
   );

@@ -7,9 +7,11 @@ const CreateGameReducer = (
     modalType: null,
     roundNum: null,
     questionNum: null,
-    isUpdatingQuestion: false,
     questionId: null,
+    currentQuestion: null,
+    currentAnswer: null,
     newQuestion: null,
+    editedQuestion: null,
   }, {type, payload}) => {
     switch (type) {
       case types.SET_TRIVIA_ID:
@@ -25,6 +27,8 @@ const CreateGameReducer = (
           roundNum: payload.roundNum,
           questionNum: payload.questionNum,
           questionId: payload.questionId,
+          currentQuestion: payload.currentQuestion,
+          currentAnswer: payload.currentAnswer,
         }
       case types.CLOSE_QUESTION_MODAL:
         return {
@@ -34,16 +38,24 @@ const CreateGameReducer = (
           roundNum: null,
           questionNum: null,
           questionId: null,
+          currentQuestion: null,
+          currentAnswer: null,
         }
       case types.SET_NEW_QUESTION:
         return {
           ...state,
-          newQuestion: payload
+          newQuestion: payload,
         }
-      case types.UNSET_NEW_QUESTION:
+      case types.SET_EDITED_QUESTION:
         return {
           ...state,
-          newQuestion: null
+          editedQuestion: payload,
+        }
+      case types.UNSET_QUESTIONS:
+        return {
+          ...state,
+          newQuestion: null,
+          editedQuestion: null,
         }
       default:
         return state;
