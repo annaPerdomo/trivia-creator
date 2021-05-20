@@ -79,6 +79,7 @@ export default function Create({ questions }) {
         <div id={bars}>
           {[1, 2, 3, 4, 5].map((i) => (
             <Bar
+              key={i}
               currentRound={currentRound}
               questions={triviaQuestions}
               onClick={() => {
