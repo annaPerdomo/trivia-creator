@@ -23,6 +23,7 @@ export default function Create({ questions }) {
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useSelector(state => state.createGame.newQuestion);
   const editedQuestion = useSelector(state => state.createGame.editedQuestion);
+  const triviaId = useSelector(state => state.createGame.triviaId);
   useEffect(() => {
     if (questions && !triviaQuestions) {
       setTriviaQuestions(questions);
@@ -67,7 +68,7 @@ export default function Create({ questions }) {
         <p>Create</p>
       </div>
       <div id={start}>
-        <Link href="/wait">
+        <Link href={`/game/${triviaId}/round-1/play`}>
           <p>Start Game</p>
         </Link>
       </div>
