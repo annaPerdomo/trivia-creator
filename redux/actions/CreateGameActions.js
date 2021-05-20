@@ -38,40 +38,54 @@ export const clearTriviaQuestionsFromState = () => ({
 
 export const createTriviaQuestion =
   (newQuestionData) => async (dispatch, getState) => {
-    console.log('NEW QUESTION DATA', {newQuestionData});
-    if (!newQuestionData.triviaId) {
-      const newTriviaGame = await fetch('http://localhost:3000/api/create/triviaGame', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuestionData)
-      })
-      //dispatch triviaID and question
-      dispatch(closeQuestionModal());
-    } else if (!newQuestionData.questionId) {
-      const newQuestion = await fetch('http://localhost:3000/api/create/questions', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuestionData),
-      });
-      const newQuestionBody = await newQuestion.json();
-      dispatch(addTriviaQuestionToState(newQuestionBody))
-      dispatch(closeQuestionModal());
-    } else {
-      const editedQuestion = await fetch('http://localhost:3000/api/update/questions', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuestionData),
-      })
-      const editedQuestionBody = await editedQuestion.json();
-      console.log('EDITED QUESTION', {editedQuestionBody});
-      dispatch(addEditedQuestionToState(editedQuestionBody))
-      dispatch(closeQuestionModal());
+    console.log('create Trivia Question!', newQuestionData, typeof newQuestionData);
+    try {
+      if (!newQuestionData.triviaId) {
+        const newTriviaGame = await fetch(
+          '/api/create/triviaGame',
+          {
+            method: 'POST',
+            body: JSON.stringify(newQuestionData),
+          }
+        );
+        //dispatch triviaID and question
+        dispatch(closeQuestionModal());
+      } else if (!newQuestionData.questionId) {
+        const newQuestion = await fetch(
+          '/api/create/questions',
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newQuestionData),
+          }
+        );
+        const newQuestionBody = await newQuestion.json();
+        dispatch(addTriviaQuestionToState(newQuestionBody));
+        dispatch(closeQuestionModal());
+      } else {
+        const editedQuestion = await fetch(
+          '/api/update/questions',
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newQuestionData),
+          }
+        );
+        const editedQuestionBody = await editedQuestion.json();
+        console.log('EDITED QUESTION', { editedQuestionBody });
+        dispatch(addEditedQuestionToState(editedQuestionBody));
+        dispatch(closeQuestionModal());
+      }
+      console.log('NEW QUESTION DATA', { newQuestionData });
+    } catch (err) {
+      if (err) {
+        console.log('something went wrong with fetching!', err);
+      }
     }
-
   };
