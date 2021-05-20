@@ -37,6 +37,7 @@
 #start:hover, #upload:hover{
    background: #ffffff;
    color: black;
+   cursor: pointer;
 }
 
 
