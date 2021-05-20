@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+
 import styles from "../../styles/Create.module.css";
-import AddQuestionModal from './AddQuestionModal/AddQuestionModal';
-import AddQuestionForm from './AddQuestionModal/AddQuestionForm';
+import {openQuestionModal, closeQuestionModal} from '../../redux/actions/CreateGameActions';
+import {useDispatch, useSelector} from 'react-redux';
 const {
    backdrop,
    modal,
@@ -9,33 +10,38 @@ const {
    questionDetails
 } = styles;
 
-export default function Question({ num, currentQuestion }) {
-  console.log({ currentQuestion });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function Question({
+  questionNum,
+  currentQuestion,
+  currentRound,
+}) {
+  const dispatch = useDispatch();
+  const isAddQuestionModalOpen = useSelector(
+    (state) => state.createGame.isAddQuestionModalOpen
+  );
   const openModal = () => {
-    if (!isModalOpen) {
-      setIsModalOpen(true);
+    if (!isAddQuestionModalOpen) {
+      dispatch(
+        openQuestionModal({
+          roundNum: currentRound,
+          questionNum,
+          questionId: currentQuestion?.[0]?.id,
+          currentQuestion: currentQuestion?.[0]?.content,
+          currentAnswer: currentQuestion?.[0]?.correctAnswer,
+          currentType: currentQuestion?.[0]?.type,
+        })
+      );
     }
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
   };
   return (
     <div className={question} onClick={openModal}>
-      {num}. {currentQuestion?.[0]?.content ? currentQuestion?.[0]?.content : 'N/A'}
-      {isModalOpen ? (
-        <div className={questionDetails}>
-          <AddQuestionModal selector="#modal">
-            <AddQuestionForm closeModal={closeModal} />
-          </AddQuestionModal>
-        </div>
-      ) : (
-        <div>{`[${
-          currentQuestion?.[0]?.correctAnswer
-            ? currentQuestion?.[0].correctAnswer
-            : 'No correct answer yet'
-        }]`}</div>
-      )}
+      {questionNum}.{' '}
+      {currentQuestion?.[0]?.content ? currentQuestion?.[0]?.content : 'N/A'}
+      <div className={questionDetails}>{`[${
+        currentQuestion?.[0]?.correctAnswer
+          ? currentQuestion?.[0].correctAnswer
+          : 'No correct answer yet'
+      }]`}</div>
     </div>
   );
 }

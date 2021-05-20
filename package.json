@@ -8,13 +8,20 @@
     "start": "next start",
     "start-app": "next build && next start",
     "update-db-schema": "npx prisma db push --preview-feature",
-    "show-db": "npx prisma studio"
+    "show-db": "npx prisma studio",
+    "play-game": "./ngrok http 3000"
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
+    "cors": "^2.8.5",
     "next": "^10.0.1",
+    "next-redux-wrapper": "^6.0.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "prisma": "^2.21.2"

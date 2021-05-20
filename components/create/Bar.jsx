@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/Create.module.css";
 import Questions from "./Questions";
-import qs from "./testQuestions.js";
 
 export default function Bar(props) {
   return (
@@ -19,12 +18,12 @@ export default function Bar(props) {
               : styles.triangle
           }
         ></div>
-        <p>{props.num}</p>
+        <p>{props.roundNum}</p>
         <p>Round</p>
       </div>
       {props.selected ? (
         <Questions
-          arr={[1, 2, 3, 4, 5]}
+          questionNumberList={[1, 2, 3, 4, 5]}
           currentRound={props.currentRound}
           questions={props.questions}
         />

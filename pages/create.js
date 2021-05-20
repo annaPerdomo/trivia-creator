@@ -15,7 +15,6 @@ export default function CreatePage({questions}) {
   const url = "www.notsure.help";
   const keywords = "trivia";
   const robots = "index, follow";
-  console.log('create page props', questions)
   return (
     <React.Fragment>
       <Head>
@@ -48,7 +47,6 @@ export async function getServerSideProps() {
       triviaId: 3,
     }
   });
-  //console.log('❗️❗️', {questions});
   return {
     props: { questions }, // will be passed to the page component as props
   }

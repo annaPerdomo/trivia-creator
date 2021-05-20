@@ -37,6 +37,7 @@
 #start:hover, #upload:hover{
    background: #ffffff;
    color: black;
+   cursor: pointer;
 }
 
 
@@ -125,6 +126,7 @@ to {
   flex-direction: column;
   border: solid;
   height: 100%;
+  cursor: pointer;
 }
 
 .bar p {
@@ -169,6 +171,7 @@ to {
 
 .question{
   border: solid;
+  cursor: pointer;
 }
 
 .questionDetails{
