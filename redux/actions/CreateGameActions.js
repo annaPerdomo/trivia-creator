@@ -39,17 +39,30 @@ export const clearTriviaQuestionsFromState = () => ({
 
 export const createTriviaQuestion =
   (newQuestionData) => async (dispatch, getState) => {
-    console.log('create Trivia Question!', newQuestionData, typeof newQuestionData);
     try {
       if (!newQuestionData.triviaId) {
         const newTriviaGame = await fetch(
           '/api/create/triviaGame',
           {
             method: 'POST',
+          }
+        );
+        const newTriviaGameData = await newTriviaGame.json();
+        dispatch(setTriviaId(newTriviaGameData.id));
+        newQuestionData.triviaId = newTriviaGameData.id;
+        const newQuestion = await fetch(
+          '/api/create/questions',
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(newQuestionData),
           }
         );
-        //dispatch triviaID and question
+        const newQuestionBody = await newQuestion.json();
+        dispatch(addTriviaQuestionToState(newQuestionBody));
         dispatch(closeQuestionModal());
       } else if (!newQuestionData.questionId) {
         const newQuestion = await fetch(
@@ -79,11 +92,9 @@ export const createTriviaQuestion =
           }
         );
         const editedQuestionBody = await editedQuestion.json();
-        console.log('EDITED QUESTION', { editedQuestionBody });
         dispatch(addEditedQuestionToState(editedQuestionBody));
         dispatch(closeQuestionModal());
       }
-      console.log('NEW QUESTION DATA', { newQuestionData });
     } catch (err) {
       if (err) {
         console.log('something went wrong with fetching!', err);

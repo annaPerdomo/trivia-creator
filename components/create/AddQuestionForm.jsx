@@ -26,14 +26,13 @@ function AddQuestionForm() {
       questionNum,
       roundNum,
       triviaId,
-      type,
+      type: type || 'text',
     }
     dispatch(createTriviaQuestion(newQuestionData));
  }
  const closeModal = () => {
    dispatch(closeQuestionModal());
  }
- console.log({type})
   return (
     <div className={backdrop}>
       <div className={modal}>
