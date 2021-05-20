@@ -23,7 +23,6 @@ export default function Bar(props) {
       </div>
       {props.selected ? (
         <Questions
-          arr={[1, 2, 3, 4, 5]}
           questionNumberList={[1, 2, 3, 4, 5]}
           currentRound={props.currentRound}
           questions={props.questions}

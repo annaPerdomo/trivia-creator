@@ -5,9 +5,9 @@ export const setTriviaId = (triviaId) => ({
   payload: {triviaId}
 });
 
-export const openQuestionModal =
-  ({ roundNum, questionNum, questionId, currentQuestion, currentAnswer }) =>
+export const openQuestionModal = (newQuestionData) =>
   (dispatch) => {
+    const { roundNum, questionNum, questionId, currentQuestion, currentAnswer, currentType } = newQuestionData;
     dispatch({
       type: types.OPEN_QUESTION_MODAL,
       payload: {
@@ -16,6 +16,7 @@ export const openQuestionModal =
         questionId,
         currentQuestion,
         currentAnswer,
+        currentType,
       },
     });
   };

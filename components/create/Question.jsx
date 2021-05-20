@@ -10,9 +10,15 @@ const {
    questionDetails
 } = styles;
 
-export default function Question({ questionNum, currentQuestion, currentRound }) {
+export default function Question({
+  questionNum,
+  currentQuestion,
+  currentRound,
+}) {
   const dispatch = useDispatch();
-  const isAddQuestionModalOpen = useSelector(state => state.createGame.isAddQuestionModalOpen);
+  const isAddQuestionModalOpen = useSelector(
+    (state) => state.createGame.isAddQuestionModalOpen
+  );
   const openModal = () => {
     if (!isAddQuestionModalOpen) {
       dispatch(
@@ -22,6 +28,7 @@ export default function Question({ questionNum, currentQuestion, currentRound })
           questionId: currentQuestion?.[0]?.id,
           currentQuestion: currentQuestion?.[0]?.content,
           currentAnswer: currentQuestion?.[0]?.correctAnswer,
+          currentType: currentQuestion?.[0]?.type,
         })
       );
     }

@@ -6,6 +6,7 @@ const CreateGameReducer = (
     isAddQuestionModalOpen: false,
     modalType: null,
     roundNum: null,
+    currentType: null,
     questionNum: null,
     questionId: null,
     currentQuestion: null,
@@ -29,6 +30,7 @@ const CreateGameReducer = (
           questionId: payload.questionId,
           currentQuestion: payload.currentQuestion,
           currentAnswer: payload.currentAnswer,
+          currentType: payload.currentType,
         }
       case types.CLOSE_QUESTION_MODAL:
         return {
@@ -40,6 +42,7 @@ const CreateGameReducer = (
           questionId: null,
           currentQuestion: null,
           currentAnswer: null,
+          currentType: null,
         }
       case types.SET_NEW_QUESTION:
         return {

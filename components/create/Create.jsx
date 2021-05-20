@@ -28,7 +28,7 @@ export default function Create({ questions }) {
       setTriviaQuestions(questions);
       dispatch(setTriviaId(questions[0].triviaId));
     }
-  }, [])
+  }, []);
   useEffect(() => {
     if (newQuestion) {
       displayNewTriviaQuestion(newQuestion);
@@ -36,15 +36,7 @@ export default function Create({ questions }) {
       displayEditedTriviaQuestion(editedQuestion);
     }
     dispatch(clearTriviaQuestionsFromState());
-  }, [newQuestion, editedQuestion])
-
-  // useEffect(() => {
-  //   if (editedQuestion) {
-  //     displayEditedTriviaQuestion(editedQuestion);
-  //   }
-  //   dispatch(clearTriviaQuestionsFromState());
-  // }, [editedQuestion])
-
+  }, [newQuestion, editedQuestion]);
   function barClick(i) {
     if (currentRound === i) {
       setCurrentRound(null);
@@ -56,7 +48,7 @@ export default function Create({ questions }) {
    const triviaQuestionsCopy = triviaQuestions.slice();
    triviaQuestionsCopy.push(newQuestionData);
    setTriviaQuestions(triviaQuestionsCopy);
-  }
+  };
   const displayEditedTriviaQuestion = (editedQuestion) => {
     const {id, type, content, correctAnswer} = editedQuestion;
     const triviaQuestionsCopy = triviaQuestions.slice();
@@ -68,10 +60,7 @@ export default function Create({ questions }) {
       }
       return triviaQuestion;
     })
-    console.log('done mapping', {triviaQuestionsCopy});
-
-  }
-  console.log(triviaQuestions)
+  };
   return (
     <div id={create}>
       <div id={title}>
