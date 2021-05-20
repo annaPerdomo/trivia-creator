@@ -8,7 +8,8 @@
     "start": "next start",
     "start-app": "next build && next start",
     "update-db-schema": "npx prisma db push --preview-feature",
-    "show-db": "npx prisma studio"
+    "show-db": "npx prisma studio",
+    "play-game": "./ngrok http 3000"
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
