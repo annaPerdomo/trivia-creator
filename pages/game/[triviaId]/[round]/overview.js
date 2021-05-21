@@ -34,7 +34,7 @@ export async function getServerSideProps(context) {
       roundNum,
     },
     include: {
-      answer: true
+      answers: true
     }
   });
   return {
