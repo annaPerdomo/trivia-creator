@@ -33,6 +33,9 @@ export async function getServerSideProps(context) {
       triviaId: 3,
       roundNum,
     },
+    include: {
+      answer: true
+    }
   });
   return {
     props: { questions },
