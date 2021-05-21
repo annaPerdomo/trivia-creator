@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
-import PlayGame from '../../../../components/PlayGame/PlayGame';
+import RoundOverview from '../../../../components/RoundOverview/RoundOverview';
 import prisma from '../../../../lib/prisma.ts';
 
-export default function PlayRound({questions}) {
+export default function RoundOverviewPage({questions}) {
   const title =
     'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
   const desc =
@@ -20,7 +20,7 @@ export default function PlayRound({questions}) {
         <meta content={robots} name="robots" />
       </Head>
 
-      <PlayGame questions={questions}/>
+      <RoundOverview />
     </React.Fragment>
   );
 }
