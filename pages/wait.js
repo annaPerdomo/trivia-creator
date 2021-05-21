@@ -20,7 +20,7 @@ export default function WaitPage() {
         <meta content={robots} name="robots" />
       </Head>
 
-    <WaitBetweenRounds/>
+      <WaitBetweenRounds/>
     </React.Fragment>
   );
 }

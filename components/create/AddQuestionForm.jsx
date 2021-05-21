@@ -7,16 +7,20 @@ const {backdrop, modal} = styles;
 
 function AddQuestionForm() {
   const dispatch = useDispatch();
-  const currentQuestion = useSelector(state => state.createGame.currentQuestion);
-  const currentAnswer = useSelector(state => state.createGame.currentAnswer);
-  const currentType = useSelector(state => state.createGame.currentType);
-  const [question, setQuestion] = useState(currentQuestion ? currentQuestion : "");
-  const [answer, setAnswer] = useState(currentAnswer ? currentAnswer :  "");
-  const [type, setType] = useState(currentType ? currentType :  "");
-  const roundNum = useSelector(state => state.createGame.roundNum);
-  const questionNum = useSelector(state => state.createGame.questionNum);
-  const triviaId = useSelector(state => state.createGame.triviaId);
-  const questionId = useSelector(state => state.createGame.questionId);
+  const currentQuestion = useSelector(
+    (state) => state.createGame.currentQuestion
+  );
+  const currentAnswer = useSelector((state) => state.createGame.currentAnswer);
+  const currentType = useSelector((state) => state.createGame.currentType);
+  const [question, setQuestion] = useState(
+    currentQuestion ? currentQuestion : ''
+  );
+  const [answer, setAnswer] = useState(currentAnswer ? currentAnswer : '');
+  const [type, setType] = useState(currentType ? currentType : '');
+  const roundNum = useSelector((state) => state.createGame.roundNum);
+  const questionNum = useSelector((state) => state.createGame.questionNum);
+  const triviaId = useSelector((state) => state.createGame.triviaId);
+  const questionId = useSelector((state) => state.createGame.questionId);
   const submitQuestion = async (e) => {
     e.preventDefault();
     const newQuestionData = {
@@ -27,18 +31,18 @@ function AddQuestionForm() {
       roundNum,
       triviaId,
       type: type || 'text',
-    }
+    };
     dispatch(createTriviaQuestion(newQuestionData));
- }
- const closeModal = () => {
-   dispatch(closeQuestionModal());
- }
+  };
+  const closeModal = () => {
+    dispatch(closeQuestionModal());
+  };
   return (
     <div className={backdrop}>
       <div className={modal}>
         <form>
           <div>
-            <label for="question">Question: </label>
+            <label htmlFor="question">Question: </label>
             <input
               type="text"
               name="question"
@@ -47,25 +51,26 @@ function AddQuestionForm() {
             ></input>
           </div>
           <div>
-            <label for="answer">Answer: </label>
+            <label htmlFor="answer">Answer: </label>
             <input
               type="text"
               name="answer"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              ></input>
+            ></input>
           </div>
           <div>
-            <label for="type-select">Type: </label>
+            <label htmlFor="type-select">Type: </label>
             <select
+              defaultValue={type ? type : false}
               id="type-select"
               name="type"
               onChange={(e) => setType(e.currentTarget.value)}
             >
               <option value="">--Please choose one--</option>
-              <option selected={type === 'text'} value="text">Text</option>
-              <option selected={type === 'visual'} value="visual">Visual</option>
-              <option selected={type === 'audio'} value="audio">Audio</option>
+              <option value="text">Text</option>
+              <option value="visual">Visual</option>
+              <option value="audio">Audio</option>
             </select>
           </div>
 
