@@ -30,7 +30,7 @@ export async function getServerSideProps(context) {
   const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
   const questions = await prisma.question.findMany({
     where: {
-      triviaId: 3,
+      triviaId: 1,
       roundNum,
     },
   });

@@ -21,25 +21,13 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    // const {
-    //   content,
-    //   correctAnswer,
-    //   questionNum,
-    //   roundNum,
-    //   triviaId,
-    //   type,
-    // } = req.body;
-    // const newQuestion = await prisma.question.create({
-    //   data: {
-    //     roundNum,
-    //     questionNum,
-    //     content,
-    //     type,
-    //     correctAnswer,
-    //     trivia: { connect: { id: triviaId } },
-    //   },
-    // });
-    // res.json(newQuestion);
+    const {
+      answers
+    } = req.body;
+    const newAnswer = await prisma.answer.createMany({
+      data: answers
+    });
+    res.json(newAnswer);
   } catch (err) {
     if (err) console.log(err);
   }

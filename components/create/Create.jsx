@@ -24,6 +24,7 @@ export default function Create({ questions }) {
   const newQuestion = useSelector(state => state.createGame.newQuestion);
   const editedQuestion = useSelector(state => state.createGame.editedQuestion);
   const triviaId = useSelector(state => state.createGame.triviaId);
+  console.log({questions})
   useEffect(() => {
     if (questions?.length && !triviaQuestions) {
       setTriviaQuestions(questions);
