@@ -1,7 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import PlayGame from '../../../../../components/PlayGame/PlayGame';
+import ScoreAnswers from '../../../../../components/AdminScore/ScoreAnswers';
 import prisma from '../../../../../lib/prisma.ts';
+import safeJsonStringify from 'safe-json-stringify';
 
 export default function AdminScorePage({questions}) {
   const title =
@@ -10,7 +11,7 @@ export default function AdminScorePage({questions}) {
     'Trivia creator allows you to host trivia nights with your friends!';
   const keywords = 'trivia';
   const robots = 'index, follow';
-
+  console.log({questions});
   return (
     <React.Fragment>
       <Head>
@@ -20,7 +21,7 @@ export default function AdminScorePage({questions}) {
         <meta content={robots} name="robots" />
       </Head>
 
-      <h1>hi scoring</h1>
+      <ScoreAnswers questions={questions} />
     </React.Fragment>
   );
 }
@@ -28,12 +29,17 @@ export default function AdminScorePage({questions}) {
 export async function getServerSideProps(context) {
   const roundParamString = context.params.round;
   const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
-  const questions = await prisma.question.findMany({
+  const fetchedQuestions = await prisma.question.findMany({
     where: {
       triviaId: 1,
       roundNum,
     },
+    include: {
+      answers: true
+    }
   });
+  const parsedQuestions = safeJsonStringify(fetchedQuestions);
+  const questions = JSON.parse(parsedQuestions);
   return {
     props: { questions },
   }
