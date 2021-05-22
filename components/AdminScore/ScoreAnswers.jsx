@@ -31,24 +31,26 @@ export default function ScoreAnswers({ questions }) {
     <div>
       <h1>Round {roundNum}</h1>
       <div>
-        <ul>
-          {questions.map((question, index) => {
+        <ul>{questions ? (
+          questions.map((question, index) => {
             return (
               <li key={index}>
                 {question.content}
-                <ul>
-                  {question.answers.map((answer, index) => (
+                <ul>{question.answers.length ? (
+                  question.answers.map((answer, index) => (
                     <div>
                       <li key={index}>
                         {answer.teamName}:{' ' + answer.content}
                         <button onClick={() => markAsTrue(answer)}>Mark As True</button>
                       </li>
                     </div>
-                  ))}
+                  ))
+                ) : (<div>No answers have been submitted yet</div>)}
                 </ul>
               </li>
             );
-          })}
+          })
+        ) : <div>No questions have been submitted yet</div>}
         </ul>
       </div>
       <Link href={`/game/${triviaId}/round-${Number(roundNum) + 1}/admin/play`}>
