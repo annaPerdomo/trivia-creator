@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import RoundOverview from '../../../../../components/RoundOverview/RoundOverview';
 import prisma from '../../../../../lib/prisma.ts';
+import safeJsonStringify from 'safe-json-stringify';
 
 export default function RoundOverviewPage({questions}) {
   const title =
@@ -10,7 +11,7 @@ export default function RoundOverviewPage({questions}) {
     'Trivia creator allows you to host trivia nights with your friends!';
   const keywords = 'trivia';
   const robots = 'index, follow';
-
+  console.log({questions})
   return (
     <React.Fragment>
       <Head>
@@ -28,15 +29,17 @@ export default function RoundOverviewPage({questions}) {
 export async function getServerSideProps(context) {
   const roundParamString = context.params.round;
   const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
-  const questions = await prisma.question.findMany({
+  const fetchedQuestions = await prisma.question.findMany({
     where: {
-      triviaId: 3,
+      triviaId: 1,
       roundNum,
     },
     include: {
       answers: true
     }
   });
+  const parsedQuestions = safeJsonStringify(fetchedQuestions);
+  const questions = JSON.parse(parsedQuestions);
   return {
     props: { questions },
   }
