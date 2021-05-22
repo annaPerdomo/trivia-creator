@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Use Prisma Migrate if you change the schema again
 
 datasource db {
   provider = "postgresql"
@@ -17,21 +18,10 @@ model TriviaGame {
   hostId       Int?
   roundAmount  Int
   questions    Question[]
-  // rounds       Round[]
 }
-
-// model Round {
-//   id           Int          @default(autoincrement()) @id
-//   trivia       TriviaGame   @relation(fields: [triviaId], references: [id])
-//   triviaId     Int
-//   questions    Question[]
-//   roundNumber  Int
-// }
 
 model Question {
   id             Int        @default(autoincrement()) @id
-  // round          Round      @relation(fields: [roundId], references: [id])
-  // roundId        Int
   trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
   triviaId       Int
   roundNum       Int
@@ -46,7 +36,8 @@ model Answer {
   id            Int         @default(autoincrement()) @id
   question      Question    @relation(fields: [questionId], references: [id])
   questionId    Int
-  teamId        Int
+  // teamId        Int
+  teamName      String
   content       String?
   isCorrect     Boolean     @default(false)
   submittedAt   DateTime    @default(now())
