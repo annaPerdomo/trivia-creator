@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
-import PlayGame from '../../../../components/PlayGame/PlayGame';
-import prisma from '../../../../lib/prisma.ts';
+import PlayGame from '../../../../../components/PlayGame/PlayGame';
+import prisma from '../../../../../lib/prisma.ts';
 
-export default function PlayRound({questions}) {
+export default function AdminPlayPage({questions}) {
   const title =
     'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
   const desc =

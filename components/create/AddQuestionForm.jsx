@@ -40,6 +40,7 @@ function AddQuestionForm() {
   return (
     <div className={backdrop}>
       <div className={modal}>
+        <h5>Round {roundNum} Question {questionNum}</h5>
         <form>
           <div>
             <label htmlFor="question">Question: </label>
@@ -73,7 +74,7 @@ function AddQuestionForm() {
               <option value="audio">Audio</option>
             </select>
           </div>
-
+          <br />
           <div>
             <button type="button" onClick={closeModal}>
               Cancel

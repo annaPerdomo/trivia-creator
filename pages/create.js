@@ -12,7 +12,7 @@ export default function CreatePage({questions}) {
   //You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
   //getting error above trying to change this
   // const image = require(`../public/testBrain.jpg`);
-  const url = "www.notsure.help";
+  // const url = "www.notsure.help";
   const keywords = "trivia";
   const robots = "index, follow";
   return (
@@ -44,7 +44,7 @@ export default function CreatePage({questions}) {
 export async function getServerSideProps() {
   const questions = await prisma.question.findMany({
     where: {
-      triviaId: 3,
+      triviaId: 1,
     }
   });
   return {
