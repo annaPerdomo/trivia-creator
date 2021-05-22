@@ -13,6 +13,20 @@ export default function ScoreAnswers({ questions }) {
   }, []);
   const router = useRouter();
   const roundNum = router.query.round.split('-')[1];
+  const markAsTrue = async (answerData) => {
+    const updatedAnswer = await fetch(
+      '/api/update/answers',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({answerId: answerData.id}),
+      }
+    );
+    const updatedAnswerBody = await updatedAnswer.json();
+  }
   return (
     <div>
       <h1>Round {roundNum}</h1>
@@ -24,9 +38,12 @@ export default function ScoreAnswers({ questions }) {
                 {question.content}
                 <ul>
                   {question.answers.map((answer, index) => (
-                    <li key={index}>
-                      {answer.teamName}:{' ' + answer.content}
-                    </li>
+                    <div>
+                      <li key={index}>
+                        {answer.teamName}:{' ' + answer.content}
+                        <button onClick={() => markAsTrue(answer)}>Mark As True</button>
+                      </li>
+                    </div>
                   ))}
                 </ul>
               </li>
