@@ -71,7 +71,7 @@ export default function Create({ questions }) {
         <p>Create</p>
       </div>
       <div id={start}>
-        <Link href={`/game/${triviaId}/round-1/play`}>
+        <Link href={`/game/${triviaId}/round-1/admin/play`}>
           <p>Start Game</p>
         </Link>
       </div>

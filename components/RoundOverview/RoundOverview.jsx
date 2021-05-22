@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export default function RoundOverview() {
+  //maybe display a loader until Daniel has everything scored 🤔
   return (
     <div>
       <div>

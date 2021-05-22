@@ -5,12 +5,15 @@ import Link from 'next/link'
 
 export default function PlayGame({questions}) {
   const [triviaId, setTriviaId] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     if (questions && !triviaId) {
       setTriviaId(questions[0].triviaId);
     }
+    const urlPath = router.route.split('/')[4];
+    setIsAdmin(urlPath === "admin")
   }, [])
-  console.log({questions});
+  console.log({questions, isAdmin});
   const router = useRouter();
   const roundNum = router.query.round.split('-')[1];
   const submitAnswers = async () => {
@@ -19,27 +22,27 @@ export default function PlayGame({questions}) {
         answers: [
           {
             questionId: 1,
-            teamName: 'Andy Samberg and the Luls',
-            content: 'Jizz in my Pants',
+            teamName: 'Karen from Finance',
+            content: 'Spring Break Anthem',
           },
           {
             questionId: 3,
-            teamName: 'Andy Samberg and the Luls',
-            content: 'Dick in a Box',
+            teamName: 'Karen from Finance',
+            content: 'I\'m On A Boat',
           },
           {
             questionId: 4,
-            teamName: 'Andy Samberg and the Luls',
-            content: 'Threw it on the Ground',
+            teamName: 'Karen from Finance',
+            content: 'Motherlover',
           },
           {
             questionId: 5,
-            teamName: 'Andy Samberg and the Luls',
+            teamName: 'Karen from Finance',
             content: 'I Just Had Sex',
           },
           {
             questionId: 2,
-            teamName: 'Andy Samberg and the Luls',
+            teamName: 'Karen from Finance',
             content: '3-Way (The Golden Rule)',
           },
         ]
@@ -67,17 +70,21 @@ export default function PlayGame({questions}) {
       <div>
         <ul>
           {questions.map((question, index) => {
-            return (
-              <li key={index}>{question.content}</li>
-              )
-            })}
+            return <li key={index}>{question.content}</li>;
+          })}
         </ul>
       </div>
-      {/* <Link href={`/game/${triviaId}/round-${roundNum}/overview`}> */}
+      <Link
+        href={
+          isAdmin
+            ? `/game/${triviaId}/round-${roundNum}/admin/score`
+            : `/game/${triviaId}/round-${roundNum}/overview`
+        }
+      >
         <button onClick={submitAnswers}>Submit</button>
-      {/* </Link> */}
+      </Link>
     </div>
-  )
+  );
 }
 
 
