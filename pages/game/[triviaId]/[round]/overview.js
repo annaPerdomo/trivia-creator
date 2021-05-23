@@ -11,7 +11,6 @@ export default function RoundOverviewPage({questions}) {
     'Trivia creator allows you to host trivia nights with your friends!';
   const keywords = 'trivia';
   const robots = 'index, follow';
-  console.log({questions})
   return (
     <React.Fragment>
       <Head>
@@ -21,7 +20,7 @@ export default function RoundOverviewPage({questions}) {
         <meta content={robots} name="robots" />
       </Head>
 
-      <RoundOverview />
+      <RoundOverview questions={questions}/>
     </React.Fragment>
   );
 }
@@ -32,7 +31,6 @@ export async function getServerSideProps(context) {
   const fetchedQuestions = await prisma.question.findMany({
     where: {
       triviaId: 1,
-      roundNum,
     },
     include: {
       answers: true

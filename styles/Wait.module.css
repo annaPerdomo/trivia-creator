@@ -9,7 +9,7 @@
   grid-gap: 0.5vw;
   padding: 20px;
   text-align: center;
-  font-size: 3rem;
+  font-size: 1em;
   font-weight: bolder;
 }
 
@@ -45,7 +45,7 @@
 
 #teamList{
   flex: 1;
-  font-size: 0.7rem;
+  font-size: 1em;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -56,7 +56,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   align-content: center;
-  font-size: 1rem;
+  font-size: 14px;
   width: 100%;
   padding: 10px;
 }

@@ -21,7 +21,7 @@ export default function RoundOverviewPage({questions}) {
         <meta content={robots} name="robots" />
       </Head>
 
-      <RoundOverview />
+      <RoundOverview questions={questions}/>
     </React.Fragment>
   );
 }
@@ -32,7 +32,6 @@ export async function getServerSideProps(context) {
   const fetchedQuestions = await prisma.question.findMany({
     where: {
       triviaId: 1,
-      roundNum,
     },
     include: {
       answers: true
