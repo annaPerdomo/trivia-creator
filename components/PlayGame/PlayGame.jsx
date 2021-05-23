@@ -21,29 +21,29 @@ export default function PlayGame({questions}) {
         const newAnswerData = {
           answers: [
             {
-              questionId: 1,
-              teamName: 'Karen from Finance',
-              content: 'Spring Break Anthem',
+              questionId: 6,
+              teamName: 'Andy Samberg and the Luls',
+              content: 'Ascension',
             },
             {
-              questionId: 3,
-              teamName: 'Karen from Finance',
-              content: 'I\'m On A Boat',
+              questionId: 7,
+              teamName: 'Andy Samberg and the Luls',
+              content: 'Numb Numb Juice',
             },
             {
-              questionId: 4,
-              teamName: 'Karen from Finance',
-              content: 'Motherlover',
+              questionId: 8,
+              teamName: 'Andy Samberg and the Luls',
+              content: 'Physical',
             },
             {
-              questionId: 5,
-              teamName: 'Karen from Finance',
-              content: 'I Just Had Sex',
+              questionId: 9,
+              teamName: 'Andy Samberg and the Luls',
+              content: 'Tempo',
             },
             {
-              questionId: 2,
-              teamName: 'Karen from Finance',
-              content: '3-Way (The Golden Rule)',
+              questionId: 10,
+              teamName: 'Andy Samberg and the Luls',
+              content: 'Work Bitch',
             },
           ]
         }
@@ -74,15 +74,15 @@ export default function PlayGame({questions}) {
           })}
         </ul>
       </div>
-      <Link
+      {/* <Link
         href={
           isAdmin
             ? `/game/${triviaId}/round-${roundNum}/admin/score`
             : `/game/${triviaId}/round-${roundNum}/overview`
         }
-      >
+      > */}
         <button onClick={submitAnswers}>Submit</button>
-      </Link>
+      {/* </Link> */}
     </div>
   );
 }
