@@ -47,18 +47,18 @@ export default function PlayGame({questions}) {
             },
           ]
         }
-        const newAnswer = await fetch(
-          '/api/create/answers',
-          {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newAnswerData),
-          }
-        );
-        const newAnswerBody = await newAnswer.json();
+        // const newAnswer = await fetch(
+        //   '/api/create/answers',
+        //   {
+        //     method: 'POST',
+        //     headers: {
+        //       'Accept': 'application/json',
+        //       'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(newAnswerData),
+        //   }
+        // );
+        // const newAnswerBody = await newAnswer.json();
       }
     } catch (err) {
       console.log(err);
@@ -74,15 +74,15 @@ export default function PlayGame({questions}) {
           })}
         </ul>
       </div>
-      {/* <Link
+      <Link
         href={
           isAdmin
             ? `/game/${triviaId}/round-${roundNum}/admin/score`
             : `/game/${triviaId}/round-${roundNum}/overview`
         }
-      > */}
+      >
         <button onClick={submitAnswers}>Submit</button>
-      {/* </Link> */}
+      </Link>
     </div>
   );
 }
