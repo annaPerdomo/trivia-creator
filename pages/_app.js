@@ -9,10 +9,10 @@ export default function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState)
 
   return (
-    <NextAuthProvider session={pageProps.session}>
-      <ReduxProvider store={store}>
+    <ReduxProvider store={store}>
+      <NextAuthProvider session={pageProps.session}>
         <Component {...pageProps} />
-      </ReduxProvider>
-    </NextAuthProvider>
+      </NextAuthProvider>
+    </ReduxProvider>
   )
 }
