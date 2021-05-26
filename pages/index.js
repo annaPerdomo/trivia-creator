@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Home from '../components/Home';
+import Header from '../components/Header/Header';
 
 
 export default function HomePage() {
@@ -35,6 +36,7 @@ const robots = 'index, follow';
         <meta content={image} name="twitter:image" />
         <meta content={url} name="twitter:url" /> */}
       </Head>
+      <Header />
       <Home />
     </React.Fragment>
   )

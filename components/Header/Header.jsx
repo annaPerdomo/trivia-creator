@@ -1,7 +1,7 @@
-import React from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { signOut, useSession } from 'next-auth/client'
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { signOut, useSession } from 'next-auth/client';
 
 export default function Header() {
   const router = useRouter();
@@ -9,12 +9,12 @@ export default function Header() {
     return router.pathname === pathname;
   }
   const [session, loading] = useSession();
-
+  //data-active changing the styling of the links in the nav if the current page is
   let left = (
     <div className="left">
       <Link href="/">
         <a className="bold" data-active={isActive('/')}>
-          Feed
+          Home/
         </a>
       </Link>
       <style jsx>{`
