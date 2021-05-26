@@ -19,16 +19,25 @@ import prisma from '../../../lib/prisma.ts';
 // }
 
 export default NextAuth({
-  // Configure one or more authentication providers
   providers: [
     Providers.GitHub({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET
     }),
-    // ...add more providers here
+    Providers.Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      authorizationUrl: 'https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code',
+    })
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
-  // A database is optional, but required to persist accounts in a database
-  //database: process.env.DATABASE_URL,
-  // secret: process.env.SECRET,
+  callbacks: {
+    async jwt(token, user, account, profile, isNewUser) {
+      if (account?.accessToken) {
+        token.accessToken = account.accessToken;
+      }
+      return token;
+    },
+  },
+  secret: process.env.SECRET,
 })
