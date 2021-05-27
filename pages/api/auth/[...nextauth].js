@@ -52,26 +52,11 @@ const GOOGLE_AUTHORIZATION_URL =
     }
   }
 
-
-// const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options)
-// export default authHandler
-
-// const options = {
-//   providers: [
-//     Providers.GitHub({
-//       clientId: process.env.GITHUB_ID,
-//       clientSecret: process.env.GITHUB_SECRET,
-//     }),
-//   ],
-//   adapter: Adapters.Prisma.Adapter({ prisma }),
-//   secret: process.env.SECRET,
-// }
-
 export default NextAuth({
   providers: [
-    Providers.GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
+    Providers.Email({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM
     }),
     Providers.Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -106,7 +91,6 @@ export default NextAuth({
         session.accessToken = token.accessToken;
         session.error = token.error;
       }
-
       return session;
     },
   },

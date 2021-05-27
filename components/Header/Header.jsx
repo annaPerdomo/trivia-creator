@@ -9,6 +9,7 @@ export default function Header() {
     return router.pathname === pathname;
   }
   const [session, loading] = useSession();
+  console.log({session})
   //data-active changing the styling of the links in the nav if the current page is
   let left = (
     <div className="left">
@@ -144,11 +145,16 @@ export default function Header() {
         `}</style>
       </div>
     )
+    // const wtf = (
+    //   <p>
+    //   {session.user.name} ({session.user.email})
+    // </p>
+    // )
     right = (
       <div className="right">
-        <p>
+        {/* <p>
           {session.user.name} ({session.user.email})
-        </p>
+        </p> */}
         <Link href="/create">
           <button>
             <a>New post</a>
