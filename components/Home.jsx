@@ -10,7 +10,7 @@ const {
   homePageButtons,
   welcomeBanner,
   signInButtonContainer,
-  signInButton
+  signOutButtonContainer
 } = styles;
 
 export default function Home() {
@@ -34,15 +34,20 @@ export default function Home() {
           <button onClick={() => signIn()}>Sign in</button>
         </div>
       ) : (
-        <div className={buttonContainer}>
-          <div className={buttonSection}>
-            <Link href="/create">
-              <button className={homePageButtons}>Create A Game</button>
-            </Link>
+        <div>
+          <div className={signOutButtonContainer}>
+            <button onClick={() => signOut()}>Sign out</button>
           </div>
-          <div className={divider}></div>
-          <div className={buttonSection}>
-            <button className={homePageButtons}>Start A Game</button>
+          <div className={buttonContainer}>
+            <div className={buttonSection}>
+              <Link href="/create">
+                <button className={homePageButtons}>Create A Game</button>
+              </Link>
+            </div>
+            <div className={divider}></div>
+            <div className={buttonSection}>
+              <button className={homePageButtons}>Play A Game</button>
+            </div>
           </div>
         </div>
       )}
