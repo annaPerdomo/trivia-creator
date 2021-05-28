@@ -13,6 +13,7 @@ const GOOGLE_AUTHORIZATION_URL =
   });
 
   async function refreshAccessToken(token) {
+    console.log("top of refreshAccessToken")
     try {
       const url =
         "https://oauth2.googleapis.com/token?" +
@@ -66,7 +67,8 @@ export default NextAuth({
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
   callbacks: {
-    async jwt(token, user, account) {
+    async jwt(token, user, account, profile, isNewUser) {
+      console.log('💟💟💟💟', {token, user, account, profile, isNewUser})
       // Initial sign in
       if (account && user) {
         return {
@@ -86,14 +88,20 @@ export default NextAuth({
       return refreshAccessToken(token);
     },
     async session(session, token) {
-      console.log('❗️❗️❗️❗️❗️❗️', {session, token})
+      // console.log('before if token declaration', {session})
+      console.log('❕❕before if token declaration', {token: token.user})
+      console.log
       if (token) {
         session.user = token.user;
         session.accessToken = token.accessToken;
         session.error = token.error;
       }
+      // console.log('❕❕❕❕❕❕', {token, tokenUser: token.user}, );
+      // console.log('❗️❗️❗️❗️❗️❗️', {session});
+
       return session;
     },
   },
   secret: process.env.SECRET,
+  database: process.env.DATABASE_URL,
 })
