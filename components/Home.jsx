@@ -17,15 +17,16 @@ export default function Home() {
   const [session, loading] = useSession();
   const [isJoiningGame, setIsJoiningGame] = useState(false);
   const [joinGameCode, setJoinGameCode] = useState('');
-  useEffect(() => {
-    if (session?.error === "RefreshAccessTokenError") {
-      console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
-      signIn(); // Force sign in to hopefully resolve error
-    }
-    if (session) {
-      console.log({session});
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session?.error === "RefreshAccessTokenError") {
+  //     console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
+  //     signIn(); // Force sign in to hopefully resolve error
+  //   }
+  //   if (session) {
+  //     console.log({session});
+  //   }
+  // }, [session]);
+  //console.log('😄😄😄😄', {loading, session})
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -37,6 +38,9 @@ export default function Home() {
         </div>
       ) : (
         <div>
+          <div>
+            <h4>You look beautiful today {session.user.name || session.user.email}</h4>
+          </div>
           <div className={signOutButtonContainer}>
             <button onClick={() => signOut()}>Sign out</button>
           </div>
@@ -48,22 +52,22 @@ export default function Home() {
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
-              <button
-                className={homePageButtons}
-                onClick={() => setIsJoiningGame(true)}
-              >
-                Play A Game
-              </button>
               {isJoiningGame ? (
                 <div>
                   <input
                     type="text"
                     name="joinGameCode"
-                    value={question}
+                    value={joinGameCode}
                     onChange={(e) => setJoinGameCode(e.target.value)}
                   ></input>
                 </div>
               ) : null}
+              <button
+                className={homePageButtons}
+                onClick={() => setIsJoiningGame(true)}
+              >
+                {isJoiningGame ? 'Enter Game Code' : 'Play A Game'}
+              </button>
             </div>
           </div>
         </div>

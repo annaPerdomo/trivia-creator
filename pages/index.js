@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useSession, getSession } from 'next-auth/client'
 import Head from 'next/head'
 import Home from '../components/Home';
 
@@ -11,7 +12,7 @@ export default function HomePage() {
   const url = 'www.notsure.help';
   const keywords = 'trivia';
   const robots = 'index, follow';
-
+  // const [ session, loading ] = useSession();
   return (
     <React.Fragment>
       <Head>
@@ -32,7 +33,16 @@ export default function HomePage() {
         <meta content={image} name="twitter:image" />
         <meta content={url} name="twitter:url" /> */}
       </Head>
-      <Home />
+      {/* <Home loading={loading} session={session}/> */}
+      <Home loading={{}} session={{}}/>
     </React.Fragment>
   );
 }
+
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {
+//       session: await getSession(context)
+//     }
+//   }
+// }

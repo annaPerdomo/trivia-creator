@@ -66,10 +66,21 @@ export default NextAuth({
     })
   ],
   adapter: Adapters.Prisma.Adapter({ prisma }),
+  secret: process.env.SECRET,
+  database: process.env.DATABASE_URL,
+  session: {
+    jwt: true,
+    maxAge: 30 * 24 * 60 * 60
+  },
+  jwt: {
+  },
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
       console.log('💟💟💟💟', {token, user, account, profile, isNewUser})
-      // Initial sign in
+      // for email sign in provider
+      if (token && !user) {
+        return token;
+      }
       if (account && user) {
         return {
           accessToken: account.accessToken,
@@ -90,18 +101,19 @@ export default NextAuth({
     async session(session, token) {
       // console.log('before if token declaration', {session})
       console.log('❕❕before if token declaration', {token: token.user})
-      console.log
-      if (token) {
+      if (token.email) {
+        session.email = token.email;
+        session.id = token.sub;
+      } else {
         session.user = token.user;
         session.accessToken = token.accessToken;
-        session.error = token.error;
+        session.error = session.error
       }
-      // console.log('❕❕❕❕❕❕', {token, tokenUser: token.user}, );
-      // console.log('❗️❗️❗️❗️❗️❗️', {session});
+      //console.log('❕❕❕❕❕❕', {token, tokenUser: token.user}, );
+      console.log('❗️❗️❗️❗️❗️❗️ after token declaration', {session, token});
 
       return session;
     },
   },
-  secret: process.env.SECRET,
-  database: process.env.DATABASE_URL,
+  debug: true,
 })
