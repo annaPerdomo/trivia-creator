@@ -13,8 +13,6 @@ This is a Next.js + React web application that allows individuals to create and 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
