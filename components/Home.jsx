@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { signin, signIn, signOut, useSession } from "next-auth/client";
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import styles from "../styles/Home.module.css";
 const {
@@ -15,63 +16,36 @@ const {
 
 export default function Home() {
   const [session, loading] = useSession();
-  const [isJoiningGame, setIsJoiningGame] = useState(false);
-  const [joinGameCode, setJoinGameCode] = useState('');
-  // useEffect(() => {
-  //   if (session?.error === "RefreshAccessTokenError") {
-  //     console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
-  //     signIn(); // Force sign in to hopefully resolve error
-  //   }
-  //   if (session) {
-  //     console.log({session});
-  //   }
-  // }, [session]);
-  //console.log('😄😄😄😄', {loading, session})
+  const router = useRouter();
+  useEffect(() => {
+    if (session?.error === "RefreshAccessTokenError") {
+      console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
+      signIn(); // Force sign in to hopefully resolve error
+    }
+    if (session && session.user) {
+      router.push('/dashboard')
+    }
+  }, [session]);
   return (
     <div className={container}>
       <div className={welcomeBanner}>
-        <h1>Welcome to Trivia DeathMatch&trade;</h1>
+        <h1>Welcome to Trivia-Creator&trade;</h1>
       </div>
       {!session ? (
         <div className={`${buttonContainer}, ${signInButtonContainer}`}>
-          <button onClick={() => signIn()}>Sign in</button>
-        </div>
-      ) : (
-        <div>
           <div>
-            <h4>You look beautiful today {session.user.name || session.user.email}</h4>
+            <button onClick={() => signIn()}>Sign in</button>
           </div>
-          <div className={signOutButtonContainer}>
-            <button onClick={() => signOut()}>Sign out</button>
+          <div>
+            or
           </div>
-          <div className={buttonContainer}>
-            <div className={buttonSection}>
-              <Link href="/create">
-                <button className={homePageButtons}>Create A Game</button>
-              </Link>
-            </div>
-            <div className={divider}></div>
-            <div className={buttonSection}>
-              {isJoiningGame ? (
-                <div>
-                  <input
-                    type="text"
-                    name="joinGameCode"
-                    value={joinGameCode}
-                    onChange={(e) => setJoinGameCode(e.target.value)}
-                  ></input>
-                </div>
-              ) : null}
-              <button
-                className={homePageButtons}
-                onClick={() => setIsJoiningGame(true)}
-              >
-                {isJoiningGame ? 'Enter Game Code' : 'Play A Game'}
-              </button>
-            </div>
+          <div>
+            <Link href="/signup">
+              <button>Create New Account</button>
+            </Link>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

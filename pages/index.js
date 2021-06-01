@@ -12,7 +12,6 @@ export default function HomePage() {
   const url = 'www.notsure.help';
   const keywords = 'trivia';
   const robots = 'index, follow';
-  // const [ session, loading ] = useSession();
   return (
     <React.Fragment>
       <Head>
@@ -33,16 +32,7 @@ export default function HomePage() {
         <meta content={image} name="twitter:image" />
         <meta content={url} name="twitter:url" /> */}
       </Head>
-      {/* <Home loading={loading} session={session}/> */}
-      <Home loading={{}} session={{}}/>
+      <Home />
     </React.Fragment>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   return {
-//     props: {
-//       session: await getSession(context)
-//     }
-//   }
-// }
