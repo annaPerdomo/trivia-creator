@@ -20,11 +20,14 @@ export default function Signup() {
   const signupWithEmail = async () => {
     console.log('signup with email clicked');
   }
+  const signupWithGoogle = async () => {
+    return await signIn('google');
+  }
   return (
     <div>
       <h5>Signup</h5>
       <div>
-        <button>Create account with Google Login</button>
+        <button onClick={signupWithGoogle}>Create account with Google Login</button>
       </div>
       <br />
       <h5>Or</h5>
