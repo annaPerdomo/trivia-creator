@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "start-app": "next build && next start",
-    "update-db-schema": "npx prisma db push --preview-feature",
+    "update-db-schema": "npx prisma db push",
     "show-db": "npx prisma studio",
     "play-game": "./ngrok http 3000"
   },

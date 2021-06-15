@@ -76,44 +76,22 @@ export default NextAuth({
   },
   callbacks: {
     async jwt(token, user, account, profile, isNewUser) {
-      console.log('💟💟💟💟', {token, user, account, profile, isNewUser})
-      // for email sign in provider
-      if (token && !user) {
+      if (Date.now() > token.accessTokenExpires) {
+        return refreshAccessToken(token);
+      } else {
         return token;
       }
-      if (account && user) {
-        return {
-          accessToken: account.accessToken,
-          accessTokenExpires: Date.now() + account.expires_in * 1000,
-          refreshToken: account.refresh_token,
-          user,
-        };
-      }
-
-      // Return previous token if the access token has not expired yet
-      if (Date.now() < token.accessTokenExpires) {
-        return token;
-      }
-
-      // Access token has expired, try to update it
-      return refreshAccessToken(token);
     },
     async session(session, token) {
-      // console.log('before if token declaration', {session})
-      console.log('❕❕before if token declaration', {token: token.user})
-      if (token.email) {
-        session.email = token.email;
-        session.id = token.sub;
-      } else {
-        session.user = token.user;
+      session.user.id = token.sub;
+      if (token.accessToken) {
         session.accessToken = token.accessToken;
-        session.error = session.error
+        session.accessTokenExpires = token.accessTokenExpires;
+        session.refreshToken = token.refreshToken;
       }
-      //console.log('❕❕❕❕❕❕', {token, tokenUser: token.user}, );
-      console.log('❗️❗️❗️❗️❗️❗️ after token declaration', {session, token});
-
       return session;
     },
   },
   debug: true,
 })
+

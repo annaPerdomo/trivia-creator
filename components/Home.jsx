@@ -36,14 +36,6 @@ export default function Home() {
           <div>
             <button onClick={() => signIn()}>Sign in</button>
           </div>
-          <div>
-            or
-          </div>
-          <div>
-            <Link href="/signup">
-              <button>Create New Account</button>
-            </Link>
-          </div>
         </div>
       ) : null}
     </div>
