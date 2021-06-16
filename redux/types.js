@@ -8,5 +8,6 @@ export const SET_EDITED_QUESTION = "SET_EDITED_QUESTION";
 export const UNSET_QUESTIONS = "UNSET_QUESTIONS";
 
 //USER
-export const SET_USER = "SET_USER";
+export const SET_USER_ID = "SET_USER_ID";
+export const SET_DISPLAY_NAME = "SET_DISPLAY_NAME";
 export const LOGOUT_USER = "LOGOUT_USER";
