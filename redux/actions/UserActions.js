@@ -13,11 +13,9 @@ export const setUserId = ({ userId }) => ({
   payload: { userId },
 });
 
-export const createEmailUser =
+export const setUserDisplayName =
   (user) => async (dispatch, getState) => {
     try {
-      const createNewUser = await signIn('email', { email: user.email });
-
       const setDisplayName = await fetch('/api/update/displayName', {
         method: 'POST',
         headers: {
@@ -33,9 +31,22 @@ export const createEmailUser =
     }
   }
 
-  export const setUser =
+  export const setUserToState =
     (user) => async (dispatch, getState) => {
       try {
+        console.log('setUserToState', {user});
+        const getUserDisplayName = await fetch('/api/get/userDisplayName', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user),
+        });
+        const userDisplayName = await getUserDisplayName.json();
+        console.log({userDisplayName});
+        dispatch(setUserId(user.id))
+        dispatch(setDisplayName(userDisplayName))
         //make fetch request to grab user display name
         //set displayName and set UserID
       } catch (err) {
