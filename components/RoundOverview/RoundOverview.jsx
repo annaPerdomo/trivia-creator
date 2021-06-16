@@ -13,6 +13,7 @@ export default function RoundOverview({questions}) {
   useEffect(() => {
     if (questions && !roundScore) {
       const currentRoundQuestions = questions.filter(question => question.roundNum === roundNum);
+      calculateAllScoresInOneLoop();
       calculateScores(questions, setTotalScore);
       calculateScores(currentRoundQuestions, setRoundScore);
     }
@@ -33,6 +34,31 @@ export default function RoundOverview({questions}) {
     });
     setScore(roundTeamScores);
   }
+
+  const calculateAllScoresInOneLoop = async () => {
+    const roundTeamScores = {};
+    const allTeamScores = {};
+    questions.forEach((questionData,  index) => {
+      if (questionData.answsers) {
+        questionData.answers.forEach((answerData, index) => {
+          if (!roundTeamScores[answerData.teamName]) {
+            roundTeamScores[answer.teamName] = {
+              total: 0,
+              round: 0
+            }
+          }
+          if (answer.isCorrect) {
+            roundTeamScores[answer.teamName].total++
+            if (questionData.roundNum === roundNum) {
+              roundTeamScores[answer.teamName].round++
+            }
+          }
+        })
+      }
+    })
+    console.log('allscoresinoneloop version of roundTeamScores', {roundTeamScores})
+  }
+
   return (
     <div>
       <h3>Round {roundNum} Scores</h3>

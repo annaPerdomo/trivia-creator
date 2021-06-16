@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { useSession, getSession } from 'next-auth/client'
 import Head from 'next/head'
-import Home from '../components/Home';
+import Dashboard from '../components/Dashboard/Dashboard';
 import { useRouter } from 'next/router';
 
 
-export default function HomePage() {
+export default function DashboardPage() {
   const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
@@ -15,12 +15,12 @@ export default function HomePage() {
   const url = 'www.notsure.help';
   const keywords = 'trivia';
   const robots = 'index, follow';
+
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
+
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
-      router.push('/dashboard');
-    } else {
       return (
         <React.Fragment>
           <Head>
@@ -29,9 +29,11 @@ export default function HomePage() {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Home />
+          <Dashboard />
         </React.Fragment>
       );
+    } else {
+      router.push('/')
     }
   }
   return null;

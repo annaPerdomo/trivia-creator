@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { signin, signIn, signOut, useSession } from "next-auth/client";
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 import styles from "../styles/Home.module.css";
 const {
@@ -8,25 +10,34 @@ const {
   divider,
   homePageButtons,
   welcomeBanner,
+  signInButtonContainer,
+  signOutButtonContainer
 } = styles;
 
 export default function Home() {
+  const [session, loading] = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (session?.error === "RefreshAccessTokenError") {
+      console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
+      signIn(); // Force sign in to hopefully resolve error
+    }
+    if (session && session.user) {
+      router.push('/dashboard')
+    }
+  }, [session]);
   return (
     <div className={container}>
       <div className={welcomeBanner}>
-        <h1>Welcome to Trivia DeathMatch&trade;</h1>
+        <h1>Welcome to Trivia-Creator&trade;</h1>
       </div>
-      <div className={buttonContainer}>
-        <div className={buttonSection}>
-          <Link href="/create">
-            <button className={homePageButtons}>Create A Game</button>
-          </Link>
+      {!session ? (
+        <div className={`${buttonContainer}, ${signInButtonContainer}`}>
+          <div>
+            <button onClick={() => signIn()}>Sign in</button>
+          </div>
         </div>
-        <div className={divider}></div>
-        <div className={buttonSection}>
-          <button className={homePageButtons}>Start A Game</button>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 }
