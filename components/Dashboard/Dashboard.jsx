@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import { signin, signIn, signOut, useSession } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
-import { useRouter } from 'next/router'
-import {setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
+import {logoutUser, setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
 const {
   buttonContainer,
   buttonSection,
@@ -18,27 +17,28 @@ const {
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  const router = useRouter()
   const [session, loading] = useSession();
   const [isJoiningGame, setIsJoiningGame] = useState(false);
   const [joinGameCode, setJoinGameCode] = useState('');
-  const [userIsChangingDisplayName, setUserIsChangingDisplayName] = useState(false);
-  const [displayName, setDisplayName] = useState(null);
-  const userId = useSelector((state) => state.user.userId);
+  const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
+    useState(false);
+  const [displayName, setDisplayName] = useState('');
   const userDisplayName = useSelector((state) => state.user.userDisplayName);
-  useEffect(( ) => {
-    if (!session) {
-      router.push('/')
-    } else {
+  const userId = useSelector((state) => state.user.userId);
+  useEffect(() => {
+    if (session && !userId) {
       dispatch(setUserToState(session));
     }
-  }, [session, loading])
-  console.log('💯💯💯💯', {session})
+  }, []);
   const submitNewDisplayName = () => {
     dispatch(updateUserDisplayName(displayName));
     setDisplayName(null);
     setUserIsChangingDisplayName(false);
-  }
+  };
+  const initiateSignOut = () => {
+    signOut();
+    dispatch(logoutUser());
+  };
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -53,7 +53,10 @@ export default function Dashboard() {
             </h4>
           </div>
           <div>
-            <button type="button" onClick={() => setUserIsChangingDisplayName(true)}>
+            <button
+              type="button"
+              onClick={() => setUserIsChangingDisplayName(true)}
+            >
               Change display name
             </button>
           </div>
@@ -66,11 +69,15 @@ export default function Dashboard() {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
               ></input>
-              <button type="button" onClick={submitNewDisplayName}>Submit new display name</button>
+              <button type="button" onClick={submitNewDisplayName}>
+                Submit new display name
+              </button>
             </div>
           ) : null}
           <div className={signOutButtonContainer}>
-            <button type="button" onClick={() => signOut()}>Sign out</button>
+            <button type="button" onClick={initiateSignOut}>
+              Sign out
+            </button>
           </div>
 
           <div className={buttonContainer}>

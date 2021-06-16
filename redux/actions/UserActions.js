@@ -1,5 +1,4 @@
 import * as types from '../types';
-import { signin, signIn, signOut, useSession } from "next-auth/client";
 
 export const setDisplayName = (userDisplayName) => ({
   type: types.SET_USER_DISPLAY_NAME,
@@ -14,10 +13,9 @@ export const setUserId = (userId) => ({
 });
 
 export const setUserToState =
-  (data) => async (dispatch, getState) => {
+  (data) => async (dispatch) => {
     try {
       const {user} = data;
-      console.log('setUserToState', {user});
       const getUserDisplayName = await fetch('/api/get/userDisplayName', {
         method: 'POST',
         headers: {
@@ -27,13 +25,10 @@ export const setUserToState =
         body: JSON.stringify(user.id),
       });
       const userDisplayName = await getUserDisplayName.json();
-      console.log({userDisplayName});
       dispatch(setUserId(user.id))
       if (userDisplayName.displayName) {
         dispatch(setDisplayName(userDisplayName.displayName))
       }
-      //make fetch request to grab user display name
-      //set displayName and set UserID
     } catch (err) {
       if (err) console.log(err);
     }

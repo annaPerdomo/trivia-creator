@@ -28,18 +28,6 @@ export default function DashboardPage() {
             <meta content={desc} name="description" />
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
-            {/*
-            <meta content={title} property="og:title" />
-            <meta content="website" property="og:type" />
-            <meta content={url} property="og:url" />
-            <meta content={desc} property="og:description" />
-            <meta content={image} property="og:image" />
-            <meta content="summary_large_image" name="twitter:card" />
-            <meta content="getjobfit.com" name="twitter:domain" />
-            <meta content={title} name="twitter:title" />
-            <meta content={desc} name="twitter:description" />
-            <meta content={image} name="twitter:image" />
-            <meta content={url} name="twitter:url" /> */}
           </Head>
           <Dashboard />
         </React.Fragment>

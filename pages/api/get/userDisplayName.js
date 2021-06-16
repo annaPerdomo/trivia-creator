@@ -21,19 +21,16 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const {
-      user
-    } = req.body;
+    const userId = req.body;
     const userDisplayName = await prisma.user.findUnique({
       where: {
-        id: user.id
+        id: Number(userId)
       },
       select: {
         displayName: true
       }
     });
-    console.log({userDisplayName})
-    res.json(userDisplayName);
+    res.send(userDisplayName);
   } catch (err) {
     if (err) console.log(err);
   }
