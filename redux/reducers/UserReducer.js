@@ -9,19 +9,18 @@ const UserReducer = (
       case types.SET_USER_ID:
         return {
           ...state,
-          userId: payload.userId,
-        }
-        case types.SET_USER_DISPLAY_NAME:
-          return {
-            ...state,
-            userDisplayName: payload.userDisplayName,
-          }
-        case types.LOGOUT_USER:
-          return {
-            ...state,
-            userId: null,
-            userDisplayName: null
-          }
+          userId: Number(payload.userId),
+        };
+      case types.SET_USER_DISPLAY_NAME:
+        return {
+          ...state,
+          userDisplayName: payload.userDisplayName,
+        };
+      case types.LOGOUT_USER:
+        return {
+          userId: null,
+          userDisplayName: null,
+        };
       default:
         return state;
     }
