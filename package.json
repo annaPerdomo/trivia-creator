@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@prisma/client": "^2.21.2",
-    "ably": "^1.2.5-beta.1",
     "cors": "^2.8.5",
     "next": "^10.0.1",
     "next-auth": "^3.23.3",
