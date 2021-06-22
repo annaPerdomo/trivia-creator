@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { signOut, useSession } from "next-auth/client";
 import { useDispatch, useSelector } from 'react-redux';
+import { io } from "socket.io-client";
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
@@ -39,6 +40,12 @@ export default function Dashboard() {
     signOut();
     dispatch(logoutUser());
   };
+  const connectToSocket = async () => {
+    const socket = io("http://localhost:4000")
+    socket.on("connect", () => {
+      console.log('we connected to the client');
+    })
+  }
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -82,9 +89,14 @@ export default function Dashboard() {
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
-              <Link href="/create">
-                <button className={homePageButtons}>Create A Game</button>
-              </Link>
+              {/* <Link href="/create"> */}
+                <button
+                  className={homePageButtons}
+                  onClick={connectToSocket}
+                >
+                  Create A Game
+                </button>
+              {/* </Link> */}
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
