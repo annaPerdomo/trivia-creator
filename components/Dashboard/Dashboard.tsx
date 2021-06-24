@@ -1,11 +1,12 @@
 // @ts-check
-import React, {useEffect, useState} from 'react';
+import * as React from 'react';
+const {useEffect, useState} = React;
 import { signOut, useSession } from "next-auth/client";
-import { useDispatch, useSelector } from 'react-redux';
 import { io } from "socket.io-client";
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
+import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 const {
   buttonContainer,
   buttonSection,
@@ -17,16 +18,16 @@ const {
   signOutButtonContainer
 } = styles;
 
-export default function Dashboard() {
-  const dispatch = useDispatch();
+const Dashboard: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [session, loading] = useSession();
-  const [isJoiningGame, setIsJoiningGame] = useState(false);
-  const [joinGameCode, setJoinGameCode] = useState('');
+  const [isJoiningGame, setIsJoiningGame] = useState<boolean>(false);
+  const [joinGameCode, setJoinGameCode] = useState<string>('');
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
-    useState(false);
-  const [displayName, setDisplayName] = useState('');
-  const userDisplayName = useSelector((state) => state.user.userDisplayName);
-  const userId = useSelector((state) => state.user.userId);
+    useState<boolean>(false);
+  const [displayName, setDisplayName] = useState<string>('');
+  const userDisplayName = useAppSelector<string>((state) => state.user.userDisplayName);
+  const userId = useAppSelector<string>((state) => state.user.userId);
   useEffect(() => {
     if (session && !userId) {
       dispatch(setUserToState(session));
@@ -91,12 +92,12 @@ export default function Dashboard() {
           <div className={buttonContainer}>
             <div className={buttonSection}>
               {/* <Link href="/create"> */}
-                <button
-                  className={homePageButtons}
-                  onClick={connectToSocket}
-                >
-                  Create A Game
-                </button>
+              <button
+                className={homePageButtons}
+                onClick={connectToSocket}
+              >
+                Create A Game
+              </button>
               {/* </Link> */}
             </div>
             <div className={divider}></div>
@@ -124,3 +125,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;
