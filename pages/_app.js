@@ -7,7 +7,6 @@ import { Provider as NextAuthProvider} from 'next-auth/client'
 
 export default function App({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState)
-  // console.log('🅰️_app.js pageProps: ', pageProps)
   return (
     <ReduxProvider store={store}>
       <NextAuthProvider session={pageProps.session}>
