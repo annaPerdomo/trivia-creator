@@ -1,3 +1,4 @@
+// @ts-check
 import React, {useEffect, useState} from 'react';
 import { signOut, useSession } from "next-auth/client";
 import { useDispatch, useSelector } from 'react-redux';
