@@ -1,7 +1,8 @@
+// @ts-check
 import React, {useState, useEffect} from 'react';
 import { useSession, getSession } from 'next-auth/client'
 import Head from 'next/head'
-import Home from '../components/Home/Home';
+import {Home} from '../components/Home/Home';
 import { useRouter } from 'next/router';
 
 
