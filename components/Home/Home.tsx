@@ -1,8 +1,9 @@
+// @ts-check
 import React, { useEffect } from 'react';
 import { signIn, useSession } from "next-auth/client";
 import { useRouter } from 'next/router'
 import Link from 'next/link';
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 const {
   buttonContainer,
   buttonSection,
@@ -14,13 +15,12 @@ const {
   signOutButtonContainer
 } = styles;
 
-export default function Home() {
+export const Home: React.FC = () => {
   const [session, loading] = useSession();
   const router = useRouter();
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
-      console.log('❕❗️❕❗️RefreshAccessTokenError!!', session);
-      signIn(); // Force sign in to hopefully resolve error
+      signIn();
     }
     if (session && session.user) {
       router.push('/dashboard')
@@ -28,7 +28,7 @@ export default function Home() {
   }, [session]);
   return (
     <div className={container}>
-      <div className={welcomeBanner}>
+      <div  className={welcomeBanner}>
         <h1>Welcome to Trivia-Creator&trade;</h1>
       </div>
       {!session ? (
