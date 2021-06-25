@@ -92,14 +92,14 @@ const Dashboard: React.FC = () => {
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
-              {/* <Link href="/create"> */}
+              <Link href="/create">
               <button
                 className={homePageButtons}
-                onClick={connectToSocket}
+                // onClick={connectToSocket}
               >
                 Create A Game
               </button>
-              {/* </Link> */}
+              </Link>
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
