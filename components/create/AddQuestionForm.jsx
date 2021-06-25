@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux'
 import { connect } from "react-redux";
-import {closeQuestionModal, createTriviaQuestion} from '../../redux/actions/CreateGameActions';
+import { useAppSelector, useAppDispatch } from '../../lib/hooks';
+import {closeQuestionModal, createTriviaQuestion} from '../../redux/reducers/createGameSlice';
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;
 
 function AddQuestionForm() {
-  const dispatch = useDispatch();
-  const currentQuestion = useSelector(
+  const dispatch = useAppDispatch();
+  const currentQuestion = useAppSelector(
     (state) => state.createGame.currentQuestion
   );
-  const currentAnswer = useSelector((state) => state.createGame.currentAnswer);
-  const currentType = useSelector((state) => state.createGame.currentType);
+  const currentAnswer = useAppSelector((state) => state.createGame.currentAnswer);
+  const currentType = useAppSelector((state) => state.createGame.currentType);
   const [question, setQuestion] = useState(
     currentQuestion ? currentQuestion : ''
   );
   const [answer, setAnswer] = useState(currentAnswer ? currentAnswer : '');
   const [type, setType] = useState(currentType ? currentType : '');
-  const roundNum = useSelector((state) => state.createGame.roundNum);
-  const questionNum = useSelector((state) => state.createGame.questionNum);
-  const triviaId = useSelector((state) => state.createGame.triviaId);
-  const questionId = useSelector((state) => state.createGame.questionId);
+  const roundNum = useAppSelector((state) => state.createGame.roundNum);
+  const questionNum = useAppSelector((state) => state.createGame.questionNum);
+  const triviaId = useAppSelector((state) => state.createGame.triviaId);
+  const questionId = useAppSelector((state) => state.createGame.questionId);
   const submitQuestion = async (e) => {
     e.preventDefault();
     const newQuestionData = {
@@ -90,13 +90,4 @@ function AddQuestionForm() {
 }
 
 export default AddQuestionForm;
-
-//The code below is needed if you aren't using useSelector and useDispatch because it maps the state and the function to dispatch
-// const mapStateToProps = state => {
-//   return { name: state.main.name }
-//  }
-//  const mapDispatchToProps = {
-//    setInfo
-//  }
-//  export default connect(mapStateToProps, mapDispatchToProps)(AddQuestionForm);
 

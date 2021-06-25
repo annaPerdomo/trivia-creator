@@ -1,6 +1,4 @@
-import { RootState } from './../store'
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
-
 
 interface UserState {
   userId: string | null,
@@ -97,4 +95,4 @@ export const userSlice = createSlice({
   }
 })
 
-export const {setDisplayName, setUserId, logoutUser} = userSlice.actions;
+export const {setDisplayName, setUserId, logoutUser} = userSlice.actions
