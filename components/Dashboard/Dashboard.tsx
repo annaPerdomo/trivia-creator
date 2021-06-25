@@ -29,7 +29,6 @@ const Dashboard: React.FC = () => {
   const [displayName, setDisplayName] = useState('');
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
-  console.log({session})
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));

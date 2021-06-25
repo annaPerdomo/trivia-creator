@@ -26,7 +26,7 @@ interface UserIdAndDisplayName {
   displayName?: string
 }
 
-export const fetchUserDisplayName = createAsyncThunk('user/setUserToState', 
+export const fetchUserDisplayName = createAsyncThunk('user/setUserToState',
   async (userData: NextAuthSession) => {
     try {
       const { user } = userData;
@@ -43,23 +43,22 @@ export const fetchUserDisplayName = createAsyncThunk('user/setUserToState',
     } catch (err) {
       if (err) console.log(err)
     }
-})
+  })
 
 export const updateUserDisplayName = createAsyncThunk('user/updateUserDisplayName',
   async (userData: UserIdAndDisplayName) => {
     try {
-      const {displayName, userId} = userData;
+      const { displayName, userId } = userData;
       const setNewDisplayName = await fetch('/api/update/displayName', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({displayName, userId: Number(userId)}),
+        body: JSON.stringify({ displayName, userId: Number(userId) }),
       });
       const newDisplayName = await setNewDisplayName.json();
-      console.log('brand new display name fam', {newDisplayName});
-      return {displayName} as UserIdAndDisplayName;
+      return { displayName } as UserIdAndDisplayName;
     } catch (err) {
       if (err) console.log(err)
     }
@@ -90,11 +89,11 @@ export const userSlice = createSlice({
         state.userDisplayName = displayName
       }
     }),
-    builder.addCase(updateUserDisplayName.fulfilled, 
-      (state, action: PayloadAction<UserIdAndDisplayName>) => {
-        const {displayName} = action.payload
-        state.userDisplayName = displayName
-    })
+      builder.addCase(updateUserDisplayName.fulfilled,
+        (state, action: PayloadAction<UserIdAndDisplayName>) => {
+          const { displayName } = action.payload
+          state.userDisplayName = displayName
+        })
   }
 })
 
