@@ -1,5 +1,5 @@
 // @ts-check
-import * as React from 'react';
+import * as React from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useSession, getSession } from 'next-auth/client'
 import Head from 'next/head'
@@ -23,8 +23,10 @@ const HomePage: NextPage = () => {
   const url = 'www.notsure.help'
   const keywords = 'trivia'
   const robots = 'index, follow'
+
   const pageIsLoadedOnClient = typeof window !== 'undefined'
   const userIsLoggedIn = session ? true : false
+  
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
       router.push('/dashboard')
@@ -44,5 +46,6 @@ const HomePage: NextPage = () => {
   }
   return null
 }
+
 
 export default HomePage
