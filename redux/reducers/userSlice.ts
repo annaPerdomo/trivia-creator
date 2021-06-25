@@ -13,7 +13,7 @@ const initialState: UserState = {
 }
 
 interface NextAuthSession {
-  user: {
+  user?: {
     email?: string,
     id?: string, 
     image?: string,
@@ -55,7 +55,7 @@ export const updateUserDisplayName = createAsyncThunk('user/updateUserDisplayNam
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({displayName, userId}),
+        body: JSON.stringify({displayName, userId: Number(userId)}),
       });
       const newDisplayName = await setNewDisplayName.json();
       console.log('brand new display name fam', {newDisplayName});
@@ -76,9 +76,6 @@ export const userSlice = createSlice({
     },
     setUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload
-    },
-    setUserToState: (state, action: PayloadAction<NextAuthSession>) => {
-
     },
     logoutUser: (state) => {
       state.userId = null;
@@ -101,4 +98,4 @@ export const userSlice = createSlice({
   }
 })
 
-export const {setDisplayName, setUserId, setUserToState, logoutUser} = userSlice.actions;
+export const {setDisplayName, setUserId, logoutUser} = userSlice.actions;
