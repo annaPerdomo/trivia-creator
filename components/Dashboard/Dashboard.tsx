@@ -18,6 +18,7 @@ const {
   signOutButtonContainer
 } = styles;
 
+
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const [session, loading] = useSession();
@@ -25,16 +26,16 @@ const Dashboard: React.FC = () => {
   const [joinGameCode, setJoinGameCode] = useState<string>('');
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
     useState<boolean>(false);
-  const [displayName, setDisplayName] = useState<string>('');
-  const userDisplayName = useAppSelector<string>((state) => state.user.userDisplayName);
-  const userId = useAppSelector<string>((state) => state.user.userId);
+  const [displayName, setDisplayName] = useState('');
+  const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
+  const userId = useAppSelector((state) => state.user.userId);
   useEffect(() => {
     if (session && !userId) {
       dispatch(setUserToState(session));
     }
   }, []);
   const submitNewDisplayName = () => {
-    dispatch(updateUserDisplayName(displayName));
+    dispatch(updateUserDisplayName({displayName, userId}));
     setDisplayName(null);
     setUserIsChangingDisplayName(false);
   };

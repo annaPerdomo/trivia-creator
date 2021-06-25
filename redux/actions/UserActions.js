@@ -47,7 +47,6 @@ export const updateUserDisplayName =
         body: JSON.stringify({displayName, userId}),
       });
       const newDisplayName = await setNewDisplayName.json();
-      console.log({newDisplayName});
       dispatch(setDisplayName(displayName));
     } catch (err) {
       if (err) console.log(err);
