@@ -15,7 +15,7 @@ const initialState: UserState = {
 interface NextAuthSession {
   user: {
     email?: string,
-    id: string, 
+    id?: string, 
     image?: string,
     name?: string
   }
@@ -77,6 +77,9 @@ export const userSlice = createSlice({
     setUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload
     },
+    setUserToState: (state, action: PayloadAction<NextAuthSession>) => {
+
+    },
     logoutUser: (state) => {
       state.userId = null;
       state.userDisplayName = null;
@@ -97,3 +100,5 @@ export const userSlice = createSlice({
     })
   }
 })
+
+export const {setDisplayName, setUserId, setUserToState, logoutUser} = userSlice.actions;

@@ -5,7 +5,7 @@ import { signOut, useSession } from "next-auth/client";
 import { io } from "socket.io-client";
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
-import {logoutUser, setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
+import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 const {
   buttonContainer,
@@ -29,9 +29,10 @@ const Dashboard: React.FC = () => {
   const [displayName, setDisplayName] = useState('');
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
+  console.log({session})
   useEffect(() => {
     if (session && !userId) {
-      dispatch(setUserToState(session));
+      dispatch(fetchUserDisplayName(session));
     }
   }, []);
   const submitNewDisplayName = () => {
