@@ -1,6 +1,6 @@
 import { Provider as ReduxProvider}  from 'react-redux'
 import { Provider as NextAuthProvider} from 'next-auth/client'
-import { AppProps } from "next/app";
+import { AppProps } from 'next/app'
 import '../styles/globals.css'
 import store from '../redux/store'
 
