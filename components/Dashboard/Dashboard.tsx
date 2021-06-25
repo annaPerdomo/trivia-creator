@@ -1,9 +1,12 @@
-import React, {useEffect, useState} from 'react';
+// @ts-check
+import * as React from 'react';
+const {useEffect, useState} = React;
 import { signOut, useSession } from "next-auth/client";
-import { useDispatch, useSelector } from 'react-redux';
+import { io } from "socket.io-client";
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
-import {logoutUser, setUserToState, updateUserDisplayName} from '../../redux/actions/UserActions';
+import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
+import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 const {
   buttonContainer,
   buttonSection,
@@ -15,23 +18,24 @@ const {
   signOutButtonContainer
 } = styles;
 
-export default function Dashboard() {
-  const dispatch = useDispatch();
+
+const Dashboard: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [session, loading] = useSession();
-  const [isJoiningGame, setIsJoiningGame] = useState(false);
-  const [joinGameCode, setJoinGameCode] = useState('');
+  const [isJoiningGame, setIsJoiningGame] = useState<boolean>(false);
+  const [joinGameCode, setJoinGameCode] = useState<string>('');
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
-    useState(false);
+    useState<boolean>(false);
   const [displayName, setDisplayName] = useState('');
-  const userDisplayName = useSelector((state) => state.user.userDisplayName);
-  const userId = useSelector((state) => state.user.userId);
+  const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
+  const userId = useAppSelector((state) => state.user.userId);
   useEffect(() => {
     if (session && !userId) {
-      dispatch(setUserToState(session));
+      dispatch(fetchUserDisplayName(session));
     }
   }, []);
   const submitNewDisplayName = () => {
-    dispatch(updateUserDisplayName(displayName));
+    dispatch(updateUserDisplayName({displayName, userId}));
     setDisplayName(null);
     setUserIsChangingDisplayName(false);
   };
@@ -39,6 +43,12 @@ export default function Dashboard() {
     signOut();
     dispatch(logoutUser());
   };
+  const connectToSocket = async () => {
+    const socket = io("http://localhost:4000")
+    socket.on("connect", () => {
+      console.log('we connected to the client');
+    })
+  }
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -83,7 +93,12 @@ export default function Dashboard() {
           <div className={buttonContainer}>
             <div className={buttonSection}>
               <Link href="/create">
-                <button className={homePageButtons}>Create A Game</button>
+              <button
+                className={homePageButtons}
+                // onClick={connectToSocket}
+              >
+                Create A Game
+              </button>
               </Link>
             </div>
             <div className={divider}></div>
@@ -111,3 +126,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;

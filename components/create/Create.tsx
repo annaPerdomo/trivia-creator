@@ -1,11 +1,12 @@
+// @ts-check
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux'
 import Link from 'next/link'
 import styles from "../../styles/Create.module.css";
 import Bar from "./Bar.jsx";
 import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
-import {clearTriviaQuestionsFromState, setTriviaId} from '../../redux/actions/CreateGameActions';
+import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers/createGameSlice';
+import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 const {
   create,
   title,
@@ -16,21 +17,28 @@ const {
   logo
 } = styles;
 
+export type CreateProps = {
+  id: number,
+  triviaId?: number, 
+  roundNum?: number, 
+  questionNum?: number, 
+  content?: string, 
+  type?: string,
+  correctAnswer?: string,
+}
+
 
 export default function Create({ questions }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [currentRound, setCurrentRound] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
-  const newQuestion = useSelector(state => state.createGame.newQuestion);
-  const editedQuestion = useSelector(state => state.createGame.editedQuestion);
-  const triviaId = useSelector(state => state.createGame.triviaId);
-  console.log({questions})
+  const newQuestion = useAppSelector(state => state.createGame.newQuestion);
+  const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
+  const triviaId = useAppSelector(state => state.createGame.triviaId);
   useEffect(() => {
     if (questions?.length && !triviaQuestions) {
       setTriviaQuestions(questions);
       dispatch(setTriviaId(questions[0].triviaId));
-    } else {
-      setTriviaQuestions([])
     }
   }, []);
   useEffect(() => {
@@ -49,9 +57,9 @@ export default function Create({ questions }) {
     }
   }
   const displayNewTriviaQuestion = (newQuestionData) => {
-   const triviaQuestionsCopy = triviaQuestions.slice();
-   triviaQuestionsCopy.push(newQuestionData);
-   setTriviaQuestions(triviaQuestionsCopy);
+    const triviaQuestionsCopy = triviaQuestions.slice();
+    triviaQuestionsCopy.push(newQuestionData);
+    setTriviaQuestions(triviaQuestionsCopy);
   };
   const displayEditedTriviaQuestion = (editedQuestion) => {
     const {id, type, content, correctAnswer} = editedQuestion;
@@ -64,6 +72,7 @@ export default function Create({ questions }) {
       }
       return triviaQuestion;
     })
+    setTriviaQuestions(triviaQuestionsCopy);
   };
   return (
     <div id={create}>

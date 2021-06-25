@@ -1,11 +1,19 @@
-import React, {useState, useEffect} from 'react';
+// @ts-check
+import * as React from 'react'
 import { useSession, getSession } from 'next-auth/client'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import Home from '../components/Home';
-import { useRouter } from 'next/router';
+import Dashboard from '../components/Dashboard/Dashboard'
+import { useRouter } from 'next/router'
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  return {
+    props: { session }
+  }
+}
 
-export default function HomePage() {
+const DashboardPage: NextPage = () => {
   const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
@@ -15,12 +23,12 @@ export default function HomePage() {
   const url = 'www.notsure.help';
   const keywords = 'trivia';
   const robots = 'index, follow';
+
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
+
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
-      router.push('/dashboard');
-    } else {
       return (
         <React.Fragment>
           <Head>
@@ -29,17 +37,14 @@ export default function HomePage() {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Home />
+          <Dashboard />
         </React.Fragment>
       );
+    } else {
+      router.push('/')
     }
   }
   return null;
 }
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
-  return {
-    props: { session }
-  }
-}
+export default DashboardPage
