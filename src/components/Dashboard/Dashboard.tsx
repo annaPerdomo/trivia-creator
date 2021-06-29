@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
-import { useAppSelector, useAppDispatch } from '../../lib/hooks';
+import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 const {
   buttonContainer,
   buttonSection,

@@ -19,6 +19,7 @@ model TriviaGame {
   hostId       Int?
   roundAmount  Int
   questions    Question[]
+  //need to add Teams?
 }
 
 model Question {

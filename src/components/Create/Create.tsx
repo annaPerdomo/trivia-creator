@@ -6,7 +6,7 @@ import Bar from "./Bar.jsx";
 import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
 import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers/createGameSlice';
-import { useAppSelector, useAppDispatch } from '../../lib/hooks';
+import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 const {
   create,
   title,
