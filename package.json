@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "test": "jest",
     "start": "next start",
     "start-app": "next build && next start",
     "update-db-schema": "npx prisma db push",
@@ -19,7 +20,7 @@
     "next": "^10.0.1",
     "next-auth": "^3.23.3",
     "next-redux-wrapper": "^6.0.2",
-    "react": "17.0.1",
+    "react": "17.0.2",
     "react-dom": "17.0.1",
     "react-redux": "^7.2.4",
     "redux": "^4.1.0",
@@ -29,11 +30,23 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@testing-library/dom": "^8.0.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.5",
+    "@types/react": "^17.0.11",
+    "babel-jest": "^27.0.6",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.0.6",
     "msw": "^0.30.0",
     "prisma": "^2.21.2",
     "react-test-renderer": "^17.0.2",
+    "ts-jest": "^27.0.0-next.12",
     "typescript": "^4.3.4"
   }
 }

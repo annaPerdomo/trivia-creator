@@ -19,12 +19,16 @@
     "jsx": "preserve",
     "noImplicitAny": false,
     "noErrorTruncation": true,
+    "baseUrl": "src",
+    "paths": {
+      "test-utils": ["src/utils/test-utils"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/Home/__tests__/home.test.js"  ],
   "exclude": [
     "node_modules"
   ]
