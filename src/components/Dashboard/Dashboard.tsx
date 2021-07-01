@@ -7,6 +7,7 @@ import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import {useChat} from './testHook';
 const {
   buttonContainer,
   buttonSection,
@@ -18,7 +19,6 @@ const {
   signOutButtonContainer
 } = styles;
 
-
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const [session, loading] = useSession();
@@ -29,6 +29,15 @@ const Dashboard: React.FC = () => {
   const [displayName, setDisplayName] = useState('');
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
+
+  const [lobbyMembers, setLobbyMembers] = useState([]);
+  const {roomMembers, sendMessage, joinRoom} = useChat();
+
+  useEffect(() => {
+    setLobbyMembers(roomMembers.lobby)
+  }, [roomMembers])
+
+
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
@@ -43,17 +52,21 @@ const Dashboard: React.FC = () => {
     signOut();
     dispatch(logoutUser());
   };
-  const connectToSocket = async () => {
-    const socket = io("http://localhost:4000")
-    socket.on("connect", () => {
-      console.log('we connected to the client');
-    })
+
+  const connectToSocket = () => {
+    joinRoom(userDisplayName)
   }
+  console.log('🎃roomMembers?', roomMembers)
   return (
     <div className={container}>
       <div className={welcomeBanner}>
         <h1>Welcome to your Dashboard!</h1>
       </div>
+      {lobbyMembers ? (
+        lobbyMembers.map(data => (
+          <div>{data}</div>
+        ))
+      ) : null}
       {session ? (
         <div>
           <div>
@@ -92,14 +105,14 @@ const Dashboard: React.FC = () => {
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
-              <Link href="/create">
+              {/* <Link href="/create"> */}
               <button
                 className={homePageButtons}
-                // onClick={connectToSocket}
+                onClick={connectToSocket}
               >
                 Create A Game
               </button>
-              </Link>
+              {/* </Link> */}
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
