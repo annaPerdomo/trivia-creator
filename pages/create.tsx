@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useSession, getSession } from 'next-auth/client'
 import Head from "next/head";
-import Create, {CreateProps} from '../src/components/Create/Create';
+import CreateGame, {CreateProps} from '../src/components/CreateGame/CreateGame';
 import prisma from '../lib/prisma';
 import { useRouter } from 'next/router'
 
@@ -46,7 +46,7 @@ const CreatePage: NextPage<Props> = ({ questions }) => {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Create questions={questions}/>
+          <CreateGame questions={questions}/>
         </React.Fragment>
       );
     } else {

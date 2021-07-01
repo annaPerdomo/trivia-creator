@@ -28,7 +28,7 @@ export type CreateProps = {
 }
 
 
-export default function Create({ questions }) {
+export default function CreateGame({ questions }) {
   const dispatch = useAppDispatch();
   const [currentRound, setCurrentRound] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
