@@ -1,5 +1,5 @@
-import prisma from '../../../lib/prisma.ts';
-import Cors from 'cors';
+import prisma from '../../../lib/prisma'
+import Cors from 'cors'
 
 const cors = Cors({
   origin: '*',
@@ -16,7 +16,18 @@ function runMiddleware(req, res, fn) {
       return resolve(result)
     })
   })
-};
+}
+
+function getFourLetterRandomString() {
+  let text = "";
+
+  const charset = "abcdefghijklmnopqrstuvwxyz";
+
+  for (let i = 0; i < 4; i++)
+    text += charset.charAt(Math.floor(Math.random() * charset.length));
+
+  return text;
+}
 
 export default async function handle(req, res) {
   try {
@@ -24,9 +35,9 @@ export default async function handle(req, res) {
     const newTriviaGame = await prisma.triviaGame.create({
       data: {
         hostId: 1,
-        roundAmount: 5,
+        joinCode: getFourLetterRandomString(),
       },
-    });
+    })
     res.json(newTriviaGame);
   } catch (err) {
     if (err) console.log(err);
