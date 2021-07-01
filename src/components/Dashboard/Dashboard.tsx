@@ -7,7 +7,7 @@ import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import {useChat} from './testHook';
+
 const {
   buttonContainer,
   buttonSection,
@@ -30,7 +30,6 @@ const Dashboard: React.FC = () => {
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
-  const {roomMembers, sendMessage, joinRoom} = useChat();
 
   useEffect(() => {
     if (session && !userId) {
@@ -46,10 +45,6 @@ const Dashboard: React.FC = () => {
     signOut();
     dispatch(logoutUser());
   };
-
-  const connectToSocket = () => {
-    joinRoom(userDisplayName)
-  }
 
   return (
     <div className={container}>
@@ -97,7 +92,6 @@ const Dashboard: React.FC = () => {
               <Link href="/create">
               <button
                 className={homePageButtons}
-                // onClick={connectToSocket}
               >
                 Create A Game
               </button>

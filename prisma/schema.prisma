@@ -9,13 +9,14 @@ generator client {
 
 model TriviaGame {
   id           Int         @default(autoincrement()) @id
-  joinCode     String?      @unique
+  joinCode     String      @unique
   createdAt    DateTime    @default(now()) @map(name: "created_at")
   playedAt     DateTime?   @map(name: "played_at")
   host         User        @relation(fields: [hostId], references: [id])
   hostId       Int         
   roundAmount  Int?
   questions    Question[]
+  teams        Team[]
 }
 
 model Question {
@@ -34,10 +35,8 @@ model Answer {
   id            Int         @default(autoincrement()) @id
   question      Question    @relation(fields: [questionId], references: [id])
   questionId    Int
-  //for connecting answers to teams? Not sure if I need it to grab team usernames?
-  // team          Team        @relation(fields: [teamId], references: [id])
-  // teamId        Int
-  teamName      String
+  team          Team        @relation(fields: [teamId], references: [id])
+  teamId        Int
   content       String?
   isCorrect     Boolean     @default(false)
   submittedAt   DateTime    @default(now())
@@ -47,7 +46,8 @@ model Team {
   id            Int         @default(autoincrement()) @id
   teamName      String?
   members       User[]
-  // answers       Answer[]
+  answers       Answer[] 
+  triviaGames   TriviaGame[]
   @@map(name: "teams")
 }
 
