@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import RoundOverview from '../../../../components/RoundOverview/RoundOverview';
+import RoundOverview from '../../../../src/components/RoundOverview/RoundOverview';
 import prisma from '../../../../lib/prisma.ts';
 import safeJsonStringify from 'safe-json-stringify';
 

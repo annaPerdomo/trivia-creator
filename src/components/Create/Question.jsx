@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import styles from "../../styles/Create.module.css";
 import {openQuestionModal, closeQuestionModal} from '../../redux/reducers/createGameSlice';
-import { useAppSelector, useAppDispatch } from "../../lib/hooks"
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks"
 const {
    backdrop,
    modal,

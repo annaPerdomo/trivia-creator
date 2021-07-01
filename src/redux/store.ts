@@ -1,5 +1,4 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
-
 import { userSlice }from './reducers/userSlice'
 import { createGameSlice } from './reducers/createGameSlice'
 

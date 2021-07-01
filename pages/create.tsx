@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useSession, getSession } from 'next-auth/client'
 import Head from "next/head";
-import Create, {CreateProps} from '../components/Create/Create';
+import Create, {CreateProps} from '../src/components/Create/Create';
 import prisma from '../lib/prisma';
 import { useRouter } from 'next/router'
 

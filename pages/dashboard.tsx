@@ -3,7 +3,7 @@ import * as React from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import Dashboard from '../components/Dashboard/Dashboard'
+import Dashboard from '../src/components/Dashboard/Dashboard'
 import { useRouter } from 'next/router'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

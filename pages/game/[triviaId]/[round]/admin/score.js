@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import ScoreAnswers from '../../../../../components/AdminScore/ScoreAnswers';
+import ScoreAnswers from '../../../../../src/components/AdminScore/ScoreAnswers';
 import prisma from '../../../../../lib/prisma.ts';
 import safeJsonStringify from 'safe-json-stringify';
 

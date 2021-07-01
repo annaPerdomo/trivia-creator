@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import PlayGame from '../../../../components/PlayGame/PlayGame';
+import PlayGame from '../../../../src/components/PlayGame/PlayGame';
 import prisma from '../../../../lib/prisma.ts';
 
 export default function PlayRound({questions}) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useAppSelector, useAppDispatch } from '../../lib/hooks';
+import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 import {closeQuestionModal, createTriviaQuestion} from '../../redux/reducers/createGameSlice';
 import styles from '../../styles/Create.module.css';
 const {backdrop, modal} = styles;

@@ -3,7 +3,7 @@ import * as React from 'react'
 import type { GetServerSideProps, NextPage } from 'next'
 import { useSession, getSession } from 'next-auth/client'
 import Head from 'next/head'
-import {Home} from '../components/Home/Home'
+import {Home} from '../src/components/Home/Home'
 import { useRouter } from 'next/router'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -26,7 +26,7 @@ const HomePage: NextPage = () => {
 
   const pageIsLoadedOnClient = typeof window !== 'undefined'
   const userIsLoggedIn = session ? true : false
-  
+
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
       router.push('/dashboard')
