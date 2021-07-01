@@ -30,13 +30,7 @@ const Dashboard: React.FC = () => {
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
-  const [lobbyMembers, setLobbyMembers] = useState([]);
   const {roomMembers, sendMessage, joinRoom} = useChat();
-
-  useEffect(() => {
-    setLobbyMembers(roomMembers.lobby)
-  }, [roomMembers])
-
 
   useEffect(() => {
     if (session && !userId) {
@@ -56,17 +50,12 @@ const Dashboard: React.FC = () => {
   const connectToSocket = () => {
     joinRoom(userDisplayName)
   }
-  console.log('🎃roomMembers?', roomMembers)
+
   return (
     <div className={container}>
       <div className={welcomeBanner}>
         <h1>Welcome to your Dashboard!</h1>
       </div>
-      {lobbyMembers ? (
-        lobbyMembers.map(data => (
-          <div>{data}</div>
-        ))
-      ) : null}
       {session ? (
         <div>
           <div>
@@ -105,14 +94,14 @@ const Dashboard: React.FC = () => {
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
-              {/* <Link href="/create"> */}
+              <Link href="/create">
               <button
                 className={homePageButtons}
-                onClick={connectToSocket}
+                // onClick={connectToSocket}
               >
                 Create A Game
               </button>
-              {/* </Link> */}
+              </Link>
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
