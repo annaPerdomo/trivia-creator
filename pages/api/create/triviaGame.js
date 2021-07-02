@@ -42,6 +42,13 @@ export default async function handle(req, res) {
     })
     res.json(newTriviaGame);
   } catch (err) {
-    if (err) console.log(err);
+    if (err) {
+      if (err.code === 'P2002') {
+        definedJoinCode = getFourLetterRandomString();
+        return await handle(req, res)
+      } else {
+        res.send(err);
+      }
+    };
   }
 }

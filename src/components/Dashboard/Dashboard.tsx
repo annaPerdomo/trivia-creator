@@ -49,6 +49,7 @@ const Dashboard: React.FC = ({draftGames}) => {
 
   const createGame = async () => {
     try {
+      console.log('💄top of createGame', {userId, session})
       const createTiviaGame = await fetch(
         'api/create/triviaGame',
         {
@@ -61,7 +62,9 @@ const Dashboard: React.FC = ({draftGames}) => {
         }
       );
       const newTriviaGame = await createTiviaGame.json();
-      router.push(`create/${newTriviaGame.joinCode}`)
+      if (newTriviaGame.joinCode) {
+        router.push(`create/${newTriviaGame.joinCode}`)
+      }
     } catch (err) {
       if (err) console.log(err);
     }
