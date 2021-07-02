@@ -3,17 +3,27 @@ import * as React from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
+import safeJsonStringify from 'safe-json-stringify';
 import Dashboard from '../src/components/Dashboard/Dashboard'
 import { useRouter } from 'next/router'
+import prisma from '../lib/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
+  const userId = Number(session.user.id);
+  const getDraftGames = await prisma.triviaGame.findMany({  
+    where: {
+      hostId: userId
+    }
+  })
+  const parsedDraftGames = safeJsonStringify(getDraftGames);
+  const draftGames = JSON.parse(parsedDraftGames);
   return {
-    props: { session }
+    props: { session, draftGames }
   }
 }
 
-const DashboardPage: NextPage = () => {
+const DashboardPage: NextPage = ({draftGames}) => {
   const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
@@ -37,7 +47,7 @@ const DashboardPage: NextPage = () => {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Dashboard />
+          <Dashboard draftGames={draftGames}/>
         </React.Fragment>
       );
     } else {

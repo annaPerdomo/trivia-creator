@@ -8,6 +8,7 @@ import CreateGame, {CreateProps} from '../../src/components/CreateGame/CreateGam
 import prisma from '../../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
   const {joinCode} = context.params;
   const joinGameCode = Array.isArray(joinCode) ? joinCode[0] : joinCode;
   const triviaGame = await prisma.triviaGame.findUnique({
@@ -16,7 +17,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   })
   const currentGameId = triviaGame.id;
-  const session = await getSession(context);
   const questions = await prisma.question.findMany({
     where: {
       triviaId: currentGameId,

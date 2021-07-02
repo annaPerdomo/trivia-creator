@@ -3,6 +3,7 @@ import * as React from 'react';
 const {useEffect, useState} = React;
 import { signOut, useSession } from "next-auth/client";
 import { useRouter } from 'next/router'
+import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
@@ -18,7 +19,7 @@ const {
   signOutButtonContainer
 } = styles;
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = ({draftGames}) => {
   const dispatch = useAppDispatch();
   const router = useRouter()
   const [session, loading] = useSession();
@@ -30,7 +31,7 @@ const Dashboard: React.FC = () => {
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
-
+  console.log({draftGames})
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
@@ -106,6 +107,23 @@ const Dashboard: React.FC = () => {
               Sign out
             </button>
           </div>
+
+          {draftGames ? (
+            <div>
+              <div>
+                <h3>Draft Games</h3>
+              </div>
+              <div>
+                {draftGames.map(draftGame => (
+                  <Link href={`/create/${draftGame.joinCode}`}>
+                    <button>
+                      Game created {draftGame.createdAt}
+                    </button>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
