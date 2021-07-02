@@ -10,7 +10,15 @@ import prisma from '../lib/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
+  if (!session.user.id) {
+    return {
+      session: null, 
+      draftGames: [],
+      joinCode: undefined
+    }
+  }
   const userId = Number(session.user.id);
+  console.log('🔦🔦🔦', {session, userId})
   const getDraftGames = await prisma.triviaGame.findMany({  
     where: {
       hostId: userId,

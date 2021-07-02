@@ -10,6 +10,13 @@ import prisma from '../../lib/prisma';
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   const {joinCode} = context.params;
+  if (joinCode === 'undefined') {
+    return {
+      props: {
+        joinCode: null
+      }
+    }
+  }
   const joinGameCode = Array.isArray(joinCode) ? joinCode[0] : joinCode;
   const triviaGame = await prisma.triviaGame.findUnique({
     where: {
@@ -26,18 +33,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: { 
       questions, 
       session,
-      currentGameId 
+      currentGameId,
+      joinCode,
     },
   }
 }
 
 type Props = {
   questions: CreateProps[],
-  currentGameId: string
+  currentGameId: string,
+  joinCode: string | []
 }
 
-const CreatePage: NextPage<Props> = ({ questions, currentGameId }) => {
-  const [ session, loading ] = useSession()
+const CreatePage: NextPage<Props> = ({ currentGameId, joinCode, questions }) => {
+  const [session, loading] = useSession()
   const router = useRouter()
   const title =
     "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
@@ -48,6 +57,7 @@ const CreatePage: NextPage<Props> = ({ questions, currentGameId }) => {
 
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
+  const joinCodeErrorThrown = joinCode === null;
 
   const createGameProps = {
     questions: questions,
@@ -55,20 +65,24 @@ const CreatePage: NextPage<Props> = ({ questions, currentGameId }) => {
   }
 
   if (pageIsLoadedOnClient) {
-    if (userIsLoggedIn) {
-      return (
-        <React.Fragment>
-          <Head>
-            <title>{title}</title>
-            <meta content={desc} name="description" />
-            <meta content={keywords} name="keywords" />
-            <meta content={robots} name="robots" />
-          </Head>
-          <CreateGame {...createGameProps}/>
-        </React.Fragment>
-      );
+    if (joinCodeErrorThrown) {
+      router.push('/dashboard')
     } else {
-      router.push('/')
+      if (userIsLoggedIn) {
+        return (
+          <React.Fragment>
+            <Head>
+              <title>{title}</title>
+              <meta content={desc} name="description" />
+              <meta content={keywords} name="keywords" />
+              <meta content={robots} name="robots" />
+            </Head>
+            <CreateGame {...createGameProps} />
+          </React.Fragment>
+        );
+      } else {
+        router.push('/')
+      }
     }
   }
   return null;
