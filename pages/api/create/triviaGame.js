@@ -32,9 +32,11 @@ function getFourLetterRandomString() {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
+    const { userId } = req.body
+    const hostId = Number(userId);
     const newTriviaGame = await prisma.triviaGame.create({
       data: {
-        hostId: 1,
+        hostId,
         joinCode: getFourLetterRandomString(),
       },
     })

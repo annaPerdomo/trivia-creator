@@ -2,8 +2,7 @@
 import * as React from 'react';
 const {useEffect, useState} = React;
 import { signOut, useSession } from "next-auth/client";
-import { io } from "socket.io-client";
-import Link from 'next/link';
+import { useRouter } from 'next/router'
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
@@ -21,6 +20,7 @@ const {
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter()
   const [session, loading] = useSession();
   const [isJoiningGame, setIsJoiningGame] = useState<boolean>(false);
   const [joinGameCode, setJoinGameCode] = useState<string>('');
@@ -45,6 +45,26 @@ const Dashboard: React.FC = () => {
     signOut();
     dispatch(logoutUser());
   };
+
+  const createGame = async () => {
+    try {
+      const createTiviaGame = await fetch(
+        'api/create/triviaGame',
+        {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+      const newTriviaGame = await createTiviaGame.json();
+      router.push(`create/${newTriviaGame.joinCode}`)
+    } catch (err) {
+      if (err) console.log(err);
+    }
+  }
 
   return (
     <div className={container}>
@@ -89,13 +109,12 @@ const Dashboard: React.FC = () => {
 
           <div className={buttonContainer}>
             <div className={buttonSection}>
-              {/* <Link href="/create"> */}
               <button
                 className={homePageButtons}
+                onClick={createGame}
               >
                 Create A Game
               </button>
-              {/* </Link> */}
             </div>
             <div className={divider}></div>
             <div className={buttonSection}>
