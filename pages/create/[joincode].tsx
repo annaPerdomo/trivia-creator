@@ -8,22 +8,35 @@ import CreateGame, {CreateProps} from '../../src/components/CreateGame/CreateGam
 import prisma from '../../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {joinCode} = context.params;
+  const joinGameCode = Array.isArray(joinCode) ? joinCode[0] : joinCode;
+  const triviaGame = await prisma.triviaGame.findUnique({
+    where: {
+      joinCode: joinGameCode
+    }
+  })
+  const currentGameId = triviaGame.id;
   const session = await getSession(context);
   const questions = await prisma.question.findMany({
     where: {
-      triviaId: 1,
+      triviaId: currentGameId,
     }
   });
   return {
-    props: { questions, session },
+    props: { 
+      questions, 
+      session,
+      currentGameId 
+    },
   }
 }
 
 type Props = {
-  questions: CreateProps[]
+  questions: CreateProps[],
+  currentGameId: string
 }
 
-const CreatePage: NextPage<Props> = ({ questions }) => {
+const CreatePage: NextPage<Props> = ({ questions, currentGameId }) => {
   const [ session, loading ] = useSession()
   const router = useRouter()
   const title =
@@ -36,6 +49,11 @@ const CreatePage: NextPage<Props> = ({ questions }) => {
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
 
+  const createGameProps = {
+    questions: questions,
+    currentGameId: currentGameId
+  }
+
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
       return (
@@ -46,7 +64,7 @@ const CreatePage: NextPage<Props> = ({ questions }) => {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <CreateGame questions={questions}/>
+          <CreateGame {...createGameProps}/>
         </React.Fragment>
       );
     } else {
@@ -57,3 +75,4 @@ const CreatePage: NextPage<Props> = ({ questions }) => {
 }
 
 export default CreatePage
+

@@ -7,6 +7,7 @@ import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
 import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers/createGameSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import { current } from "@reduxjs/toolkit";
 const {
   create,
   title,
@@ -28,18 +29,21 @@ export type CreateProps = {
 }
 
 
-export default function CreateGame({ questions }) {
+export default function CreateGame({ questions, currentGameId }) {
   const dispatch = useAppDispatch();
   const [currentRound, setCurrentRound] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useAppSelector(state => state.createGame.newQuestion);
   const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
   const triviaId = useAppSelector(state => state.createGame.triviaId);
+  console.log(questions, currentGameId)
   useEffect(() => {
     if (questions?.length && !triviaQuestions) {
       setTriviaQuestions(questions);
-      dispatch(setTriviaId(questions[0].triviaId));
+    } else {
+      setTriviaQuestions([])
     }
+    dispatch(setTriviaId(currentGameId))
   }, []);
   useEffect(() => {
     if (newQuestion) {
