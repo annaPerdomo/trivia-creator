@@ -13,7 +13,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const userId = Number(session.user.id);
   const getDraftGames = await prisma.triviaGame.findMany({  
     where: {
-      hostId: userId
+      hostId: userId,
+      playedAt: null,
     }
   })
   const parsedDraftGames = safeJsonStringify(getDraftGames);
