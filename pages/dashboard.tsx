@@ -10,15 +10,7 @@ import prisma from '../lib/prisma'
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session.user.id) {
-    return {
-      session: null, 
-      draftGames: [],
-      joinCode: undefined
-    }
-  }
   const userId = Number(session.user.id);
-  console.log('🔦🔦🔦', {session, userId})
   const getDraftGames = await prisma.triviaGame.findMany({  
     where: {
       hostId: userId,
@@ -32,7 +24,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-const DashboardPage: NextPage = ({draftGames}) => {
+type DraftGames = {
+  createdAt: number,
+  hostId: number,
+  id: number,
+  joinCode: string,
+  playedAt: null,
+  roundAmount: number | null,
+}
+
+
+type Props = DraftGames[]
+
+const DashboardPage: NextPage<Props> = ({draftGames}) => {
   const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
@@ -46,8 +50,12 @@ const DashboardPage: NextPage = ({draftGames}) => {
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
 
+  
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
+      const dashboardProps = {
+        draftGames: draftGames
+      }
       return (
         <React.Fragment>
           <Head>
@@ -56,7 +64,7 @@ const DashboardPage: NextPage = ({draftGames}) => {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Dashboard draftGames={draftGames}/>
+          <Dashboard {...dashboardProps} />
         </React.Fragment>
       );
     } else {
