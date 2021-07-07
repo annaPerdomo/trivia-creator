@@ -45,7 +45,7 @@ type Props = {
   joinCode: string | []
 }
 
-const CreatePage: NextPage<Props> = ({ currentGameId, joinCode, questions }) => {
+const CreatePage: NextPage<Props> = (props) => {
   const [session, loading] = useSession()
   const router = useRouter()
   const title =
@@ -57,12 +57,7 @@ const CreatePage: NextPage<Props> = ({ currentGameId, joinCode, questions }) => 
 
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
-  const joinCodeErrorThrown = joinCode === null;
-
-  const createGameProps = {
-    questions: questions,
-    currentGameId: currentGameId
-  }
+  const joinCodeErrorThrown = props.joinCode === null;
 
   if (pageIsLoadedOnClient) {
     if (joinCodeErrorThrown) {
@@ -77,7 +72,7 @@ const CreatePage: NextPage<Props> = ({ currentGameId, joinCode, questions }) => 
               <meta content={keywords} name="keywords" />
               <meta content={robots} name="robots" />
             </Head>
-            <CreateGame {...createGameProps} />
+            <CreateGame {...props} />
           </React.Fragment>
         );
       } else {
