@@ -3,12 +3,15 @@ import * as React from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import safeJsonStringify from 'safe-json-stringify';
+import safeJsonStringify from 'safe-json-stringify'
 import Dashboard from '../src/components/Dashboard/Dashboard'
 import { useRouter } from 'next/router'
 import prisma from '../lib/prisma'
+import type { Session } from "next-auth";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null
+}> = async (context) => {
   const session = await getSession(context);
   const userId = Number(session.user.id);
   const getDraftGames = await prisma.triviaGame.findMany({  
@@ -24,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-type DraftGames = {
+export interface DraftGames {
   createdAt: number,
   hostId: number,
   id: number,
@@ -33,10 +36,12 @@ type DraftGames = {
   roundAmount: number | null,
 }
 
+export interface DashboardProps {
+  draftGames: DraftGames[],
+  session: Session | null,
+}
 
-type Props = DraftGames[]
-
-const DashboardPage: NextPage<Props> = ({draftGames}) => {
+const DashboardPage: NextPage<DashboardProps> = (props) => {
   const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
@@ -53,9 +58,6 @@ const DashboardPage: NextPage<Props> = ({draftGames}) => {
   
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
-      const dashboardProps = {
-        draftGames: draftGames
-      }
       return (
         <React.Fragment>
           <Head>
@@ -64,7 +66,7 @@ const DashboardPage: NextPage<Props> = ({draftGames}) => {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <Dashboard {...dashboardProps} />
+          <Dashboard {...props} />
         </React.Fragment>
       );
     } else {

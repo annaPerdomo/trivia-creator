@@ -7,6 +7,8 @@ import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import { DashboardProps, DraftGames } from '../../../pages/dashboard';
+import type { Session } from "next-auth";
 
 const {
   buttonContainer,
@@ -19,19 +21,24 @@ const {
   signOutButtonContainer
 } = styles;
 
-const Dashboard: React.FC = ({draftGames}) => {
+interface DashboardComponentProps {
+  draftGames: DraftGames[],
+  session: Session | null,
+}
+
+const Dashboard: React.FC <DashboardComponentProps> = (props) => {
   const dispatch = useAppDispatch();
   const router = useRouter()
   const [session, loading] = useSession();
-  const [isJoiningGame, setIsJoiningGame] = useState<boolean>(false);
-  const [joinGameCode, setJoinGameCode] = useState<string>('');
+  const [isJoiningGame, setIsJoiningGame] = useState(false);
+  const [joinGameCode, setJoinGameCode] = useState('');
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
-    useState<boolean>(false);
+    useState(false);
   const [displayName, setDisplayName] = useState('');
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
-  console.log({draftGames})
+  console.log(props, typeof props)
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
@@ -58,7 +65,7 @@ const Dashboard: React.FC = ({draftGames}) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ userId }),
+          body: JSON.stringify({ userId }),      
         }
       );
       const newTriviaGame = await createTiviaGame.json();
@@ -111,13 +118,13 @@ const Dashboard: React.FC = ({draftGames}) => {
             </button>
           </div>
 
-          {draftGames ? (
+          {props ? (
             <div>
               <div>
                 <h3>Draft Games</h3>
               </div>
               <div>
-                {draftGames.map(draftGame => (
+                {props.draftGames.map(draftGame => (
                   <Link href={`/create/${draftGame.joinCode}`}>
                     <button>
                       Game created {draftGame.createdAt}
