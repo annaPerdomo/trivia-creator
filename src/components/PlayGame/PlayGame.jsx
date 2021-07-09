@@ -6,6 +6,7 @@ import Link from 'next/link'
 export default function PlayGame({questions}) {
   const [triviaId, setTriviaId] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [roundAnswers, setRoundAnswers] = useState([])
   useEffect(() => {
     if (questions && !triviaId) {
       setTriviaId(questions[0].triviaId);
@@ -13,6 +14,8 @@ export default function PlayGame({questions}) {
     const urlPath = router.route.split('/')[4];
     setIsAdmin(urlPath === "admin")
   }, [])
+
+  
   const router = useRouter();
   const roundNum = router.query.round.split('-')[1];
   const submitAnswers = async () => {
@@ -70,8 +73,23 @@ export default function PlayGame({questions}) {
       <div>
         <ul>
           {questions.map((question, index) => {
-            return <li key={index}>{question.content}</li>;
-          })}
+            return (
+              <div>
+                <div>
+                  <label htmlFor="question">{question.content}</label>
+                  <input
+                    type="text"
+                    name="question"
+                    // value={question}
+                    onChange={(e) => {
+                      const newAnswers = roundAnswers;
+                      newAnswers[index] = e.target.value;
+                      setRoundAnswers(newAnswers);
+                    }}
+                  />
+                </div>
+              </div>
+          )})}
         </ul>
       </div>
       <Link
