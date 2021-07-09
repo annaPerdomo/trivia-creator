@@ -9,24 +9,6 @@ import { useRouter } from 'next/router'
 import prisma from '../lib/prisma'
 import type { Session } from "next-auth";
 
-export const getServerSideProps: GetServerSideProps<{
-  session: Session | null
-}> = async (context) => {
-  const session = await getSession(context);
-  const userId = Number(session.user.id);
-  const getDraftGames = await prisma.triviaGame.findMany({  
-    where: {
-      hostId: userId,
-      playedAt: null,
-    }
-  })
-  const parsedDraftGames = safeJsonStringify(getDraftGames);
-  const draftGames = JSON.parse(parsedDraftGames);
-  return {
-    props: { session, draftGames }
-  }
-}
-
 export interface DraftGames {
   createdAt: number,
   hostId: number,
@@ -39,6 +21,40 @@ export interface DraftGames {
 export interface DashboardProps {
   draftGames: DraftGames[],
   session: Session | null,
+}
+
+
+export const getServerSideProps: GetServerSideProps<{
+  session: Session | null
+}> = async (context) => {
+  const session = await getSession(context);
+  if (!session?.user) {
+    return {
+      props: {
+        session: null, 
+        draftGames: []
+      }
+    }
+  }
+  const userId = Number(session.user.id);
+  const getDraftGames = await prisma.triviaGame.findMany({  
+    where: {
+      hostId: userId,
+      playedAt: null,
+    }
+  })
+
+  // Turn all the createdAt dates into strings so that they can be passed to the client
+  const draftGames = getDraftGames.map(game => {
+    return {
+      ...game,
+      createdAt: game.createdAt.toString()
+    };
+  });
+
+  return {
+    props: { session, draftGames }
+  }
 }
 
 const DashboardPage: NextPage<DashboardProps> = (props) => {
@@ -55,7 +71,6 @@ const DashboardPage: NextPage<DashboardProps> = (props) => {
   const pageIsLoadedOnClient = typeof window !== 'undefined';
   const userIsLoggedIn = session ? true : false;
 
-  
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {
       return (

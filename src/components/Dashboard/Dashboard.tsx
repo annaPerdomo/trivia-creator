@@ -8,7 +8,6 @@ import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 import { DashboardProps, DraftGames } from '../../../pages/dashboard';
-import type { Session } from "next-auth";
 
 const {
   buttonContainer,
@@ -21,12 +20,7 @@ const {
   signOutButtonContainer
 } = styles;
 
-interface DashboardComponentProps {
-  draftGames: DraftGames[],
-  session: Session | null,
-}
-
-const Dashboard: React.FC <DashboardComponentProps> = (props) => {
+const Dashboard: React.FC <DashboardProps> = (props) => {
   const dispatch = useAppDispatch();
   const router = useRouter()
   const [session, loading] = useSession();
@@ -38,7 +32,6 @@ const Dashboard: React.FC <DashboardComponentProps> = (props) => {
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
-  console.log(props, typeof props)
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
@@ -56,7 +49,6 @@ const Dashboard: React.FC <DashboardComponentProps> = (props) => {
 
   const createGame = async () => {
     try {
-      console.log('💄top of createGame', {userId, session})
       const createTiviaGame = await fetch(
         'api/create/triviaGame',
         {
