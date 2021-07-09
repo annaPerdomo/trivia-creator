@@ -3,7 +3,6 @@ import * as React from 'react'
 import { useSession, getSession } from 'next-auth/client'
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
-import safeJsonStringify from 'safe-json-stringify'
 import Dashboard from '../src/components/Dashboard/Dashboard'
 import { useRouter } from 'next/router'
 import prisma from '../lib/prisma'
@@ -56,7 +55,6 @@ export const getServerSideProps: GetServerSideProps<{
 }
 
 const DashboardPage: NextPage<DashboardProps> = (props) => {
-  const [ session, loading ] = useSession();
   const router = useRouter();
   const title =
     'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
@@ -67,7 +65,7 @@ const DashboardPage: NextPage<DashboardProps> = (props) => {
   const robots = 'index, follow';
 
   const pageIsLoadedOnClient = typeof window !== 'undefined';
-  const userIsLoggedIn = session ? true : false;
+  const userIsLoggedIn = props.session ? true : false;
 
   if (pageIsLoadedOnClient) {
     if (userIsLoggedIn) {

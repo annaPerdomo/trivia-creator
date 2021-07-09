@@ -1,7 +1,7 @@
 // @ts-check
 import * as React from 'react';
 const {useEffect, useState} = React;
-import { signOut, useSession } from "next-auth/client";
+import { signOut } from "next-auth/client";
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
@@ -23,7 +23,7 @@ const {
 const Dashboard: React.FC <DashboardProps> = (props) => {
   const dispatch = useAppDispatch();
   const router = useRouter()
-  const [session, loading] = useSession();
+  const {session} = props;
   const [isJoiningGame, setIsJoiningGame] = useState(false);
   const [joinGameCode, setJoinGameCode] = useState('');
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
