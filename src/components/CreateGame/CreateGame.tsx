@@ -1,6 +1,7 @@
 // @ts-check
 import React, { useState, useEffect } from "react";
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styles from "../../styles/Create.module.css";
 import Bar from "./Bar.jsx";
 import Modal from '../Modal/Modal';
@@ -28,15 +29,17 @@ export type CreateProps = {
   correctAnswer?: string,
 }
 
-
+//can grab game code from route params
 export default function CreateGame({ questions, currentGameId }) {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [currentRound, setCurrentRound] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useAppSelector(state => state.createGame.newQuestion);
   const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
   const triviaId = useAppSelector(state => state.createGame.triviaId);
-  console.log(questions, currentGameId)
+  const triviaJoinCode = router.query.joinCode;
+  console.log('😲', questions, currentGameId, router.query)
   useEffect(() => {
     if (questions?.length && !triviaQuestions) {
       setTriviaQuestions(questions);
@@ -84,7 +87,7 @@ export default function CreateGame({ questions, currentGameId }) {
         <p>Create</p>
       </div>
       <div id={start}>
-        <Link href={`/game/${triviaId}/round-1/admin/play`}>
+        <Link href={`/host/${triviaJoinCode}/lobby`}>
           <p>Start Game</p>
         </Link>
       </div>
