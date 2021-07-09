@@ -43,8 +43,6 @@ export const getServerSideProps: GetServerSideProps<{
       playedAt: null,
     }
   })
-
-  // Turn all the createdAt dates into strings so that they can be passed to the client
   const draftGames = getDraftGames.map(game => {
     return {
       ...game,
