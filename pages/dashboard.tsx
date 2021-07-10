@@ -26,31 +26,32 @@ export interface DashboardProps {
 export const getServerSideProps: GetServerSideProps<{
   session: Session | null
 }> = async (context) => {
-  const session = await getSession(context);
-  if (!session?.user) {
+  const session = await getSession(context)
+  const userIsNotLoggedIn = !session?.user
+  if (userIsNotLoggedIn) {
     return {
       props: {
         session: null, 
         draftGames: []
       }
     }
-  }
-  const userId = Number(session.user.id);
-  const getDraftGames = await prisma.triviaGame.findMany({  
-    where: {
-      hostId: userId,
-      playedAt: null,
-    }
-  })
-  const draftGames = getDraftGames.map(game => {
+  } else {
+    const userId = Number(session.user.id);
+    const getDraftGames = await prisma.triviaGame.findMany({  
+      where: {
+        hostId: userId,
+        playedAt: null,
+      }
+    })
+    const draftGames = getDraftGames.map(game => {
+      return {
+        ...game,
+        createdAt: game.createdAt.toString()
+      };
+    });
     return {
-      ...game,
-      createdAt: game.createdAt.toString()
-    };
-  });
-
-  return {
-    props: { session, draftGames }
+      props: { session, draftGames }
+    }
   }
 }
 

@@ -1,8 +1,7 @@
-import React from 'react';
+import * as React from 'react'
 import Head from 'next/head';
-import ScoreAnswers from '../../../../../src/components/AdminScore/ScoreAnswers';
-import prisma from '../../../../../lib/prisma.ts';
-import safeJsonStringify from 'safe-json-stringify';
+import ScoreAnswers from '../../../../src/components/AdminScore/ScoreAnswers';
+import prisma from '../../../../lib/prisma'
 
 export default function AdminScorePage({questions}) {
   const title =
@@ -29,17 +28,21 @@ export default function AdminScorePage({questions}) {
 export async function getServerSideProps(context) {
   const roundParamString = context.params.round;
   const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
-  const fetchedQuestions = await prisma.question.findMany({
+  const getQuestions = await prisma.question.findMany({
     where: {
       triviaId: 1,
-      roundNum,
+      roundNum
     },
     include: {
       answers: true
     }
   });
-  const parsedQuestions = safeJsonStringify(fetchedQuestions);
-  const questions = JSON.parse(parsedQuestions);
+  const questions = getQuestions.map(question => {
+    return {
+      ...question, 
+      submittedAt: question.submittedAt.toString()
+    }
+  })
   return {
     props: { questions },
   }

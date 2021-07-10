@@ -1,9 +1,8 @@
 import * as React from 'react'
-// import type { GetServerSideProps, NextPage } from 'next'
-import { signIn, getSession } from 'next-auth/client'
 import Head from 'next/head'
-import RoundOverview from '../../../../src/components/RoundOverview/RoundOverview'
-import prisma from '../../../../lib/prisma'
+import { signIn, getSession } from 'next-auth/client'
+import RoundOverview from '../../../src/components/RoundOverview/RoundOverview'
+import prisma from '../../../lib/prisma'
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -16,8 +15,7 @@ export async function getServerSideProps(context) {
       }
     }
   } else {
-    const {joinCode, round} = context.params;
-    const roundNum = Number(round.slice(round.length - 1));
+    const {joinCode} = context.params;
     const triviaGame = await prisma.triviaGame.findUnique({
       where: {
         joinCode
@@ -27,7 +25,6 @@ export async function getServerSideProps(context) {
     const fetchedQuestions = await prisma.question.findMany({
       where: {
         triviaId: currentGameId,
-        roundNum
       },
       include: {
         answers: true
@@ -60,7 +57,7 @@ export async function getServerSideProps(context) {
 
 
 
-export default function RoundOverviewPage(props) {
+export default function GameOverviewPage(props) {
   const title =
     'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
   const desc =
@@ -81,7 +78,10 @@ export default function RoundOverviewPage(props) {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <RoundOverview {...props} />
+          <div>
+            Game Overview Page
+          </div>
+          {/* <RoundOverview {...props} /> */}
         </React.Fragment>
       );
     } else {
