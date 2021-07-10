@@ -12,12 +12,9 @@ import {
 
 export async function getServerSideProps(context) {
   const {joinCode, round} = context.params;
-
   const session = await userSessionIfLoggedIn(context)
-
   const triviaGameId = await getTriviaIdFromJoinCode(joinCode, prisma);
   const roundNum = Number(round.slice(round.length - 1));
-
   const questions = await getQuestionsForCurrentRound(triviaGameId, roundNum, prisma);
   return {
     props: {
