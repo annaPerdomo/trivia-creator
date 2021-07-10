@@ -1,61 +1,23 @@
 import * as React from 'react'
 import Head from 'next/head'
-import { signIn, getSession } from 'next-auth/client'
+import { signIn } from 'next-auth/client'
 import RoundOverview from '../../../src/components/RoundOverview/RoundOverview'
 import prisma from '../../../lib/prisma'
+import {
+  getAllQuestionsAndAnswers,
+  getTriviaIdFromJoinCode,
+  userSessionIfLoggedIn
+} from '../../../lib/helperFunctions/Prisma/runOnServer'
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  const userIsNotLoggedIn = !session?.user
-  if (userIsNotLoggedIn) {
-    return {
-      props: {
-        session: null, 
-        questions: []
-      }
-    }
-  } else {
-    const {joinCode} = context.params;
-    const triviaGame = await prisma.triviaGame.findUnique({
-      where: {
-        joinCode
-      }
-    })
-    const currentGameId = triviaGame.id;
-    const fetchedQuestions = await prisma.question.findMany({
-      where: {
-        triviaId: currentGameId,
-      },
-      include: {
-        answers: true
-      }
-    });
-    if (fetchedQuestions) {
-      const questions = fetchedQuestions.map(question => {
-        if (question?.answers?.submittedAt) {
-          return {
-            ...question, 
-            submittedAt: question.answers.submittedAt.toString()
-          }
-        } else {
-          return {
-            ...question
-          }
-        }
-      })
-      return {
-        props: { session, questions },
-      }
-    } else {
-      return {
-        props: { session, questions: [] }
-      }
-    }
+  const {joinCode} = context.params;
+  const session = await userSessionIfLoggedIn(context)
+  const triviaGameId = await getTriviaIdFromJoinCode(joinCode, prisma);
+  const questions = await getAllQuestionsAndAnswers(triviaGameId, prisma)
+  return {
+    props: { session, questions }
   }
 }
-
-
-
 
 export default function GameOverviewPage(props) {
   const title =
