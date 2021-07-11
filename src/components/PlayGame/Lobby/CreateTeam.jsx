@@ -10,14 +10,17 @@ export default function CreateTeam(props) {
   const [teamName, setTeamName] = useState('');
   
   const createTeam = async () => {
-    dispatch(createTriviaTeam(
-      { 
-        teamName,
-        triviaId: triviaGame.id,
-        userId: Number(session.user.id), 
-      }
-    ))
-    setTeamName('')
+    const teamNameExists = teamName.length > 0
+    if (teamNameExists) {
+      dispatch(createTriviaTeam(
+        { 
+          teamName,
+          triviaId: triviaGame.id,
+          userId: Number(session.user.id), 
+        }
+      ))
+      setTeamName('')
+    }
   }
   return (
     <div>
