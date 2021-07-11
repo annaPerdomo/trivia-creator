@@ -2,6 +2,7 @@ import * as React from 'react'
 import Head from 'next/head'
 import { signIn } from 'next-auth/client'
 import prisma from '../../../lib/prisma'
+import GameLobby from '../../../src/components/PlayGame/Lobby/GameLobby'
 import {
   getTriviaIdFromJoinCode,
   userSessionIfLoggedIn
@@ -17,7 +18,7 @@ export async function getServerSideProps(context) {
 
 }
 
-export default function GameLobby(props) {
+export default function GameLobbyPage(props) {
   const title =
   'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
   const desc =
@@ -38,6 +39,8 @@ export default function GameLobby(props) {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
+
+          <GameLobby {...props}/>
         </React.Fragment>
       )
     } else {
