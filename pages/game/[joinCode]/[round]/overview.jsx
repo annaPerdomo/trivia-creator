@@ -1,6 +1,6 @@
 import * as React from 'react'
 // import type { GetServerSideProps, NextPage } from 'next'
-import { signIn, getSession } from 'next-auth/client'
+import { signIn } from 'next-auth/client'
 import Head from 'next/head'
 import RoundOverview from '../../../../src/components/RoundOverview/RoundOverview'
 import prisma from '../../../../lib/prisma'
