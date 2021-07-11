@@ -1,12 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { userSlice }from './reducers/userSlice'
 import { createGameSlice } from './reducers/createGameSlice'
+import { playGameSlice } from './reducers/playGameSlice'
 
 export function makeStore() {
   return configureStore({
     reducer: {
       user: userSlice.reducer,
       createGame: createGameSlice.reducer,
+      playGame: playGameSlice.reducer,
     }
   })
 }
