@@ -32,7 +32,6 @@ export default async function handle(req, res) {
         }
       }
     })
-    console.log({newTeam})
     res.json(newTeam)
   } catch (err) {
     if (err) {
