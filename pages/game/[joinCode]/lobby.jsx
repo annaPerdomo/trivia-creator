@@ -4,14 +4,14 @@ import { signIn } from 'next-auth/client'
 import prisma from '../../../lib/prisma'
 import GameLobby from '../../../src/components/PlayGame/Lobby/GameLobby'
 import {
-  getTriviaIdFromJoinCode,
+  getTriviaGameFromJoinCode,
   userSessionIfLoggedIn
 } from '../../../lib/helperFunctions/Prisma/runOnServer'
 
 export async function getServerSideProps(context) {
   const { joinCode } = context.params;
   const session = await userSessionIfLoggedIn(context)
-  const triviaGame = getTriviaIdFromJoinCode(joinCode, prisma)
+  const triviaGame = await getTriviaGameFromJoinCode(joinCode, prisma)
   return {
     props: { session, triviaGame }
   }
