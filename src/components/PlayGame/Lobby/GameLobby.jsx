@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import CreateGroup from './CreateGroup';
+import CreateTeam from './CreateTeam';
 
 
 //ability to create team so an api cal for it
@@ -14,7 +14,7 @@ export default function GameLobby(props) {
         <h1>Welcome to The Game Lobby</h1>
       </div>
       <div>
-        <CreateGroup />
+        <CreateTeam />
       </div>
     </div>
   )

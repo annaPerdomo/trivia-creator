@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-export default function CreateGroup() {
-  const [isCreatingGroup, setIsCreatingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
+export default function CreateTeam() {
+  const [isCreatingTeam, setIsCreatingTeam] = useState(false);
+  const [newTeamName, setNewTeamName] = useState('');
   
-  const createGroup = async () => {
+  const createTeam = async () => {
 
   }
   return (
@@ -15,10 +15,10 @@ export default function CreateGroup() {
       <input
         type="text"
         name="newGroupName"
-        value={newGroupName}
-        onChange={(e) => setNewGroupName(e.target.value)}
+        value={newTeamName}
+        onChange={(e) => setNewTeamName(e.target.value)}
       ></input>
-      <button type="button" onClick={createGroup}>
+      <button type="button" onClick={createTeam}>
         Create Group
       </button>
     </div>  

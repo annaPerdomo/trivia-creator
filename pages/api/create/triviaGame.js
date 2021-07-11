@@ -18,14 +18,12 @@ function runMiddleware(req, res, fn) {
   })
 }
 
-function getFourLetterRandomString() {
+const getFourLetterRandomString = () => {
   let text = "";
-
   const charset = "abcdefghijklmnopqrstuvwxyz";
-
-  for (let i = 0; i < 4; i++)
+  for (let i = 0; i < 4; i++) {
     text += charset.charAt(Math.floor(Math.random() * charset.length));
-
+  }
   return text;
 }
 
