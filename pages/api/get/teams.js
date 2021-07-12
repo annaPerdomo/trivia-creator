@@ -24,15 +24,16 @@ export default async function handle(req, res) {
     await runMiddleware(req, res, cors);
     const currentGamesTeams = await prisma.triviaGame.findUnique({
       where: {
-        id: triviaId
+        id: Number(triviaId)
       },
       include: {
         teams: {
           select: {
             members: true,
-            teamName: true
+            teamName: true,
+            id: true,
           }
-        }
+        },
       }
     })
     res.send(currentGamesTeams)

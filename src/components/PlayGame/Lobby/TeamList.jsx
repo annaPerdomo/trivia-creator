@@ -9,6 +9,7 @@ import Link from 'next/link'
 
 export default function TeamList({triviaId, userId}) {
   const [teams, setTeams] = useState(null)
+  const [firstTeamId, setFirstTeamId] = useState(null)
   const fetchTeams = async () => {
     try {
       const currentTeamsGames = await fetch('/api/get/teams', {
@@ -20,49 +21,66 @@ export default function TeamList({triviaId, userId}) {
         body: JSON.stringify({triviaId}),
       })
       const triviaGame = await currentTeamsGames.json()
+      triviaGame.teams.forEach(team => {
+        team?.members.forEach(member => {
+          if (Number(member.id) === Number(userId)) {
+            setFirstTeamId(team.id)
+          }
+        })
+      })
       setTeams(triviaGame.teams)
     } catch (err) {
       if (err) console.log(err)
     }
   }
-  const joinTeam = async (isAlreadyInTeam) => {
+  console.log({firstTeamId})
+  const joinTeam = async (newTeamId) => {
     try {
-      console.log({isAlreadyInTeam})
+      const updateTeam = await fetch('/api/update/teams', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          newTeamId: Number(newTeamId), 
+          originalTeamId: Number(firstTeamId), 
+          userId: Number(userId)
+        }),
+      })
+      const triviaGame = await updateTeam.json()
     } catch (err) {
       if (err) console.log(err)
     }
   }
+  //http://localhost:3000/game/uilj/lobby
   return (
     <div>
       Teams:
       {teams?.length ? (
         <div>
           {teams.map((team, index) => {
-            let isAlreadyInTeam = false;
             return (
               <div key={index}>
                 {`${index + 1}: ${team.teamName} - `}
                 <span>
-                  {team?.members
-                    ? team.members.reduce((memberString, member, index) => {
+                  {team?.members?.length
+                    ? team.members.reduce((memberString, member, memberIndex) => {
                         if (Number(member.id) === Number(userId)) {
-                          isAlreadyInTeam = true;
                           memberString += "You";
                         } else {
                           memberString += `${member.displayName}`;
                         }
-                        if (index !== team.members.length - 1) {
-                          memberstring += ', '
+                        if (memberIndex !== team.members.length - 1) {
+                          memberString += ', '
                         }
                         return memberString;
                       }, "")
                     : "lonely sad team"}
                 </span>
-                {isAlreadyInTeam ? null : (
-                  <button onClick={() => joinTeam(isAlreadyInTeam)}>
+                <button onClick={() => joinTeam(team.id)}>
                     Join Team
-                  </button>
-                )}
+                </button>
               </div>
             );
           })}
