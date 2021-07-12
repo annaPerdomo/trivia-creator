@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
-
-//maybe you can create some sort of team and users join table?
-//handle the case of a user already having joined a team
-//also display the users in the teams
-
 export default function TeamList({triviaId, userId}) {
   const [teams, setTeams] = useState(null)
   const [firstTeamId, setFirstTeamId] = useState(null)
+
   const fetchTeams = async () => {
+    console.log('FETCHING FAM')
     try {
       const currentTeamsGames = await fetch('/api/get/teams', {
         method: 'POST',
@@ -33,7 +30,13 @@ export default function TeamList({triviaId, userId}) {
       if (err) console.log(err)
     }
   }
-  console.log({firstTeamId})
+
+
+  useEffect(() => {
+    fetchTeams()
+    setInterval(fetchTeams, 5000)
+  }, [])
+
   const joinTeam = async (newTeamId) => {
     try {
       const updateTeam = await fetch('/api/update/teams', {
@@ -53,7 +56,7 @@ export default function TeamList({triviaId, userId}) {
       if (err) console.log(err)
     }
   }
-  //http://localhost:3000/game/uilj/lobby
+
   return (
     <div>
       Teams:
