@@ -5,21 +5,26 @@ import Link from 'next/link'
 import {createTriviaTeam} from '../../../redux/reducers/playGameSlice'
 
 export default function CreateTeam(props) {
-  const {session, triviaGame} = props
+  const {session, triviaGame, isAlreadyInTeam} = props
   const dispatch = useAppDispatch();
   const [teamName, setTeamName] = useState('');
-  
   const createTeam = async () => {
     const teamNameExists = teamName.length > 0
     if (teamNameExists) {
-      dispatch(createTriviaTeam(
-        { 
-          teamName,
-          triviaId: triviaGame.id,
-          userId: Number(session.user.id), 
-        }
-      ))
-      setTeamName('')
+      if (isAlreadyInTeam) {
+        alert('You have to leave a group before creating another group')
+      } else {
+        dispatch(createTriviaTeam(
+          { 
+            teamName,
+            triviaId: triviaGame.id,
+            userId: Number(session.user.id), 
+          }
+        ))
+        setTeamName('')
+      }
+    } else {
+      alert('In order to create a team you need a name')
     }
   }
   return (

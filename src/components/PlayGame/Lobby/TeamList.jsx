@@ -63,7 +63,7 @@ export default function TeamList(props) {
     }
   }
 
-  const removeSelfFromTeam = async (teamId) => {
+  const leaveTeam = async (teamId) => {
     try {
       const removeMemberFromTeam = await fetch('/api/delete/memberFromTeam', {
         method: 'POST',
@@ -76,6 +76,7 @@ export default function TeamList(props) {
           userId: Number(userId)
          }),
       })
+      setFirstTeamId(null)
       fetchTeams()
     } catch (err) {
       if (err) console.log(err)
@@ -126,7 +127,7 @@ export default function TeamList(props) {
                     : "lonely sad team"}
                 </span>
                 {team.id === firstTeamId ? (
-                  <button onClick={() => removeSelfFromTeam(team.id)}>Leave Team</button>
+                  <button onClick={() => leaveTeam(team.id)}>Leave Team</button>
                 ) : (
                   <button onClick={() => joinTeam(team.id)}>Join Team</button>
                 )}

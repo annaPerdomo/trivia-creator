@@ -22,17 +22,11 @@ export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
     const { teamId } = req.body
-    // await prisma.user.delete({
-    //   where: {
-    //     email: 'bert@prisma.io',
-    //   },
-    // })
     const deleteTeam = await prisma.team.delete({
       where: {
         id: teamId
       }
     })
-    console.log({deleteTeam})
     res.json(deleteTeam)
   } catch (err) {
     if (err) console.log(err)

@@ -9,16 +9,26 @@ import TeamList from './TeamList'
 //set stuff in database
 export default function GameLobby(props) {  
   const {session, triviaGame} = props;
+  const [isAlreadyInTeam, setIsAlreadyInTeam] = useState(false)
   return (
     <div>
       <div>
         <h1>Welcome to The Game Lobby</h1>
       </div>
       <div>
-        <TeamList triviaId={triviaGame?.id} userId={session?.user?.id}/>
+        <TeamList
+          isAlreadyInTeam={isAlreadyInTeam}
+          setIsAlreadyInTeam={setIsAlreadyInTeam} 
+          triviaId={triviaGame?.id} 
+          userId={session?.user?.id}
+        />
       </div>
       <div>
-        <CreateTeam session={session} triviaGame={triviaGame}/>
+        <CreateTeam
+          isAlreadyInTeam={isAlreadyInTeam}
+          session={session} 
+          triviaGame={triviaGame}
+        />
       </div>
     </div>
   )

@@ -22,7 +22,7 @@ export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
     const { newTeamId, originalTeamId, userId } = req.body
-    if (newTeamId) {
+    if (originalTeamId) {
       const updateOldTeam = await prisma.team.update({
         where: {
           id: originalTeamId
