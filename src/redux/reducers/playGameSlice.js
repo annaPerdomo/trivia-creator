@@ -38,11 +38,27 @@ export const playGameSlice = createSlice({
       state.triviaId = triviaId
       state.isGameHost = userId === hostId
     },
-    
+    setTeam: (state, action) => {
+      const {teamId, teamName} = action.payload
+      if (state.teamId !== teamId) {
+        state.teamId = teamId
+        state.teamName = teamName
+      }
+    }, 
+    removeTeam: (state, action) => {
+      state.teamId = null
+      state.teamName = null
+    }, 
+    deleteSelfFromTeam: (state, action) => {
+      const {deletedTeamId} = action.payload
+      if (state.teamId === deletedTeamId) {
+        state.teamId = null
+        state.teamName = null
+      }
+    }
   },
   extraReducers: builder => {
     builder.addCase(createTriviaTeam.fulfilled, (state, action) => {
-      console.log('wtf', action.payload)
       const {id, teamName} = action.payload
       state.teamId = id
       state.teamName = teamName
@@ -50,4 +66,4 @@ export const playGameSlice = createSlice({
   }
 })
 
-export const {setGame} = playGameSlice.actions
+export const {deleteSelfFromTeam, removeTeam, setGame, setTeam} = playGameSlice.actions

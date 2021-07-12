@@ -2,14 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import CreateTeam from './CreateTeam';
+import { useAppDispatch } from "../../../../lib/hooks";
 import TeamList from './TeamList'
+import { setGame } from "../../../redux/reducers/playGameSlice";
 
-//ability to create team so an api cal for it
-//have list of teams already made
-//set stuff in database
 export default function GameLobby(props) {  
   const {session, triviaGame} = props;
+  const dispatch = useAppDispatch();
   const [isAlreadyInTeam, setIsAlreadyInTeam] = useState(false)
+  useEffect(() => {
+    if (session && triviaGame) {
+      dispatch(setGame({
+        hostId: Number(triviaGame.hostId), 
+        triviaId: Number(triviaGame.id),
+        userId: Number(session.user.id)
+      }))
+    }
+  }, [])
   return (
     <div>
       <div>

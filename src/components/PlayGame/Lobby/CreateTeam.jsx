@@ -29,7 +29,7 @@ export default function CreateTeam(props) {
   }
   return (
     <div>
-      <label htmlFor="newGroup">Group Name: </label>
+      <label htmlFor="newGroup">Team Name: </label>
       <input
         type="text"
         name="newGroupName"
@@ -37,7 +37,7 @@ export default function CreateTeam(props) {
         onChange={(e) => setTeamName(e.target.value)}
       ></input>
       <button type="button" onClick={createTeam}>
-        Create Group
+        Create Team
       </button>
     </div>  
   )

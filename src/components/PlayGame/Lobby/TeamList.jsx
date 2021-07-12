@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useAppSelector, useAppDispatch } from "../../../../lib/hooks";
+import { deleteSelfFromTeam, setTeam, removeTeam } from "../../../redux/reducers/playGameSlice";
 
 export default function TeamList(props) {
   const {triviaId, userId, isAlreadyInTeam, setIsAlreadyInTeam} = props
+  const dispatch = useAppDispatch()
   const [teams, setTeams] = useState(null)
   const [firstTeamId, setFirstTeamId] = useState(null)
-
+  const isGameHost = useAppSelector(state => state.playGame.isGameHost)
   const fetchTeams = async () => {
     try {
       setIsAlreadyInTeam(false)
@@ -24,6 +27,8 @@ export default function TeamList(props) {
           if (Number(member.id) === Number(userId)) {
             setIsAlreadyInTeam(true)
             setFirstTeamId(team.id)
+            dispatch(
+              setTeam({teamId: Number(team.id), teamName: team.teamName}))
           }
         })
       })
@@ -53,7 +58,11 @@ export default function TeamList(props) {
             userId: Number(userId)
           }),
         })
-        const triviaGame = await updateTeam.json()
+        const newTeam = await updateTeam.json()
+        dispatch(setTeam({
+          teamId: Number(newTeam.id),
+          teamName: newTeam.teamName
+        }))
         fetchTeams()
       } else {
         alert('You can only be in one group at a time')
@@ -65,23 +74,24 @@ export default function TeamList(props) {
 
   const leaveTeam = async (teamId) => {
     try {
-      const removeMemberFromTeam = await fetch('/api/delete/memberFromTeam', {
-        method: 'POST',
+      const removeMemberFromTeam = await fetch("/api/delete/memberFromTeam", {
+        method: "POST",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           teamId: Number(teamId),
-          userId: Number(userId)
-         }),
-      })
-      setFirstTeamId(null)
-      fetchTeams()
+          userId: Number(userId),
+        }),
+      });
+      setFirstTeamId(null);
+      dispatch(removeTeam());
+      fetchTeams();
     } catch (err) {
-      if (err) console.log(err)
+      if (err) console.log(err);
     }
-  }
+  };
 
   const deleteTeam = async (teamId) => {
     try {
@@ -93,6 +103,7 @@ export default function TeamList(props) {
         },
         body: JSON.stringify({ teamId }),
       })
+      dispatch(deleteSelfFromTeam({deletedTeamId: teamId}))
       fetchTeams()
     } catch (err) {
       if (err) console.log(err)
@@ -131,9 +142,11 @@ export default function TeamList(props) {
                 ) : (
                   <button onClick={() => joinTeam(team.id)}>Join Team</button>
                 )}
-                <button onClick={() => deleteTeam(team.id)}>
-                  Delete Team (only if host)
-                </button>
+                {isGameHost ? (
+                  <button onClick={() => deleteTeam(team.id)}>
+                    Delete Team 
+                  </button>
+                ) : null}
               </div>
             );
           })}
