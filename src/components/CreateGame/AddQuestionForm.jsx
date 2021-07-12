@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 import {closeQuestionModal, createTriviaQuestion} from '../../redux/reducers/createGameSlice';
@@ -37,6 +37,10 @@ function AddQuestionForm() {
   const closeModal = () => {
     dispatch(closeQuestionModal());
   };
+  const questionInput = useRef(null)
+  useEffect(() => {
+    questionInput.current.focus()
+  }, [])
   return (
     <div className={backdrop}>
       <div className={modal}>
@@ -45,6 +49,7 @@ function AddQuestionForm() {
           <div>
             <label htmlFor="question">Question: </label>
             <input
+              ref={questionInput}
               type="text"
               name="question"
               value={question}

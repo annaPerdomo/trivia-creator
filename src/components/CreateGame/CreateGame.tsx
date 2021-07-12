@@ -39,7 +39,6 @@ export default function CreateGame({ questions, currentGameId }) {
   const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
   const triviaId = useAppSelector(state => state.createGame.triviaId);
   const triviaJoinCode = router.query.joinCode;
-  console.log('😲', questions, currentGameId, router.query)
   useEffect(() => {
     if (questions?.length && !triviaQuestions) {
       setTriviaQuestions(questions);
@@ -87,7 +86,7 @@ export default function CreateGame({ questions, currentGameId }) {
         <p>Create</p>
       </div>
       <div id={start}>
-        <Link href={`/host/${triviaJoinCode}/lobby`}>
+        <Link href={`/game/${triviaJoinCode}/lobby`}>
           <p>Start Game</p>
         </Link>
       </div>
@@ -109,7 +108,6 @@ export default function CreateGame({ questions, currentGameId }) {
             />
           ))}
         </div>
-
         <p id={logo}>it's a trivia&trade;</p>
       </div>
       <Modal selector="#modal">
