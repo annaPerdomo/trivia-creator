@@ -25,32 +25,50 @@ export default function TeamList({triviaId, userId}) {
       if (err) console.log(err)
     }
   }
+  const joinTeam = async (isAlreadyInTeam) => {
+    try {
+      console.log({isAlreadyInTeam})
+    } catch (err) {
+      if (err) console.log(err)
+    }
+  }
   return (
     <div>
       Teams:
       {teams?.length ? (
         <div>
-          {teams.map((team, index) => (
-            <div key={index}>
-              {`${index + 1}: ${team.teamName} - `}
-              <span>
-                {team?.members ? (
-                  team.members.reduce((memberString, member) => {
-                    if (Number(member.id) === Number(userId)) {
-                      memberString += 'You, '
-                    } else {
-                      memberString += `${member.displayName}, `
-                    }
-                    return memberString
-                  }, '')
-                ) : 'lonely sad team'}
-              </span>
-              <button>Join Team</button>
-            </div>
-          ))}
+          {teams.map((team, index) => {
+            let isAlreadyInTeam = false;
+            return (
+              <div key={index}>
+                {`${index + 1}: ${team.teamName} - `}
+                <span>
+                  {team?.members
+                    ? team.members.reduce((memberString, member, index) => {
+                        if (Number(member.id) === Number(userId)) {
+                          isAlreadyInTeam = true;
+                          memberString += "You";
+                        } else {
+                          memberString += `${member.displayName}`;
+                        }
+                        if (index !== team.members.length - 1) {
+                          memberstring += ', '
+                        }
+                        return memberString;
+                      }, "")
+                    : "lonely sad team"}
+                </span>
+                {isAlreadyInTeam ? null : (
+                  <button onClick={() => joinTeam(isAlreadyInTeam)}>
+                    Join Team
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       ) : null}
       <button onClick={() => fetchTeams()}>click me</button>
-    </div>  
-  )
+    </div>
+  );
 }
