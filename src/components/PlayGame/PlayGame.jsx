@@ -2,25 +2,38 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
+import { setGame, setTeam } from "../../redux/reducers/playGameSlice";
+import { grabUsersTeamAndId } from "../../../lib/helperFunctions/runOnClient";
 
-export default function PlayGame({questions}) {
-  const [triviaId, setTriviaId] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [roundAnswers, setRoundAnswers] = useState([])
+export default function PlayGame(props) {
+  const {questions, session, triviaGame} = props;
+  const dispatch = useAppDispatch()
+  const isGameHost = useAppSelector(state => state.playGame.isGameHost)
+  const triviaId = useAppSelector(state => state.playGame.triviaId)
+  const teamId = useAppSelector(state => state.playGame.teamId)
+  const teamName = useAppSelector(state => state.playGame.teamName)
+  const [roundAnswers, setRoundAnswers] = useState({})
+  console.log({roundAnswers})
   useEffect(() => {
-    if (questions && !triviaId) {
-      setTriviaId(questions[0].triviaId);
+    if (session && triviaGame && !triviaId) {
+      dispatch(setGame({
+        hostId: Number(triviaGame.hostId), 
+        triviaId: Number(triviaGame.id),
+        userId: Number(session.user.id)
+      }))
+      if (!teamId) {
+        const userId = session.user.id
+        const teamNameAndId = grabUsersTeamAndId(triviaGame.teams, userId)
+        dispatch(setTeam(teamNameAndId))
+      }
     }
-    const urlPath = router.route.split('/')[4];
-    setIsAdmin(urlPath === "admin")
   }, [])
-
-  
   const router = useRouter();
   const roundNum = router.query.round.split('-')[1];
   const submitAnswers = async () => {
     try {
-      if (!isAdmin) {
+      if (!isGameHost) {
         const newAnswerData = {
           answers: [
             {
@@ -76,15 +89,22 @@ export default function PlayGame({questions}) {
             return (
               <div>
                 <div>
-                  <label htmlFor="question">{question.content}</label>
+                  <label 
+                    htmlFor="question">{isGameHost ? question.content : `Question ${ index + 1}: `}
+                  </label>
                   <input
                     type="text"
                     name="question"
                     // value={question}
                     onChange={(e) => {
-                      const newAnswers = roundAnswers;
-                      newAnswers[index] = e.target.value;
-                      setRoundAnswers(newAnswers);
+                      const answer = {
+                        questionId: Number(question.id),
+                        teamName, 
+                        teamId, 
+                        content: e.target.value
+                      }
+                      setRoundAnswers[Number(question.id)] = answer
+                      //setRoundAnswers([...roundAnswers, answer]);
                     }}
                   />
                 </div>
@@ -94,7 +114,7 @@ export default function PlayGame({questions}) {
       </div>
       <Link
         href={
-          isAdmin
+          isGameHost
             ? `/game/${triviaId}/round-${roundNum}/admin/score`
             : `/game/${triviaId}/round-${roundNum}/overview`
         }

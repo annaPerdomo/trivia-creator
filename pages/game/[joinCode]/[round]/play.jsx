@@ -5,6 +5,7 @@ import PlayGame from '../../../../src/components/PlayGame/PlayGame'
 import prisma from '../../../../lib/prisma'
 import {
   getQuestionsForCurrentRound,
+  getTriviaGameFromJoinCode,
   getTriviaIdFromJoinCode,
   userSessionIfLoggedIn
 } from '../../../../lib/helperFunctions/Prisma/runOnServer'
@@ -13,12 +14,13 @@ import {
 export async function getServerSideProps(context) {
   const {joinCode, round} = context.params;
   const session = await userSessionIfLoggedIn(context)
-  const triviaGameId = await getTriviaIdFromJoinCode(joinCode, prisma);
+  const triviaGame = await getTriviaGameFromJoinCode(joinCode, prisma)
+  const triviaGameId = triviaGame.id
   const roundNum = Number(round.slice(round.length - 1));
   const questions = await getQuestionsForCurrentRound(triviaGameId, roundNum, prisma);
   return {
     props: {
-      session, questions
+      session, questions, triviaGame
     }
   }
 }

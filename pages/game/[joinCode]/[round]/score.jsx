@@ -3,28 +3,6 @@ import Head from 'next/head';
 import ScoreAnswers from '../../../../src/components/AdminScore/ScoreAnswers';
 import prisma from '../../../../lib/prisma'
 
-export default function AdminScorePage({questions}) {
-  const title =
-    'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
-  const desc =
-    'Trivia creator allows you to host trivia nights with your friends!';
-  const keywords = 'trivia';
-  const robots = 'index, follow';
-  console.log({questions});
-  return (
-    <React.Fragment>
-      <Head>
-        <title>{title}</title>
-        <meta content={desc} name="description" />
-        <meta content={keywords} name="keywords" />
-        <meta content={robots} name="robots" />
-      </Head>
-
-      <ScoreAnswers questions={questions} />
-    </React.Fragment>
-  );
-}
-
 export async function getServerSideProps(context) {
   const roundParamString = context.params.round;
   const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
@@ -46,5 +24,29 @@ export async function getServerSideProps(context) {
   return {
     props: { questions },
   }
+}
+
+
+
+export default function AdminScorePage({questions}) {
+  const title =
+    'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
+  const desc =
+    'Trivia creator allows you to host trivia nights with your friends!';
+  const keywords = 'trivia';
+  const robots = 'index, follow';
+  console.log({questions});
+  return (
+    <React.Fragment>
+      <Head>
+        <title>{title}</title>
+        <meta content={desc} name="description" />
+        <meta content={keywords} name="keywords" />
+        <meta content={robots} name="robots" />
+      </Head>
+
+      <ScoreAnswers questions={questions} />
+    </React.Fragment>
+  );
 }
 
