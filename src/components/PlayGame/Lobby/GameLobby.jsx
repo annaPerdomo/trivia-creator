@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import CreateTeam from './CreateTeam';
-import { useAppDispatch } from "../../../../lib/hooks";
+import { useAppSelector, useAppDispatch } from "../../../../lib/hooks";
 import TeamList from './TeamList'
 import { setGame } from "../../../redux/reducers/playGameSlice";
 
@@ -10,6 +10,7 @@ export default function GameLobby(props) {
   const {session, triviaGame} = props;
   const dispatch = useAppDispatch();
   const [isAlreadyInTeam, setIsAlreadyInTeam] = useState(false)
+  const isGameHost = useAppSelector(state => state.playGame.isGameHost)
   useEffect(() => {
     if (session && triviaGame) {
       dispatch(setGame({
@@ -19,7 +20,24 @@ export default function GameLobby(props) {
       }))
     }
   }, [])
-  return (
+  const startGame = async () => {
+    try {
+      const updateGame = await fetch('/api/update/triviaGame', {
+        method: 'POST', 
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          triviaId: triviaGame.id
+        }),
+      })
+      const updatedGame = await updateGame.json()
+    } catch (err) {
+      if (err) console.log(err)
+    }
+  }
+  return ( 
     <div>
       <div>
         <h1>Welcome to The Game Lobby</h1>
@@ -39,6 +57,11 @@ export default function GameLobby(props) {
           triviaGame={triviaGame}
         />
       </div>
+      {isGameHost ? (
+        <div>
+          <button onClick={() => startGame()}>Start Game</button>
+        </div>
+      ) : null}
     </div>
   )
 }
