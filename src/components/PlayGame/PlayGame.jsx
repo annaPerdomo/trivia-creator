@@ -33,49 +33,20 @@ export default function PlayGame(props) {
   const roundNum = router.query.round.split('-')[1];
   const submitAnswers = async () => {
     try {
-      if (!isGameHost) {
-        const newAnswerData = {
-          answers: [
-            {
-              questionId: 6,
-              teamName: 'Andy Samberg and the Luls',
-              content: 'Ascension',
-            },
-            {
-              questionId: 7,
-              teamName: 'Andy Samberg and the Luls',
-              content: 'Numb Numb Juice',
-            },
-            {
-              questionId: 8,
-              teamName: 'Andy Samberg and the Luls',
-              content: 'Physical',
-            },
-            {
-              questionId: 9,
-              teamName: 'Andy Samberg and the Luls',
-              content: 'Tempo',
-            },
-            {
-              questionId: 10,
-              teamName: 'Andy Samberg and the Luls',
-              content: 'Work Bitch',
-            },
-          ]
-        }
-        // const newAnswer = await fetch(
-        //   '/api/create/answers',
-        //   {
-        //     method: 'POST',
-        //     headers: {
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(newAnswerData),
-        //   }
-        // );
-        // const newAnswerBody = await newAnswer.json();
-      }
+      const newAnswers = Object.values(roundAnswers);
+      console.log({ newAnswers });
+      // const newAnswer = await fetch(
+      //   '/api/create/answers',
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Accept': 'application/json',
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(newAnswerData),
+      //   }
+      // );
+      // const newAnswerBody = await newAnswer.json();
     } catch (err) {
       console.log(err);
     }
@@ -95,7 +66,6 @@ export default function PlayGame(props) {
                   <input
                     type="text"
                     name="question"
-                    // value={question}
                     onChange={(e) => {
                       const answer = {
                         questionId: Number(question.id),
@@ -103,8 +73,10 @@ export default function PlayGame(props) {
                         teamId, 
                         content: e.target.value
                       }
-                      setRoundAnswers[Number(question.id)] = answer
-                      //setRoundAnswers([...roundAnswers, answer]);
+                      const test = roundAnswers;
+                      test[Number(question.id)] = answer
+                      console.log({test})
+                      setRoundAnswers(test)
                     }}
                   />
                 </div>
@@ -112,7 +84,8 @@ export default function PlayGame(props) {
           )})}
         </ul>
       </div>
-      <Link
+      <button onClick={submitAnswers}>Submit</button>
+      {/* <Link
         href={
           isGameHost
             ? `/game/${triviaId}/round-${roundNum}/admin/score`
@@ -120,7 +93,7 @@ export default function PlayGame(props) {
         }
       >
         <button onClick={submitAnswers}>Submit</button>
-      </Link>
+      </Link> */}
     </div>
   );
 }
