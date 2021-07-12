@@ -37,31 +37,43 @@ export default function GameLobby(props) {
       if (err) console.log(err)
     }
   }
-  return ( 
+  return (
     <div>
       <div>
         <h1>Welcome to The Game Lobby</h1>
       </div>
-      <div>
-        <TeamList
-          isAlreadyInTeam={isAlreadyInTeam}
-          setIsAlreadyInTeam={setIsAlreadyInTeam} 
-          triviaId={triviaGame?.id} 
-          userId={session?.user?.id}
-        />
-      </div>
-      <div>
-        <CreateTeam
-          isAlreadyInTeam={isAlreadyInTeam}
-          session={session} 
-          triviaGame={triviaGame}
-        />
-      </div>
-      {isGameHost ? (
+      {!Object.keys(triviaGame).length ? (
         <div>
-          <button onClick={() => startGame()}>Start Game</button>
+          <p>
+            Hmmmm the code doesn't pull up an applicable trivia game.
+            <br />
+            Please check the code and try again
+          </p>
         </div>
-      ) : null}
+      ) : (
+        <div>
+          <div>
+            <TeamList
+              isAlreadyInTeam={isAlreadyInTeam}
+              setIsAlreadyInTeam={setIsAlreadyInTeam}
+              triviaId={triviaGame?.id}
+              userId={session?.user?.id}
+            />
+          </div>
+          <div>
+            <CreateTeam
+              isAlreadyInTeam={isAlreadyInTeam}
+              session={session}
+              triviaGame={triviaGame}
+            />
+          </div>
+          {isGameHost ? (
+            <div>
+              <button onClick={() => startGame()}>Start Game</button>
+            </div>
+          ) : null}
+        </div>
+      )}
     </div>
-  )
+  );
 }
