@@ -6,6 +6,7 @@ import { deleteSelfFromTeam, setTeam, removeTeam } from "../../../redux/reducers
 
 export default function TeamList(props) {
   const {triviaId, userId, isAlreadyInTeam, setIsAlreadyInTeam} = props
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const [teams, setTeams] = useState(null)
   const [firstTeamId, setFirstTeamId] = useState(null)
@@ -22,17 +23,21 @@ export default function TeamList(props) {
         body: JSON.stringify({triviaId}),
       })
       const triviaGame = await currentTeamsGames.json()
-      triviaGame.teams.forEach(team => {
-        team?.members.forEach(member => {
-          if (Number(member.id) === Number(userId)) {
-            setIsAlreadyInTeam(true)
-            setFirstTeamId(team.id)
-            dispatch(
-              setTeam({teamId: Number(team.id), teamName: team.teamName}))
-          }
+      if (triviaGame.playedAt) {
+        router.push(`/game/${triviaGame.joinCode}/round-1/play`)
+      } else {
+        triviaGame.teams.forEach(team => {
+          team?.members.forEach(member => {
+            if (Number(member.id) === Number(userId)) {
+              setIsAlreadyInTeam(true)
+              setFirstTeamId(team.id)
+              dispatch(
+                setTeam({teamId: Number(team.id), teamName: team.teamName}))
+            }
+          })
         })
-      })
-      setTeams(triviaGame.teams)
+        setTeams(triviaGame.teams)
+      }
     } catch (err) {
       if (err) console.log(err)
     }
@@ -40,7 +45,10 @@ export default function TeamList(props) {
 
   useEffect(() => {
     fetchTeams()
-    setInterval(fetchTeams, 5000)
+    const continuouslyFetchingTeams = setInterval(fetchTeams, 5000)
+    return () => {
+      clearInterval(continuouslyFetchingTeams)
+    }
   }, [])
 
   const joinTeam = async (newTeamId) => {
