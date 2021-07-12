@@ -7,7 +7,6 @@ export default function TeamList({triviaId, userId}) {
   const [firstTeamId, setFirstTeamId] = useState(null)
 
   const fetchTeams = async () => {
-    console.log('FETCHING FAM')
     try {
       const currentTeamsGames = await fetch('/api/get/teams', {
         method: 'POST',
@@ -31,11 +30,10 @@ export default function TeamList({triviaId, userId}) {
     }
   }
 
-
-  useEffect(() => {
-    fetchTeams()
-    setInterval(fetchTeams, 5000)
-  }, [])
+  // useEffect(() => {
+  //   fetchTeams()
+  //   setInterval(fetchTeams, 5000)
+  // }, [])
 
   const joinTeam = async (newTeamId) => {
     try {
@@ -52,11 +50,26 @@ export default function TeamList({triviaId, userId}) {
         }),
       })
       const triviaGame = await updateTeam.json()
+      fetchTeams()
     } catch (err) {
       if (err) console.log(err)
     }
   }
-
+  const deleteTeam = async (teamId) => {
+    try {
+      const deleteTeam = await fetch('/api/delete/team', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ teamId }),
+      })
+      fetchTeams()
+    } catch (err) {
+      if (err) console.log(err)
+    }
+  }
   return (
     <div>
       Teams:
@@ -83,6 +96,9 @@ export default function TeamList({triviaId, userId}) {
                 </span>
                 <button onClick={() => joinTeam(team.id)}>
                     Join Team
+                </button>
+                <button onClick={() => deleteTeam(team.id)}>
+                  Delete Team (only if host)
                 </button>
               </div>
             );
