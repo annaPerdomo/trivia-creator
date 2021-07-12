@@ -22,7 +22,7 @@ export const createTriviaTeam = createAsyncThunk('playGame/createTriviaTeam', as
         body: JSON.stringify(triviaTeam),
       }
     )
-    return await newTriviaTeam.json();
+    return newTriviaTeam.json();
   } catch (err) {
     if (err) console.log(err)
   }
@@ -42,11 +42,12 @@ export const playGameSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(createTriviaTeam.fulfilled, (state, action) => {
-      const {teamId, teamName} = action.payload
-      state.teamId = teamId
+      console.log('wtf', action.payload)
+      const {id, teamName} = action.payload
+      state.teamId = id
       state.teamName = teamName
     })
   }
 })
 
-export const {setGame} = playGameSlice.actions;
+export const {setGame} = playGameSlice.actions
