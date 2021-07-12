@@ -29,7 +29,8 @@ export default async function handle(req, res) {
       include: {
         teams: {
           select: {
-            members: true
+            members: true,
+            teamName: true
           }
         }
       }
