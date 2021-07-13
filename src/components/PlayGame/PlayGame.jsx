@@ -30,7 +30,6 @@ export default function PlayGame(props) {
   }, [])
   const roundNum = Number(router.query.round.split('-')[1]);
   const joinCode = router.query.joinCode;
-
   const submitAnswers = async () => {
     try {
       if (Object.values(roundAnswers).length) {
