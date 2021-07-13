@@ -8,7 +8,6 @@ export default function RoundOverview({questions}) {
   const [totalScore, setTotalScore] = useState(null);
   const router = useRouter();
   const isFinalGameOverview = router?.query?.round === undefined
-  console.log({isFinalGameOverview})
   const roundNum = router.query.round ? Number(router.query.round.split('-')[1]) : null;
   const joinCode = router.query.joinCode;
   useEffect(() => {

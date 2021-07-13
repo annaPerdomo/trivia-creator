@@ -16,7 +16,6 @@ export default function PlayGame(props) {
   const [roundAnswers, setRoundAnswers] = useState({})
 
   useEffect(() => {
-    console.log('onMount', {props})
     if (session && triviaGame && !triviaId) {
       dispatch(setGame({
         hostId: Number(triviaGame.hostId), 
@@ -66,25 +65,25 @@ export default function PlayGame(props) {
               <div key={index}>
                 <div>
                   <label 
-                    htmlFor="question">{isGameHost ? question.content : `Question ${ index + 1}: `}
+                    htmlFor="question">{isGameHost ? question.content + ' ' : `Question ${ index + 1}: `}
                   </label>
-                  <input
-                    type="text"
-                    name="question"
-                    onChange={(e) => {
-                      const answer = {
-                        questionId: Number(question.id),
-                        // teamId, 
-                        // teamName, 
-                        teamId: 14, 
-                        teamName: 'The Coppolas', 
-                        content: e.target.value
-                      }
-                      const test = roundAnswers;
-                      test[Number(question.id)] = answer
-                      setRoundAnswers(test)
-                    }}
-                  />
+                  {isGameHost ? question.correctAnswer : (
+                    <input
+                      type="text"
+                      name="question"
+                      onChange={(e) => {
+                        const answer = {
+                          questionId: Number(question.id),
+                          teamId, 
+                          teamName, 
+                          content: e.target.value
+                        }
+                        const test = roundAnswers;
+                        test[Number(question.id)] = answer
+                        setRoundAnswers(test)
+                      }}
+                    />
+                  )}
                 </div>
               </div>
           )})}
@@ -106,7 +105,6 @@ export default function PlayGame(props) {
           </div>
         </div>
       )}
-      <button onClick={submitAnswers}>Submit</button>
     </div>
   );
 }
