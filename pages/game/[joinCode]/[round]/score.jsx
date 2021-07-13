@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Head from 'next/head';
 import { signIn } from 'next-auth/client'
-import ScoreAnswers from '../../../../src/components/AdminScore/ScoreAnswers';
+import ScoreAnswers from '../../../../src/components/PlayGame/Host/ScoreAnswers';
 import prisma from '../../../../lib/prisma'
 import {
   getQuestionsAndAnswersForCurrentRound, 
