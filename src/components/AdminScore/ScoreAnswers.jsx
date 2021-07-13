@@ -4,7 +4,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 
-export default function ScoreAnswers({ questions }) {
+export default function ScoreAnswers(props) {
+  const {questions} = props;
   const [triviaId, setTriviaId] = useState(null);
   useEffect(() => {
     if (questions && !triviaId) {

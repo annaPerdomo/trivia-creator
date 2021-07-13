@@ -1,52 +1,74 @@
 import * as React from 'react'
 import Head from 'next/head';
+import { signIn } from 'next-auth/client'
 import ScoreAnswers from '../../../../src/components/AdminScore/ScoreAnswers';
 import prisma from '../../../../lib/prisma'
+import {
+  getQuestionsAndAnswersForCurrentRound, 
+  getTriviaGameFromJoinCode,
+  getTriviaIdFromJoinCode, 
+  userSessionIfLoggedIn
+} from '../../../../lib/helperFunctions/Prisma/runOnServer'
 
 export async function getServerSideProps(context) {
-  const roundParamString = context.params.round;
-  const roundNum = Number(roundParamString.slice(roundParamString.length - 1));
-  const getQuestions = await prisma.question.findMany({
-    where: {
-      triviaId: 1,
-      roundNum
-    },
-    include: {
-      answers: true
-    }
-  });
-  const questions = getQuestions.map(question => {
+  const { joinCode, round } = context.params;
+  const session = await userSessionIfLoggedIn(context);
+  const triviaGame = await getTriviaGameFromJoinCode(joinCode, prisma);
+  const triviaGameId = triviaGame.id;
+  const roundNum = Number(round.slice(round.length - 1));
+  console.log(session);
+  if (Number(session?.user?.id) === Number(triviaGame.hostId)) {
+    const questions = await getQuestionsAndAnswersForCurrentRound(
+      triviaGameId,
+      roundNum,
+      prisma
+    );
     return {
-      ...question, 
-      submittedAt: question.submittedAt.toString()
-    }
-  })
-  return {
-    props: { questions },
+      props: { session, questions, triviaGame },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: `/game/${joinCode}/round-${roundNum}/overview`,
+        permanent: false,
+      },
+    };
   }
 }
 
-
-
-export default function AdminScorePage({questions}) {
+export default function HostScorePage(props) {
   const title =
     'Trivia Creator | Create trivia questions & answers and then play with a group | Trivia';
   const desc =
     'Trivia creator allows you to host trivia nights with your friends!';
   const keywords = 'trivia';
   const robots = 'index, follow';
-  console.log({questions});
-  return (
-    <React.Fragment>
-      <Head>
-        <title>{title}</title>
-        <meta content={desc} name="description" />
-        <meta content={keywords} name="keywords" />
-        <meta content={robots} name="robots" />
-      </Head>
 
-      <ScoreAnswers questions={questions} />
-    </React.Fragment>
-  );
+  const pageIsLoadedOnClient = typeof window !== 'undefined';
+  const userIsLoggedIn = props.session ? true : false;
+  
+  if (pageIsLoadedOnClient) {
+    if (userIsLoggedIn) {      
+      return (
+        <React.Fragment>
+          <Head>
+            <title>{title}</title>
+            <meta content={desc} name="description" />
+            <meta content={keywords} name="keywords" />
+            <meta content={robots} name="robots" />
+          </Head>
+    
+          <ScoreAnswers {...props} />
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <div>
+          <button onClick={() => signIn()}>Sign in</button>
+        </div>
+      );
+    }
+  }
+  return null;
 }
 
