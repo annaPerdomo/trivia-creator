@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Head from 'next/head'
 import { signIn } from 'next-auth/client'
-import RoundOverview from '../../../src/components/RoundOverview/RoundOverview'
+import RoundOverview from '../../../src/components/PlayGame/RoundOverview/RoundOverview'
 import prisma from '../../../lib/prisma'
 import {
   getAllQuestionsAndAnswers,
@@ -40,10 +40,7 @@ export default function GameOverviewPage(props) {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-          <div>
-            Game Overview Page
-          </div>
-          {/* <RoundOverview {...props} /> */}
+          <RoundOverview {...props} />
         </React.Fragment>
       );
     } else {

@@ -4,11 +4,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export default function RoundOverview({questions}) {
-  console.log({questions})
   const [roundScore, setRoundScore] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const router = useRouter();
-  const roundNum = Number(router.query.round.split('-')[1]);
+  const isFinalGameOverview = router?.query?.round === undefined
+  console.log({isFinalGameOverview})
+  const roundNum = router.query.round ? Number(router.query.round.split('-')[1]) : null;
   const joinCode = router.query.joinCode;
   useEffect(() => {
     if (questions && !roundScore) {
@@ -18,6 +19,7 @@ export default function RoundOverview({questions}) {
       calculateScores(currentRoundQuestions, setRoundScore);
     }
   }, [])
+
   const calculateScores = async (currentQuestions, setScore) => {
     const roundTeamScores = {};
     currentQuestions.forEach(question => {
@@ -32,7 +34,6 @@ export default function RoundOverview({questions}) {
         })
       }
     });
-    console.log({roundTeamScores})
     setScore(roundTeamScores);
   }
 
@@ -57,38 +58,48 @@ export default function RoundOverview({questions}) {
         })
       }
     })
-    console.log('allscoresinoneloop version of roundTeamScores', {roundTeamScores, allTeamScores})
   }
-
   return (
     <div>
-      <h3>Round {roundNum} Scores</h3>
-      <div>
-        {roundScore ?
-          Object.keys(roundScore).map((teamName, index) => {
-            const teamScore = roundScore[teamName];
-            return (
-              <div key={index} >{teamName}: {teamScore}{' points earned this round'}</div>
-            )
-          })
-        : null}
-      </div>
+      {isFinalGameOverview ? null : (
+        <div>
+          <h3>Round {roundNum} Scores</h3>
+          <div>
+            {roundScore
+              ? Object.keys(roundScore).map((teamName, index) => {
+                  const teamScore = roundScore[teamName];
+                  return (
+                    <div key={index}>
+                      {teamName}: {teamScore}
+                      {" points earned this round"}
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+        </div>
+      )}
       <h3>Total Scores</h3>
       <div>
-        {totalScore ?
-            Object.keys(totalScore).map((teamName, index) => {
+        {totalScore
+          ? Object.keys(totalScore).map((teamName, index) => {
               const teamScore = totalScore[teamName];
               return (
-                <div key={index}>{teamName}: {teamScore}{' points earned this game'}</div>
-              )
+                <div key={index}>
+                  {teamName}: {teamScore}
+                  {" points earned this game"}
+                </div>
+              );
             })
           : null}
       </div>
-      <div>
-        <Link href={`/game/${joinCode}/round-${roundNum + 1}/play`}>
-          <button>Go to Round {roundNum + 1}</button>
-        </Link>
-      </div>
+      {isFinalGameOverview ? null : (
+        <div>
+          <Link href={`/game/${joinCode}/round-${roundNum + 1}/play`}>
+            <button>Go to Round {roundNum + 1}</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
