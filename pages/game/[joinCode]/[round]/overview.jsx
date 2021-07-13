@@ -2,20 +2,19 @@ import * as React from 'react'
 // import type { GetServerSideProps, NextPage } from 'next'
 import { signIn } from 'next-auth/client'
 import Head from 'next/head'
-import RoundOverview from '../../../../src/components/RoundOverview/RoundOverview'
+import RoundOverview from '../../../../src/components/PlayGame/RoundOverview/RoundOverview'
 import prisma from '../../../../lib/prisma'
 import {
-  getQuestionsAndAnswersForCurrentRound,
+  getAllQuestionsAndAnswers,
   getTriviaIdFromJoinCode,
   userSessionIfLoggedIn
 } from '../../../../lib/helperFunctions/Prisma/runOnServer'
 
 export async function getServerSideProps(context) {
-  const {joinCode, round} = context.params;
+  const {joinCode} = context.params;
   const session = await userSessionIfLoggedIn(context)
   const triviaGameId = await getTriviaIdFromJoinCode(joinCode, prisma);
-  const roundNum = Number(round.slice(round.length - 1));
-  const questions = await getQuestionsAndAnswersForCurrentRound(triviaGameId, roundNum, prisma);
+  const questions = await getAllQuestionsAndAnswers(triviaGameId, prisma);
   return {
     props: { session, questions },
   }

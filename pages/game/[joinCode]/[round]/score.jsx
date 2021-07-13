@@ -16,8 +16,8 @@ export async function getServerSideProps(context) {
   const triviaGame = await getTriviaGameFromJoinCode(joinCode, prisma);
   const triviaGameId = triviaGame.id;
   const roundNum = Number(round.slice(round.length - 1));
-  console.log(session);
-  if (Number(session?.user?.id) === Number(triviaGame.hostId)) {
+  const isGameHost = Number(session?.user?.id) === Number(triviaGame.hostId)
+  if (isGameHost) {
     const questions = await getQuestionsAndAnswersForCurrentRound(
       triviaGameId,
       roundNum,
@@ -57,7 +57,6 @@ export default function HostScorePage(props) {
             <meta content={keywords} name="keywords" />
             <meta content={robots} name="robots" />
           </Head>
-    
           <ScoreAnswers {...props} />
         </React.Fragment>
       );

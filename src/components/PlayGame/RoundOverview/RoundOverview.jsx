@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export default function RoundOverview({questions}) {
-  //maybe display a loader until Daniel has everything scored 🤔
+  console.log({questions})
   const [roundScore, setRoundScore] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const router = useRouter();
   const roundNum = Number(router.query.round.split('-')[1]);
-
+  const joinCode = router.query.joinCode;
   useEffect(() => {
     if (questions && !roundScore) {
       const currentRoundQuestions = questions.filter(question => question.roundNum === roundNum);
@@ -32,15 +32,16 @@ export default function RoundOverview({questions}) {
         })
       }
     });
+    console.log({roundTeamScores})
     setScore(roundTeamScores);
   }
 
   const calculateAllScoresInOneLoop = async () => {
     const roundTeamScores = {};
     const allTeamScores = {};
-    questions.forEach((questionData,  index) => {
-      if (questionData.answsers) {
-        questionData.answers.forEach((answerData, index) => {
+    questions.forEach((question,  index) => {
+      if (question?.answsers?.length) {
+        question.answers.forEach((answerData, index) => {
           if (!roundTeamScores[answerData.teamName]) {
             roundTeamScores[answer.teamName] = {
               total: 0,
@@ -49,14 +50,14 @@ export default function RoundOverview({questions}) {
           }
           if (answer.isCorrect) {
             roundTeamScores[answer.teamName].total++
-            if (questionData.roundNum === roundNum) {
+            if (question.roundNum === roundNum) {
               roundTeamScores[answer.teamName].round++
             }
           }
         })
       }
     })
-    console.log('allscoresinoneloop version of roundTeamScores', {roundTeamScores})
+    console.log('allscoresinoneloop version of roundTeamScores', {roundTeamScores, allTeamScores})
   }
 
   return (
@@ -64,10 +65,10 @@ export default function RoundOverview({questions}) {
       <h3>Round {roundNum} Scores</h3>
       <div>
         {roundScore ?
-          Object.keys(roundScore).map(teamName => {
+          Object.keys(roundScore).map((teamName, index) => {
             const teamScore = roundScore[teamName];
             return (
-              <div>{teamName}: {teamScore}{' points earned this round'}</div>
+              <div key={index} >{teamName}: {teamScore}{' points earned this round'}</div>
             )
           })
         : null}
@@ -75,16 +76,16 @@ export default function RoundOverview({questions}) {
       <h3>Total Scores</h3>
       <div>
         {totalScore ?
-            Object.keys(totalScore).map(teamName => {
+            Object.keys(totalScore).map((teamName, index) => {
               const teamScore = totalScore[teamName];
               return (
-                <div>{teamName}: {teamScore}{' points earned this game'}</div>
+                <div key={index}>{teamName}: {teamScore}{' points earned this game'}</div>
               )
             })
           : null}
       </div>
       <div>
-        <Link href={`/game/1/round-${roundNum + 1}/play`}>
+        <Link href={`/game/${joinCode}/round-${roundNum + 1}/play`}>
           <button>Go to Round {roundNum + 1}</button>
         </Link>
       </div>

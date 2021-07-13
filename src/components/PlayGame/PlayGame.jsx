@@ -12,9 +12,11 @@ export default function PlayGame(props) {
   const isGameHost = useAppSelector(state => state.playGame.isGameHost)
   const triviaId = useAppSelector(state => state.playGame.triviaId)
   const teamId = useAppSelector(state => state.playGame.teamId)
+  const teamName = useAppSelector(state => state.playGame.teamName)
   const [roundAnswers, setRoundAnswers] = useState({})
 
   useEffect(() => {
+    console.log('onMount', {props})
     if (session && triviaGame && !triviaId) {
       dispatch(setGame({
         hostId: Number(triviaGame.hostId), 
@@ -34,7 +36,6 @@ export default function PlayGame(props) {
     try {
       if (Object.values(roundAnswers).length) {
         const newAnswers = Object.values(roundAnswers);
-        console.log({ newAnswers });
         const newAnswer = await fetch(
           '/api/create/answers',
           {
@@ -62,7 +63,7 @@ export default function PlayGame(props) {
         <ul>
           {questions.map((question, index) => {
             return (
-              <div>
+              <div key={index}>
                 <div>
                   <label 
                     htmlFor="question">{isGameHost ? question.content : `Question ${ index + 1}: `}
@@ -73,7 +74,10 @@ export default function PlayGame(props) {
                     onChange={(e) => {
                       const answer = {
                         questionId: Number(question.id),
-                        teamId, 
+                        // teamId, 
+                        // teamName, 
+                        teamId: 14, 
+                        teamName: 'The Coppolas', 
                         content: e.target.value
                       }
                       const test = roundAnswers;
@@ -102,7 +106,7 @@ export default function PlayGame(props) {
           </div>
         </div>
       )}
-      {/* <button onClick={submitAnswers}>Submit</button> */}
+      <button onClick={submitAnswers}>Submit</button>
     </div>
   );
 }
