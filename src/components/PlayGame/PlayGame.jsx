@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
@@ -9,12 +8,12 @@ import { grabUsersTeamAndId } from "../../../lib/helperFunctions/runOnClient";
 export default function PlayGame(props) {
   const {questions, session, triviaGame} = props;
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const isGameHost = useAppSelector(state => state.playGame.isGameHost)
   const triviaId = useAppSelector(state => state.playGame.triviaId)
   const teamId = useAppSelector(state => state.playGame.teamId)
-  const teamName = useAppSelector(state => state.playGame.teamName)
   const [roundAnswers, setRoundAnswers] = useState({})
-  console.log({roundAnswers})
+
   useEffect(() => {
     if (session && triviaGame && !triviaId) {
       dispatch(setGame({
@@ -29,24 +28,30 @@ export default function PlayGame(props) {
       }
     }
   }, [])
-  const router = useRouter();
-  const roundNum = router.query.round.split('-')[1];
+  const roundNum = Number(router.query.round.split('-')[1]);
+  const joinCode = router.query.joinCode;
+
   const submitAnswers = async () => {
     try {
-      const newAnswers = Object.values(roundAnswers);
-      console.log({ newAnswers });
-      // const newAnswer = await fetch(
-      //   '/api/create/answers',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Accept': 'application/json',
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(newAnswerData),
-      //   }
-      // );
-      // const newAnswerBody = await newAnswer.json();
+      if (Object.values(roundAnswers).length) {
+        const newAnswers = Object.values(roundAnswers);
+        console.log({ newAnswers });
+        const newAnswer = await fetch(
+          '/api/create/answers',
+          {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({answers: newAnswers}),
+          }
+        );
+        const newAnswerBody = await newAnswer.json();
+        router.push(`/game/${joinCode}/round-${roundNum}/overview`)
+      } else {
+        alert('please submit answers before continuing')
+      }
     } catch (err) {
       console.log(err);
     }
@@ -69,13 +74,11 @@ export default function PlayGame(props) {
                     onChange={(e) => {
                       const answer = {
                         questionId: Number(question.id),
-                        teamName, 
                         teamId, 
                         content: e.target.value
                       }
                       const test = roundAnswers;
                       test[Number(question.id)] = answer
-                      console.log({test})
                       setRoundAnswers(test)
                     }}
                   />
@@ -84,16 +87,14 @@ export default function PlayGame(props) {
           )})}
         </ul>
       </div>
-      <button onClick={submitAnswers}>Submit</button>
-      {/* <Link
-        href={
-          isGameHost
-            ? `/game/${triviaId}/round-${roundNum}/admin/score`
-            : `/game/${triviaId}/round-${roundNum}/overview`
-        }
-      >
+      {isGameHost? (
+        <Link href={`/game/${joinCode}/round-${roundNum}/score`}>        
+          <button>Score Round</button>
+        </Link>
+      ) : (
         <button onClick={submitAnswers}>Submit</button>
-      </Link> */}
+      )}
+      {/* <button onClick={submitAnswers}>Submit</button> */}
     </div>
   );
 }
