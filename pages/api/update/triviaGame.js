@@ -30,7 +30,6 @@ export default async function handle(req, res) {
         playedAt: new Date()
       }
     })
-    console.log({updatedTriviaGame})
     res.json(updatedTriviaGame)
   } catch (err) {
     if (err) console.log(err)

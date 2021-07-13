@@ -30,7 +30,6 @@ export default async function handle(req, res) {
         displayName
       }
     })
-    console.log({updateDisplayName});
     res.json(updateDisplayName);
   } catch (err) {
     if (err) console.log(err);
