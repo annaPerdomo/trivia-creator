@@ -91,7 +91,16 @@ export default function PlayGame(props) {
           <button>Score Round</button>
         </Link>
       ) : (
-        <button onClick={submitAnswers}>Submit</button>
+        <div>
+          <div>
+            <button onClick={submitAnswers}>Submit</button>
+          </div>
+          <div>
+            <Link href={`/game/${joinCode}/round-${roundNum}/overview`}>
+              <button>Proceed to Round {roundNum} Overview</button>
+            </Link>
+          </div>
+        </div>
       )}
       {/* <button onClick={submitAnswers}>Submit</button> */}
     </div>
