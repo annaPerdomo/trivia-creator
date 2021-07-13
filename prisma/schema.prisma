@@ -37,6 +37,7 @@ model Answer {
   questionId    Int
   team          Team        @relation(fields: [teamId], references: [id])
   teamId        Int
+  teamName      String?
   content       String?
   isCorrect     Boolean     @default(false)
   submittedAt   DateTime    @default(now())
