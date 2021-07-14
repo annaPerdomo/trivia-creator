@@ -112,11 +112,13 @@ to {
 
 .barContainer{
   display: flex;
+  background: #ffffff;
 }
 
 #bars {
   height: 100%;
   display: flex;
+  background: #C4C4C4;
 }
 
 .bar {
