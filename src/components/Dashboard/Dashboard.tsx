@@ -7,9 +7,10 @@ import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import { DashboardProps, DraftGames } from '../../../pages/dashboard';
+import { DashboardProps } from '../../../pages/dashboard';
 import PlayGameSection from './PlayGameSection'
 import CreateGameSection from './CreateGameSection'
+import DraftGames from './DraftGames'
 
 const {
   buttonContainer,
@@ -24,7 +25,7 @@ const {
 
 const Dashboard: React.FC <DashboardProps> = (props) => {
   const dispatch = useAppDispatch()
-  const {session} = props
+  const {draftGames, session} = props
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
     useState(false)
   const [displayName, setDisplayName] = useState('')
@@ -84,21 +85,8 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
               Sign out
             </button>
           </div>
-
-          {props ? (
-            <div>
-              <div>
-                <h3>Draft Games</h3>
-              </div>
-              <div>
-                {props.draftGames.map((draftGame) => (
-                  <Link href={`/create/${draftGame.joinCode}`}>
-                    <button>Game created {draftGame.createdAt}</button>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ) : null}
+          
+          {draftGames ? <DraftGames draftGames={draftGames}/> : null}
 
           <div className={buttonContainer}>
             <CreateGameSection />
