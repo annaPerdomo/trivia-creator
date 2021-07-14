@@ -8,6 +8,8 @@ import styles from "../../styles/Home.module.css";
 import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 import { DashboardProps, DraftGames } from '../../../pages/dashboard';
+import PlayGameSection from './PlayGameSection'
+import CreateGameSection from './CreateGameSection'
 
 const {
   buttonContainer,
@@ -21,17 +23,13 @@ const {
 } = styles;
 
 const Dashboard: React.FC <DashboardProps> = (props) => {
-  const dispatch = useAppDispatch();
-  const router = useRouter()
-  const {session} = props;
-  const [isJoiningGame, setIsJoiningGame] = useState(false);
-  const [joinGameCode, setJoinGameCode] = useState('');
+  const dispatch = useAppDispatch()
+  const {session} = props
   const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
-    useState(false);
-  const [displayName, setDisplayName] = useState('');
-  const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
-  const userId = useAppSelector((state) => state.user.userId);
-
+    useState(false)
+  const [displayName, setDisplayName] = useState('')
+  const userDisplayName = useAppSelector((state) => state.user.userDisplayName)
+  const userId = useAppSelector((state) => state.user.userId)
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
@@ -46,29 +44,6 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
     signOut();
     dispatch(logoutUser());
   };
-
-  const createGame = async () => {
-    try {
-      const createTiviaGame = await fetch(
-        'api/create/triviaGame',
-        {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ userId }),      
-        }
-      );
-      const newTriviaGame = await createTiviaGame.json();
-      if (newTriviaGame.joinCode) {
-        router.push(`create/${newTriviaGame.joinCode}`)
-      }
-    } catch (err) {
-      if (err) console.log(err);
-    }
-  }
-
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -78,7 +53,7 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
         <div>
           <div>
             <h4>
-              You look beautiful today{' '}
+              You look beautiful today{" "}
               {userDisplayName || session.user.name || session.user.email}
             </h4>
           </div>
@@ -116,11 +91,9 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
                 <h3>Draft Games</h3>
               </div>
               <div>
-                {props.draftGames.map(draftGame => (
+                {props.draftGames.map((draftGame) => (
                   <Link href={`/create/${draftGame.joinCode}`}>
-                    <button>
-                      Game created {draftGame.createdAt}
-                    </button>
+                    <button>Game created {draftGame.createdAt}</button>
                   </Link>
                 ))}
               </div>
@@ -128,33 +101,9 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
           ) : null}
 
           <div className={buttonContainer}>
-            <div className={buttonSection}>
-              <button
-                className={homePageButtons}
-                onClick={createGame}
-              >
-                Create A Game
-              </button>
-            </div>
+            <CreateGameSection />
             <div className={divider}></div>
-            <div className={buttonSection}>
-              {isJoiningGame ? (
-                <div>
-                  <input
-                    type="text"
-                    name="joinGameCode"
-                    value={joinGameCode}
-                    onChange={(e) => setJoinGameCode(e.target.value)}
-                  ></input>
-                </div>
-              ) : null}
-              <button
-                className={homePageButtons}
-                onClick={() => setIsJoiningGame(true)}
-              >
-                {isJoiningGame ? 'Enter Game Code' : 'Play A Game'}
-              </button>
-            </div>
+            <PlayGameSection />
           </div>
         </div>
       ) : null}
