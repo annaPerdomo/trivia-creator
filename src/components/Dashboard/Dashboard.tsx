@@ -13,12 +13,9 @@ import ChangeDisplayNameSection from './ChangeDisplayNameSection'
 
 const {
   buttonContainer,
-  buttonSection,
   container,
   divider,
-  homePageButtons,
   welcomeBanner,
-  signInButtonContainer,
   signOutButtonContainer
 } = styles;
 

@@ -2,6 +2,7 @@ import * as React from 'react'
 import Head from 'next/head'
 import { signIn } from 'next-auth/client'
 import RoundOverview from '../../../src/components/PlayGame/RoundOverview/RoundOverview'
+import WaitBetweenRounds from '../../../src/components/PlayGame/RoundOverview/WaitBetweenRounds'
 import prisma from '../../../lib/prisma'
 import {
   getAllQuestionsAndAnswers,
@@ -41,6 +42,7 @@ export default function GameOverviewPage(props) {
             <meta content={robots} name="robots" />
           </Head>
           <RoundOverview {...props} />
+          {/* <WaitBetweenRounds /> */}
         </React.Fragment>
       );
     } else {

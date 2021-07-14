@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/Create.module.css";
 import Questions from "./Questions";
+const {
+  bar,
+  barContainer,
+  selected,
+  triangle
+} = styles;
 
 export default function Bar(props) {
   return (
-    <div className={styles.barContainer}>
+    <div className={barContainer}>
       <div
-        className={
-          props.selected ? `${styles.bar} ${styles.selected}` : styles.bar
-        }
+        className={props.selected ? `${bar} ${selected}` : bar}
         onClick={props.onClick}
       >
         <div
-          className={
-            props.selected
-              ? `${styles.triangle} ${styles.selected}`
-              : styles.triangle
-          }
+          className={props.selected ? `${triangle} ${selected}` : triangle}
         ></div>
         <p>{props.roundNum}</p>
         <p>Round</p>

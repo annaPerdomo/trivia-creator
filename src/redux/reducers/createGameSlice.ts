@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface CreateGameState {
   triviaId: number | null,
+  joinCode: string | null,
   isAddQuestionModalOpen: boolean,
   modalType: string | null,
-  roundNum: number | null,
+  roundId: number | null,
   currentType: string | null,
   questionNum: number | null,
   questionId: number | null,
@@ -26,9 +27,10 @@ interface CreateGameState {
 
 const initialState: CreateGameState = {
   triviaId: null,
+  joinCode: null,
   isAddQuestionModalOpen: false,
   modalType: null,
-  roundNum: null,
+  roundId: null,
   currentType: null,
   questionNum: null,
   questionId: null,
@@ -39,7 +41,7 @@ const initialState: CreateGameState = {
 }
 
 interface OpenQuestionModalPayload {
-  roundNum: number, 
+  roundId: number, 
   questionNum: number,
   questionId: number,
   currentQuestion: string,
@@ -67,20 +69,55 @@ interface NewOrEditedQuestion {
   }
   newOrEdited: 'edited' | 'new'
 }
+interface NewTriviaGame {
 
-const createNewTriviaGame = async () => {
+}
+interface Round {
+  roundNum: number
+}
+
+interface NewTriviaGame {
+  userId: number,
+  rounds: Round[]
+}
+
+interface NewTriviaGamePayload {
+  createdAt: string, 
+  hostId: number, 
+  id: number, 
+  joinCode: string,
+  playedAt: string | null,
+}
+
+
+const createTriviaGame = async (triviaGame) => {
   try {
     const newTriviaGame = await fetch(
       '/api/create/triviaGame',
       {
         method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(triviaGame),
       }
     );
-    return await newTriviaGame.json();
+    return newTriviaGame.json();
   } catch (err) {
     if (err) console.log(err)
   }
 }
+
+export const createNewTriviaGame = createAsyncThunk('createGame/createTriviaGame', async (newTriviaGame: NewTriviaGame) => {
+  try {
+    return await createTriviaGame(newTriviaGame);
+  } catch (err) {
+    if (err) {
+      console.log(err)
+    }
+  }
+})
 
 const createNewQuestion = async (newQuestion) => {
   try {
@@ -128,18 +165,11 @@ const editQuestion = async (question) => {
 
 export const createTriviaQuestion = createAsyncThunk('createGame/createTriviaQuestion', async (question: NewQuestion) => {
   try {
-    const isBrandNewTriviaGame = !question.triviaId
-    const isNewQuestion = !question.questionId
     const isEditingQuestion = question.questionId ? true : false
-    if (isBrandNewTriviaGame) {
-      const newTriviaGame = await createNewTriviaGame()
-      const newTriviaId = newTriviaGame.id
-      const newQuestionAndTriviaId = { triviaId: newTriviaId, ...question }
-      return createNewQuestion(newQuestionAndTriviaId)
-    } else if (isNewQuestion) {
+    if (isEditingQuestion) {
+      return editQuestion(question)
+    } else {
       return createNewQuestion(question)
-    } else if (isEditingQuestion) {
-      return editQuestion(question);
     }
   } catch (err) {
     if (err) console.log(err)
@@ -155,7 +185,7 @@ export const createGameSlice = createSlice({
     },
     openQuestionModal: (state, action: PayloadAction<OpenQuestionModalPayload>) => {
       const {
-        roundNum, 
+        roundId, 
         questionNum,
         questionId,
         currentQuestion,
@@ -163,7 +193,7 @@ export const createGameSlice = createSlice({
         currentType,
       } = action.payload;
       state.isAddQuestionModalOpen = true
-      state.roundNum = roundNum
+      state.roundId = roundId
       state.questionNum = questionNum
       state.questionId = questionId
       state.currentQuestion = currentQuestion
@@ -191,6 +221,11 @@ export const createGameSlice = createSlice({
           state.editedQuestion = question;
         }
         state.isAddQuestionModalOpen = false;
+      }), 
+      builder.addCase(createNewTriviaGame.fulfilled, (state, action: PayloadAction<NewTriviaGamePayload>) => {
+
+        const {joinCode} = action.payload;
+        state.joinCode = joinCode
       })
   }
 })

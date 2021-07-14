@@ -1,57 +1,45 @@
 // @ts-check
 import * as React from 'react';
 const {useEffect, useState} = React;
-import { signOut } from "next-auth/client";
 import { useRouter } from 'next/router'
-import Link from 'next/link';
 import styles from "../../styles/Home.module.css";
-import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
+import { createNewTriviaGame } from '../../redux/reducers/createGameSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import { DashboardProps, DraftGames } from '../../../pages/dashboard';
-import PlayGameSection from './PlayGameSection'
-
 const {
-  buttonContainer,
   buttonSection,
-  container,
-  divider,
   homePageButtons,
-  welcomeBanner,
-  signInButtonContainer,
-  signOutButtonContainer
 } = styles;
 
 const CreateGameSection = () => {
-  const dispatch = useAppDispatch()
-  const router = useRouter()
-  const [isCreatingAGame, setIsCreatingAGame] = useState(false)
-  const [gameRoundAmount, setGameRoundAmount] = useState(0)
-  const userId = useAppSelector((state) => state.user.userId)
-  //change that to a createGameSlice dispatch
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [isCreatingAGame, setIsCreatingAGame] = useState(false);
+  const [gameRoundAmount, setGameRoundAmount] = useState(0);
+  const userId = useAppSelector((state) => Number(state.user.userId));
+  const joinCode = useAppSelector((state) => state.createGame.joinCode);
   const createGame = async () => {
     try {
-      //dispatch()
-      
-      // const createTiviaGame = await fetch(
-      //   'api/create/triviaGame',
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Accept': 'application/json',
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify({ userId }),      
-      //   }
-      // );
-      // const newTriviaGame = await createTiviaGame.json();
-      // if (newTriviaGame.joinCode) {
-      //   router.push(`create/${newTriviaGame.joinCode}`)
-      // }
+      const rounds = [];
+      for (let i = 0; i < gameRoundAmount; i++) {
+        rounds.push({
+          roundNum: i + 1,
+        });
+      }
+      dispatch(
+        createNewTriviaGame({
+          userId,
+          rounds,
+        })
+      );
     } catch (err) {
       if (err) console.log(err);
     }
-  }
-
+  };
+  useEffect(() => {
+    if (joinCode) {
+      router.push(`/create/${joinCode}`);
+    }
+  }, [joinCode]);
   return (
     <div className={buttonSection}>
       {isCreatingAGame ? (
@@ -80,6 +68,6 @@ const CreateGameSection = () => {
       )}
     </div>
   );
-}
+};
 
 export default CreateGameSection;

@@ -13,20 +13,39 @@ model TriviaGame {
   createdAt    DateTime    @default(now()) @map(name: "created_at")
   playedAt     DateTime?   @map(name: "played_at")
   host         User        @relation(fields: [hostId], references: [id])
-  hostId       Int         
-  roundAmount  Int?
-  questions    Question[]
+  hostId       Int 
+  rounds       Round[]            
+  // roundAmount  Int?
+  // questions    Question[]
   teams        Team[]
 }
 
-model Question {
-  id             Int        @default(autoincrement()) @id
-  trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
-  triviaId       Int
+model Round { 
+  id             Int         @default(autoincrement()) @id
   roundNum       Int
+  hasBeenScored  Boolean?    @default(false)
+  trivia         TriviaGame  @relation(fields: [triviaId], references: [id])
+  triviaId       Int 
+  questions      Question[]
+  bonusPoints    Json?
+  // {
+  //   bonusPoints: [
+  //    {teamId: 14, teamName: 'The Good The Bad The Ugly'},
+  //    {teamId: 1, teamName: 'The Coppolas'},
+  //  ]
+  // }
+}
+
+model Question {
+  id             Int         @default(autoincrement()) @id
+  // trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
+  // triviaId       Int
+  round          Round       @relation(fields: [roundId], references: [id])
+  roundId        Int
+  // roundNum       Int
   questionNum    Int?
   content        String?
-  type           String?
+  type           String?    
   correctAnswer  String?
   answers        Answer[]
 }

@@ -29,7 +29,6 @@ export type CreateProps = {
   correctAnswer?: string,
 }
 
-//can grab game code from route params
 export default function CreateGame({ questions, currentGameId }) {
   const dispatch = useAppDispatch()
   const router = useRouter()
