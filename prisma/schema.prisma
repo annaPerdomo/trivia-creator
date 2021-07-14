@@ -15,8 +15,6 @@ model TriviaGame {
   host         User        @relation(fields: [hostId], references: [id])
   hostId       Int 
   rounds       Round[]            
-  // roundAmount  Int?
-  // questions    Question[]
   teams        Team[]
 }
 
@@ -38,11 +36,8 @@ model Round {
 
 model Question {
   id             Int         @default(autoincrement()) @id
-  // trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
-  // triviaId       Int
   round          Round       @relation(fields: [roundId], references: [id])
   roundId        Int
-  // roundNum       Int
   questionNum    Int?
   content        String?
   type           String?    

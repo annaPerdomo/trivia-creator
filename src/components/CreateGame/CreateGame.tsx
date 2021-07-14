@@ -8,7 +8,7 @@ import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
 import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers/createGameSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import { current } from "@reduxjs/toolkit";
+
 const {
   create,
   title,
@@ -19,7 +19,7 @@ const {
   logo
 } = styles;
 
-export type CreateProps = {
+export type Question = {
   id: number,
   triviaId?: number, 
   roundNum?: number, 
@@ -29,7 +29,8 @@ export type CreateProps = {
   correctAnswer?: string,
 }
 
-export default function CreateGame({ questions, currentGameId }) {
+export default function CreateGame(props) {
+  const {currentGameId, roundsAndQuestions, session} = props
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [currentRound, setCurrentRound] = useState(null);
@@ -39,13 +40,25 @@ export default function CreateGame({ questions, currentGameId }) {
   const triviaId = useAppSelector(state => state.createGame.triviaId);
   const triviaJoinCode = router.query.joinCode;
   useEffect(() => {
-    if (questions?.length && !triviaQuestions) {
-      setTriviaQuestions(questions);
+    if (roundsAndQuestions?.length && !triviaQuestions) {
+      const questions = roundsAndQuestions.reduce((questionArr, round) => {
+        console.log(round)
+        return [...questionArr, ...round.questions]
+      }, [])
+      console.log('checking reduce lmao', {questions})
     } else {
       setTriviaQuestions([])
     }
-    dispatch(setTriviaId(currentGameId))
-  }, []);
+  }, [])
+  // useEffect(() => {
+  //   if (questions?.length && !triviaQuestions) {
+  //     setTriviaQuestions(questions);
+  //   } else {
+  //     setTriviaQuestions([])
+  //   }
+  //   dispatch(setTriviaId(currentGameId))
+  // }, []);
+  console.log({roundsAndQuestions, triviaQuestions})
   useEffect(() => {
     if (newQuestion) {
       displayNewTriviaQuestion(newQuestion);
@@ -94,18 +107,20 @@ export default function CreateGame({ questions, currentGameId }) {
       </div>
       <div id={bigRec}>
         <div id={bars}>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <Bar
-              key={i}
-              currentRound={currentRound}
-              questions={triviaQuestions}
-              onClick={() => {
-                barClick(i);
-              }}
-              selected={currentRound === i ? true : false}
-              roundNum={i}
-            />
-          ))}
+          {roundsAndQuestions?.length > 0 ? (
+            roundsAndQuestions.map((round, i) => (
+              <Bar
+                key={i}
+                currentRound={currentRound}
+                questions={round.questions}
+                onClick={() => {
+                  barClick(i);
+                }}
+                selected={currentRound === i ? true : false}
+                roundNum={i + 1}
+              />
+            ))
+          ) : null}
         </div>
         <p id={logo}>it's a trivia&trade;</p>
       </div>

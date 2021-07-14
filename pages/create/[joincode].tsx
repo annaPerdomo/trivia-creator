@@ -4,8 +4,9 @@ import type { GetServerSideProps, NextPage } from 'next'
 import { useSession, getSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Head from "next/head";
-import CreateGame, {CreateProps} from '../../src/components/CreateGame/CreateGame';
+import CreateGame, {Question} from '../../src/components/CreateGame/CreateGame';
 import prisma from '../../lib/prisma';
+import type { Session } from "next-auth";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -24,29 +25,51 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   })
   const currentGameId = triviaGame.id;
-  const questions = await prisma.question.findMany({
+  console.log('😙fetched game from db fam', {triviaGame})
+  const questions = []
+  const roundsAndQuestions = await prisma.round.findMany({
     where: {
-      triviaId: currentGameId,
-    }
+      triviaId: Number(currentGameId),
+    },
+    include: {
+      // roundId: true,
+      // roundNum: true,
+      questions: true,
+    },
   });
+  console.log('😙fetched created rounds~', {roundsAndQuestions})
+  // const questions = await prisma.question.findMany({
+  //   where: {
+  //     triviaId: currentGameId,
+  //   }
+  // });
   return {
     props: { 
-      questions, 
-      session,
       currentGameId,
       joinCode,
+      roundsAndQuestions, 
+      session,
     },
   }
 }
+interface RoundsAndQuestions {
+  id: number, 
+  roundNum: number
+  hasBeenScored: Boolean,
+  triviaId: number, 
+  bonusPoints: string | null, 
+  questions: Question[]
+}
 
 type Props = {
-  questions: CreateProps[],
   currentGameId: string,
-  joinCode: string | []
+  joinCode: string,
+  roundsAndQuestions: RoundsAndQuestions[],
+  session: Session
 }
 
 const CreatePage: NextPage<Props> = (props) => {
-  const [session, loading] = useSession()
+  const {session} = props
   const router = useRouter()
   const title =
     "Trivia Creator | Create trivia questions & answers and then play with a group | Trivia";
