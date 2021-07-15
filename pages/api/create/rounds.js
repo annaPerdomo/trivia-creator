@@ -26,20 +26,6 @@ export default async function handle(req, res) {
       triviaId,
     } = req.body;
 
-    //const questions = [
-    //   {
-    //     questionNum: 1,
-    //     content, 
-    //     type, 
-    //     correctAnswer
-    //   },
-    //   {
-    //     questionNum: 2,
-    //     content, 
-    //     type, 
-    //     correctAnswer
-    //   },
-    // ]
     const newQuestion = await prisma.round.create({
       data: {
         trivia: { connect: { id: triviaId } },
@@ -48,16 +34,6 @@ export default async function handle(req, res) {
         }
       },
     });
-
-    const newQuestion = await prisma.question.create({
-      data: {
-        questionNum,
-        content,
-        type,
-        correctAnswer,
-        round: {connect: {id: roundId}},
-      }
-    })
     res.json(newQuestion);
   } catch (err) {
     if (err) console.log(err);

@@ -16,6 +16,7 @@ model TriviaGame {
   hostId       Int 
   rounds       Round[]            
   teams        Team[]
+  lastUpdated  DateTime?
 }
 
 model Round { 
