@@ -8,7 +8,7 @@ const {
   triangle
 } = styles;
 
-export default function Bar(props) {
+export default function RoundHeaders(props) {
   return (
     <div className={barContainer}>
       <div
@@ -24,7 +24,7 @@ export default function Bar(props) {
       {props.selected ? (
         <Questions
           questionNumberList={[1, 2, 3, 4, 5]}
-          currentRound={props.currentRound}
+          currentRound={props.openRoundNumber}
           questions={props.questions}
         />
       ) : null}
