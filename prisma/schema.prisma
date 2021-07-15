@@ -43,6 +43,14 @@ model Question {
   type           String?    
   correctAnswer  String?
   answers        Answer[]
+  tags           Tag[]        
+}
+
+model Tag {
+  id             Int         @default(autoincrement()) @id
+  tagName        String
+  question       Question    @relation(fields: [questionId], references: [id])
+  questionId     Int
 }
 
 model Answer {
