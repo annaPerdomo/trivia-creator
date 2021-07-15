@@ -48,6 +48,16 @@ export default async function handle(req, res) {
         }
       },
     });
+
+    const newQuestion = await prisma.question.create({
+      data: {
+        questionNum,
+        content,
+        type,
+        correctAnswer,
+        round: {connect: {id: roundId}},
+      }
+    })
     res.json(newQuestion);
   } catch (err) {
     if (err) console.log(err);
