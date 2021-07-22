@@ -29,6 +29,7 @@ export type Question = {
   correctAnswer?: string,
 }
 
+//handle row deletion
 export default function CreateGame(props) {
   const {currentGameId, roundsAndQuestions, session} = props
   const dispatch = useAppDispatch()
