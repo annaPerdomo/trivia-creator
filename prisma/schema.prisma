@@ -17,6 +17,7 @@ model TriviaGame {
   rounds       Round[]            
   teams        Team[]
   lastUpdated  DateTime?
+  title        String?
 }
 
 model Round { 
