@@ -105,7 +105,6 @@ export default function CreateGame(props) {
     setTriviaQuestions(triviaQuestionsCopy);
   };
   return (
-   // <div>
     <div id={create}>
       <div id={title}>
         <p>Create</p>
@@ -153,16 +152,9 @@ export default function CreateGame(props) {
                 className={
                   openRoundNumber === numberOfRounds + 1 ? `${triangle} ${selected}` : triangle
                 }
-              >
+              ></div>
               <p>Create Round</p>
             </div>
-            {/* {props.selected ? (
-              <Questions
-                questionNumberList={[1, 2, 3, 4, 5]}
-                currentRound={props.openRoundNumber}
-                questions={props.questions}
-              />
-            ) : null} */}
           </div>
 
         </div>
@@ -173,7 +165,6 @@ export default function CreateGame(props) {
       <Modal selector="#modal">
         <AddQuestionForm />
       </Modal>
-    </div>
     </div>
   );
 }
