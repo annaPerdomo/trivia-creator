@@ -16,7 +16,7 @@ model TriviaGame {
   hostId       Int 
   rounds       Round[]            
   teams        Team[]
-  lastUpdated  DateTime?
+  lastUpdated  DateTime?   @default(now())
   title        String?
 }
 

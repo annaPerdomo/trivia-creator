@@ -10,13 +10,17 @@ import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 
 const {
-  create,
-  title,
-  start,
-  upload,
-  bigRec,
+  bar,
   bars,
-  logo
+  barContainer,
+  bigRec,
+  create,
+  logo,
+  selected,
+  start,
+  title,
+  triangle,
+  upload,
 } = styles;
 
 export type Question = {
@@ -34,7 +38,9 @@ export default function CreateGame(props) {
   const {currentGameId, roundsAndQuestions, session} = props
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const [oepnRoundNumber, setOpenRoundNumber] = useState(null);
+  const [numberOfRounds, setNumberOfRounds] = useState(0);
+  const [rounds, setRounds] = useState([]);
+  const [openRoundNumber, setOpenRoundNumber] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useAppSelector(state => state.createGame.newQuestion);
   const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
@@ -46,6 +52,9 @@ export default function CreateGame(props) {
         console.log(round)
         return [...questionArr, ...round.questions]
       }, [])
+      setTriviaQuestions(questions);
+      setNumberOfRounds(roundsAndQuestions.length);
+      setRounds(roundsAndQuestions);
       console.log('checking reduce lmao', {questions})
     } else {
       setTriviaQuestions([])
@@ -70,7 +79,7 @@ export default function CreateGame(props) {
   }, [newQuestion, editedQuestion]);
 
   const openOrCloseRound = (i) => {
-    if (oepnRoundNumber === i) {
+    if (openRoundNumber === i) {
       setOpenRoundNumber(null);
     } else {
       setOpenRoundNumber(i);
@@ -96,6 +105,7 @@ export default function CreateGame(props) {
     setTriviaQuestions(triviaQuestionsCopy);
   };
   return (
+   // <div>
     <div id={create}>
       <div id={title}>
         <p>Create</p>
@@ -110,24 +120,60 @@ export default function CreateGame(props) {
       </div>
       <div id={bigRec}>
         <div id={bars}>
-          {roundsAndQuestions?.length > 0 ? (
-            roundsAndQuestions.map((round, i) => (
-              <RoundHeaders
-                key={round.id}
-                oepnRoundNumber={oepnRoundNumber}
-                questions={round.questions}
-                onClick={() => openOrCloseRound(i)}
-                selected={oepnRoundNumber === i ? true : false}
-                roundNum={i + 1}
+          {rounds?.length > 0
+            ? rounds.map((round, i) => (
+                <RoundHeaders
+                  key={round.id}
+                  openRoundNumber={openRoundNumber}
+                  questions={round.questions}
+                  onClick={() => openOrCloseRound(i)}
+                  selected={openRoundNumber === i ? true : false}
+                  roundNum={i + 1}
+                />
+              ))
+            : null}
+          
+          <div className={barContainer}>
+            <div
+              className={openRoundNumber === numberOfRounds + 1  ? `${bar} ${selected}` : bar}
+              onClick={() => {
+                const roundsCopy = rounds.slice();
+                roundsCopy.push({
+                    id: rounds[rounds.length - 1].id++,
+                    roundNum: numberOfRounds + 1,
+                    hasBeenScored: false, 
+                    triviaId: currentGameId,
+                    questions: [],
+                })
+                setRounds(roundsCopy);
+                setNumberOfRounds(numberOfRounds + 1);
+              }}
+            >
+              <div
+                className={
+                  openRoundNumber === numberOfRounds + 1 ? `${triangle} ${selected}` : triangle
+                }
+              >
+              <p>Create Round</p>
+            </div>
+            {/* {props.selected ? (
+              <Questions
+                questionNumberList={[1, 2, 3, 4, 5]}
+                currentRound={props.openRoundNumber}
+                questions={props.questions}
               />
-            ))
-          ) : null}
+            ) : null} */}
+          </div>
+
         </div>
+      </div>
+      <div>
         <p id={logo}>it's a trivia&trade;</p>
       </div>
       <Modal selector="#modal">
         <AddQuestionForm />
       </Modal>
+    </div>
     </div>
   );
 }
