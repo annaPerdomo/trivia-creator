@@ -183,6 +183,9 @@ export const createGameSlice = createSlice({
     setTriviaId: (state, action: PayloadAction<number>) => {
       state.triviaId = action.payload;
     },
+    setJoinCode: (state, action: PayloadAction<string>) => {
+      state.joinCode = action.payload;
+    },
     openQuestionModal: (state, action: PayloadAction<OpenQuestionModalPayload>) => {
       const {
         roundId, 
@@ -230,4 +233,4 @@ export const createGameSlice = createSlice({
   }
 })
 
-export const {setTriviaId, openQuestionModal, closeQuestionModal, clearTriviaQuestionsFromState} = createGameSlice.actions;
+export const {setTriviaId, setJoinCode, openQuestionModal, closeQuestionModal, clearTriviaQuestionsFromState} = createGameSlice.actions;

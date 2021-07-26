@@ -6,7 +6,7 @@ import styles from "../../styles/Create.module.css";
 import RoundHeaders from "./RoundHeaders";
 import Modal from '../Modal/Modal';
 import AddQuestionForm from './AddQuestionForm';
-import { clearTriviaQuestionsFromState, setTriviaId } from '../../redux/reducers/createGameSlice';
+import { clearTriviaQuestionsFromState, setJoinCode, setTriviaId } from '../../redux/reducers/createGameSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 
 const {
@@ -55,20 +55,13 @@ export default function CreateGame(props) {
       setTriviaQuestions(questions);
       setNumberOfRounds(roundsAndQuestions.length);
       setRounds(roundsAndQuestions);
-      console.log('checking reduce lmao', {questions})
+      dispatch(setTriviaId(currentGameId))
+      dispatch(setJoinCode(joinCode))
     } else {
       setTriviaQuestions([])
     }
   }, [])
-  // useEffect(() => {
-  //   if (questions?.length && !triviaQuestions) {
-  //     setTriviaQuestions(questions);
-  //   } else {
-  //     setTriviaQuestions([])
-  //   }
-  //   dispatch(setTriviaId(currentGameId))
-  // }, []);
-  console.log({roundsAndQuestions, triviaQuestions})
+
   useEffect(() => {
     if (newQuestion) {
       displayNewTriviaQuestion(newQuestion);
