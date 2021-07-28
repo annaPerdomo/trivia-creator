@@ -1,50 +1,52 @@
 // @ts-check
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/Create.module.css";
-import Question from './Question';
+import Question from "./Question";
 import QuestionsContainer from "./QuestionsContainer";
-import {openQuestionModal, closeQuestionModal} from '../../redux/reducers/createGameSlice';
-import { useAppSelector, useAppDispatch } from "../../../lib/hooks"
-import { QuestionType } from '../../redux/reducers/createGameSlice';
+import {
+  openQuestionModal,
+  closeQuestionModal,
+} from "../../redux/reducers/createGameSlice";
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
+import { QuestionType } from "../../redux/reducers/createGameSlice";
 const {
   bar,
   barContainer,
   selected,
-  triangle, 
-  question, 
+  triangle,
+  question,
   questions,
-  questionDetails
+  questionDetails,
 } = styles;
 
 interface Props {
   key: number;
   openRoundNumber: number;
-  questions:
+  questions: QuestionType[];
+  onClick: () => void;
+  selected: boolean;
+  roundNum: number;
 }
-
 
 //add question logic. Right now question number list is a static array
 //
-export default function RoundHeaders(props) {
+export default function RoundHeaders<Props>(props) {
   const dispatch = useAppDispatch();
   const isAddQuestionModalOpen = useAppSelector(
     (state) => state.createGame.isAddQuestionModalOpen
   );
-  console.log(props.questions)
+  console.log(props.questions);
   const noQuestions = props.questions?.length > 0;
-  const addRound = () => {
-    
-  }
   const openModal = (question: QuestionType) => {
     if (!isAddQuestionModalOpen) {
       dispatch(
         openQuestionModal({
-          roundNum: question?[0]?.roundNum,
-          questionNum: question?[0].questionNum,
-          questionId: question?.[0]?.id,
-          currentQuestion: question?.[0]?.content,
-          currentAnswer: question?.[0]?.correctAnswer,
-          currentType: question?.[0]?.type,
+          roundNum: props.roundNum,
+          questionNum: props.questions.length + 1,
+          // questionId: question?.[0]?.id,
+          // currentQuestion: question?.[0]?.content,
+          // currentAnswer: question?.[0]?.correctAnswer,
+          // currentType: question?.[0]?.type,
         })
       );
     }
@@ -65,7 +67,7 @@ export default function RoundHeaders(props) {
         <>
           <div id={questions}>
             {props.questions.map((question, index) => (
-              <Question question={question} questionNum={index}/>
+              <Question question={question} questionNum={index} />
             ))}
             {/* 
               iterate through questions duh
