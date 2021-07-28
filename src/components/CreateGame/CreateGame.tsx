@@ -28,7 +28,7 @@ export type Question = {
   triviaId?: number, 
   roundNum?: number, 
   questionNum?: number, 
-  content?: string, 
+  content?: string,
   type?: string,
   correctAnswer?: string,
 }
@@ -38,14 +38,15 @@ export default function CreateGame(props) {
   const {currentGameId, roundsAndQuestions, session} = props
   const dispatch = useAppDispatch()
   const router = useRouter()
-  const [numberOfRounds, setNumberOfRounds] = useState(0);
   const [rounds, setRounds] = useState([]);
   const [openRoundNumber, setOpenRoundNumber] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
   const newQuestion = useAppSelector(state => state.createGame.newQuestion);
   const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
   const triviaId = useAppSelector(state => state.createGame.triviaId);
-  const joinCode = router.query.joinCode;
+  const joinCode = router.query.joinCode as string;
+  const numberOfRounds = rounds?.length ? rounds.length : 0;
+  console.log({joinCode})
   useEffect(() => {
     if (roundsAndQuestions?.length && !triviaQuestions) {
       const questions = roundsAndQuestions.reduce((questionArr, round) => {
@@ -53,7 +54,6 @@ export default function CreateGame(props) {
         return [...questionArr, ...round.questions]
       }, [])
       setTriviaQuestions(questions);
-      setNumberOfRounds(roundsAndQuestions.length);
       setRounds(roundsAndQuestions);
       dispatch(setTriviaId(currentGameId))
       dispatch(setJoinCode(joinCode))
@@ -84,6 +84,7 @@ export default function CreateGame(props) {
     triviaQuestionsCopy.push(newQuestionData);
     setTriviaQuestions(triviaQuestionsCopy);
   };
+
   const displayEditedTriviaQuestion = (editedQuestion) => {
     const {id, type, content, correctAnswer} = editedQuestion;
     const triviaQuestionsCopy = triviaQuestions.slice();
@@ -97,6 +98,19 @@ export default function CreateGame(props) {
     })
     setTriviaQuestions(triviaQuestionsCopy);
   };
+
+  const createNewRound = () => {
+    const roundsCopy = rounds.slice();
+    roundsCopy.push({
+        id: rounds[rounds.length - 1].id++,
+        roundNum: numberOfRounds + 1,
+        hasBeenScored: false, 
+        triviaId: currentGameId,
+        questions: [],
+    })
+    setRounds(roundsCopy);
+  }
+
   return (
     <div id={create}>
       <div id={title}>
@@ -128,18 +142,7 @@ export default function CreateGame(props) {
           <div className={barContainer}>
             <div
               className={openRoundNumber === numberOfRounds + 1  ? `${bar} ${selected}` : bar}
-              onClick={() => {
-                const roundsCopy = rounds.slice();
-                roundsCopy.push({
-                    id: rounds[rounds.length - 1].id++,
-                    roundNum: numberOfRounds + 1,
-                    hasBeenScored: false, 
-                    triviaId: currentGameId,
-                    questions: [],
-                })
-                setRounds(roundsCopy);
-                setNumberOfRounds(numberOfRounds + 1);
-              }}
+              onClick={createNewRound}
             >
               <div
                 className={

@@ -12,7 +12,7 @@ const {
 
 export default function Question({
   questionNum,
-  currentQuestion,
+  question,
   currentRound,
 }) {
   const dispatch = useAppDispatch();
@@ -25,10 +25,10 @@ export default function Question({
         openQuestionModal({
           roundNum: currentRound,
           questionNum,
-          questionId: currentQuestion?.[0]?.id,
-          currentQuestion: currentQuestion?.[0]?.content,
-          currentAnswer: currentQuestion?.[0]?.correctAnswer,
-          currentType: currentQuestion?.[0]?.type,
+          questionId: question?.id,
+          question: question?.content,
+          currentAnswer: question?.correctAnswer,
+          currentType: question?.type,
         })
       );
     }
@@ -36,10 +36,10 @@ export default function Question({
   return (
     <div className={question} onClick={openModal}>
       {questionNum}.{' '}
-      {currentQuestion?.[0]?.content ? currentQuestion?.[0]?.content : 'N/A'}
+      {question?.[0]?.content ? question?.[0]?.content : 'N/A'}
       <div className={questionDetails}>{`[${
-        currentQuestion?.[0]?.correctAnswer
-          ? currentQuestion?.[0].correctAnswer
+        question?.[0]?.correctAnswer
+          ? question?.[0].correctAnswer
           : 'No correct answer yet'
       }]`}</div>
     </div>
