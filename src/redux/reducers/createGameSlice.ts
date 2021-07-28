@@ -49,14 +49,15 @@ interface OpenQuestionModalPayload {
   currentType?: string,
 }
 
-interface NewQuestion {
+export interface QuestionType {
   content: string,
   correctAnswer: string,
   questionId?: number,
   questionNum: number,
   roundNum: number,
   triviaId?: number,
-  type?: string
+  type?: string,
+  tags?: string[],
 }
 
 interface NewOrEditedQuestion {
@@ -119,7 +120,7 @@ export const createNewTriviaGame = createAsyncThunk('createGame/createTriviaGame
   }
 })
 
-const createNewQuestion = async (newQuestion) => {
+const createNewQuestion = async (newQuestion: QuestionType) => {
   try {
     const postNewQuestion = await fetch(
       '/api/create/questions',
@@ -163,7 +164,7 @@ const editQuestion = async (question) => {
   }
 }
 
-export const createTriviaQuestion = createAsyncThunk('createGame/createTriviaQuestion', async (question: NewQuestion) => {
+export const createTriviaQuestion = createAsyncThunk('createGame/createTriviaQuestion', async (question: QuestionType) => {
   try {
     const isEditingQuestion = question.questionId ? true : false
     if (isEditingQuestion) {
