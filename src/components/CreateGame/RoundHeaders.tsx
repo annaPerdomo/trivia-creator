@@ -39,9 +39,13 @@ export default function RoundHeaders<Props>(props) {
   const noQuestions = props.questions?.length > 0;
   const openModal = (question: QuestionType) => {
     if (!isAddQuestionModalOpen) {
+      console.log({
+        roundId: props.key,
+        questionNum: props.questions.length + 1,
+      });
       dispatch(
         openQuestionModal({
-          roundNum: props.roundNum,
+          roundId: props.key,
           questionNum: props.questions.length + 1,
           // questionId: question?.[0]?.id,
           // currentQuestion: question?.[0]?.content,
