@@ -18,14 +18,17 @@ const {
 
 interface Props {
   key: number;
+  onClick: () => void;
   openRoundNumber: number;
-  questions:
+  questions: any;
+  selected: boolean;
+  roundNum: number;
 }
 
 
 //add question logic. Right now question number list is a static array
 //
-export default function RoundHeaders(props) {
+export default function RoundHeaders(props: Props) {
   const dispatch = useAppDispatch();
   const isAddQuestionModalOpen = useAppSelector(
     (state) => state.createGame.isAddQuestionModalOpen
@@ -39,8 +42,8 @@ export default function RoundHeaders(props) {
     if (!isAddQuestionModalOpen) {
       dispatch(
         openQuestionModal({
-          roundNum: question?[0]?.roundNum,
-          questionNum: question?[0].questionNum,
+          roundNum: question?.[0]?.roundNum,
+          questionNum: question?.[0]?.questionNum,
           questionId: question?.[0]?.id,
           currentQuestion: question?.[0]?.content,
           currentAnswer: question?.[0]?.correctAnswer,
