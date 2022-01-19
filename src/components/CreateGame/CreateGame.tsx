@@ -1,13 +1,17 @@
 // @ts-check
 import React, { useState, useEffect } from "react";
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from "next/link";
+import { useRouter } from "next/router";
 import styles from "../../styles/Create.module.css";
 import RoundHeaders from "./RoundHeaders";
-import Modal from '../Modal/Modal';
-import AddQuestionForm from './AddQuestionForm';
-import { clearTriviaQuestionsFromState, setJoinCode, setTriviaId } from '../../redux/reducers/createGameSlice';
-import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import Modal from "../Modal/Modal";
+import AddQuestionForm from "./AddQuestionForm";
+import {
+  clearTriviaQuestionsFromState,
+  setJoinCode,
+  setTriviaId,
+} from "../../redux/reducers/createGameSlice";
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
 
 const {
   bar,
@@ -23,44 +27,36 @@ const {
   upload,
 } = styles;
 
-export type Question = {
-  id: number,
-  triviaId?: number, 
-  roundNum?: number, 
-  questionNum?: number, 
-  content?: string,
-  type?: string,
-  correctAnswer?: string,
-}
-
 //handle row deletion
 export default function CreateGame(props) {
-  const {currentGameId, roundsAndQuestions, session} = props
-  const dispatch = useAppDispatch()
-  const router = useRouter()
+  const { currentGameId, roundsAndQuestions, session } = props;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [rounds, setRounds] = useState([]);
   const [openRoundNumber, setOpenRoundNumber] = useState(null);
   const [triviaQuestions, setTriviaQuestions] = useState(null);
-  const newQuestion = useAppSelector(state => state.createGame.newQuestion);
-  const editedQuestion = useAppSelector(state => state.createGame.editedQuestion);
-  const triviaId = useAppSelector(state => state.createGame.triviaId);
+  const newQuestion = useAppSelector((state) => state.createGame.newQuestion);
+  const editedQuestion = useAppSelector(
+    (state) => state.createGame.editedQuestion
+  );
+  const triviaId = useAppSelector((state) => state.createGame.triviaId);
   const joinCode = router.query.joinCode as string;
   const numberOfRounds = rounds?.length ? rounds.length : 0;
-  console.log({joinCode})
+  console.log({ joinCode });
   useEffect(() => {
     if (roundsAndQuestions?.length && !triviaQuestions) {
       const questions = roundsAndQuestions.reduce((questionArr, round) => {
-        console.log(round)
-        return [...questionArr, ...round.questions]
-      }, [])
+        console.log(round);
+        return [...questionArr, ...round.questions];
+      }, []);
       setTriviaQuestions(questions);
       setRounds(roundsAndQuestions);
-      dispatch(setTriviaId(currentGameId))
-      dispatch(setJoinCode(joinCode))
+      dispatch(setTriviaId(currentGameId));
+      dispatch(setJoinCode(joinCode));
     } else {
-      setTriviaQuestions([])
+      setTriviaQuestions([]);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (newQuestion) {
@@ -77,7 +73,7 @@ export default function CreateGame(props) {
     } else {
       setOpenRoundNumber(i);
     }
-  }
+  };
 
   const displayNewTriviaQuestion = (newQuestionData) => {
     const triviaQuestionsCopy = triviaQuestions.slice();
@@ -86,30 +82,30 @@ export default function CreateGame(props) {
   };
 
   const displayEditedTriviaQuestion = (editedQuestion) => {
-    const {id, type, content, correctAnswer} = editedQuestion;
+    const { id, type, content, correctAnswer } = editedQuestion;
     const triviaQuestionsCopy = triviaQuestions.slice();
-    triviaQuestionsCopy.map(triviaQuestion => {
+    triviaQuestionsCopy.map((triviaQuestion) => {
       if (triviaQuestion.id === id) {
         triviaQuestion.type = type;
-        triviaQuestion.content = content,
-        triviaQuestion.correctAnswer = correctAnswer;
+        (triviaQuestion.content = content),
+          (triviaQuestion.correctAnswer = correctAnswer);
       }
       return triviaQuestion;
-    })
+    });
     setTriviaQuestions(triviaQuestionsCopy);
   };
 
   const createNewRound = () => {
     const roundsCopy = rounds.slice();
     roundsCopy.push({
-        id: rounds[rounds.length - 1].id++,
-        roundNum: numberOfRounds + 1,
-        hasBeenScored: false, 
-        triviaId: currentGameId,
-        questions: [],
-    })
+      id: rounds[rounds.length - 1].id++,
+      roundNum: numberOfRounds + 1,
+      hasBeenScored: false,
+      triviaId: currentGameId,
+      questions: [],
+    });
     setRounds(roundsCopy);
-  }
+  };
 
   return (
     <div id={create}>
@@ -138,21 +134,26 @@ export default function CreateGame(props) {
                 />
               ))
             : null}
-          
+
           <div className={barContainer}>
             <div
-              className={openRoundNumber === numberOfRounds + 1  ? `${bar} ${selected}` : bar}
+              className={
+                openRoundNumber === numberOfRounds + 1
+                  ? `${bar} ${selected}`
+                  : bar
+              }
               onClick={createNewRound}
             >
               <div
                 className={
-                  openRoundNumber === numberOfRounds + 1 ? `${triangle} ${selected}` : triangle
+                  openRoundNumber === numberOfRounds + 1
+                    ? `${triangle} ${selected}`
+                    : triangle
                 }
               ></div>
               <p>Create Round</p>
             </div>
           </div>
-
         </div>
       </div>
       <div>
