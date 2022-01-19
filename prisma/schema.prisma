@@ -9,7 +9,7 @@ generator client {
 
 model TriviaGame {
   createdAt    DateTime    @default(now()) @map(name: "created_at")
-  description  String
+  description  String?
   host         User        @relation(fields: [hostId], references: [id])
   hostId       Int
   id           Int         @default(autoincrement()) @id
@@ -45,8 +45,8 @@ model Question {
   questionNum    Int?
   round          Round       @relation(fields: [roundId], references: [id])
   roundId        Int
-  type           String?    
   tags           Tag[]        
+  type           String?    
 }
 
 model Tag {
@@ -64,7 +64,6 @@ model Answer {
   questionId    Int
   team          Team        @relation(fields: [teamId], references: [id])
   teamId        Int
-  teamName      String?
   submittedAt   DateTime    @default(now())
 }
 
