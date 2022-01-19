@@ -8,76 +8,74 @@ generator client {
 }
 
 model TriviaGame {
+  createdAt    DateTime    @default(now()) @map(name: "created_at")
+  host         User        @relation(fields: [hostId], references: [id])
+  hostId       Int
   id           Int         @default(autoincrement()) @id
   joinCode     String?      @unique
-  createdAt    DateTime    @default(now()) @map(name: "created_at")
   playedAt     DateTime?   @map(name: "played_at")
-  host         User        @relation(fields: [hostId], references: [id])
-  hostId       Int         
-  roundAmount  Int?
   questions    Question[]
+  roundAmount  Int?
 }
 
 model Question {
+  answers        Answer[]
+  content        String?
+  correctAnswer  String?
   id             Int        @default(autoincrement()) @id
+  questionNum    Int?
+  roundNum       Int
   trivia         TriviaGame   @relation(fields: [triviaId], references: [id])
   triviaId       Int
-  roundNum       Int
-  questionNum    Int?
-  content        String?
   type           String?
-  correctAnswer  String?
-  answers        Answer[]
 }
 
 model Answer {
+  content       String?
   id            Int         @default(autoincrement()) @id
+  isCorrect     Boolean     @default(false)
   question      Question    @relation(fields: [questionId], references: [id])
   questionId    Int
-  //for connecting answers to teams? Not sure if I need it to grab team usernames?
-  // team          Team        @relation(fields: [teamId], references: [id])
-  // teamId        Int
-  teamName      String
-  content       String?
-  isCorrect     Boolean     @default(false)
   submittedAt   DateTime    @default(now())
+  team          Team        @relation(fields: [teamId], references: [id])
+  teamId        Int
 }
 
 model Team {
+  answers       Answer[]
   id            Int         @default(autoincrement()) @id
-  teamName      String?
   members       User[]
-  // answers       Answer[]
+  teamName      String?
   @@map(name: "teams")
 }
 
 
 model User {
-  id            Int         @default(autoincrement()) @id
-  name          String?
+  createdAt     DateTime?    @default(now()) @map(name: "created_at")
   displayName   String?
   email         String?     @unique
   emailVerified DateTime? @map(name: "email_verified")
-  image         String?
-  createdAt     DateTime?    @default(now()) @map(name: "created_at")
-  updatedAt     DateTime?   @updatedAt @map(name: "updated_at")
-  teams         Team[]
   hostedTriviaGames   TriviaGame[]
+  id            Int         @default(autoincrement()) @id
+  image         String?
+  name          String?
+  teams         Team[]
+  updatedAt     DateTime?   @updatedAt @map(name: "updated_at")
   @@map(name: "users")
 }
 
 model Account {
-  id                 Int       @default(autoincrement()) @id
-  compoundId         String    @unique @map(name: "compound_id")
-  userId             Int       @map(name: "user_id")
-  providerType       String    @map(name: "provider_type")
-  providerId         String    @map(name: "provider_id")
-  providerAccountId  String    @map(name: "provider_account_id")
-  refreshToken       String?   @map(name: "refresh_token")
   accessToken        String?   @map(name: "access_token")
   accessTokenExpires DateTime? @map(name: "access_token_expires")
+  compoundId         String    @unique @map(name: "compound_id")
   createdAt          DateTime  @default(now()) @map(name: "created_at")
+  id                 Int       @default(autoincrement()) @id
+  providerAccountId  String    @map(name: "provider_account_id")
+  providerId         String    @map(name: "provider_id")
+  providerType       String    @map(name: "provider_type")
+  refreshToken       String?   @map(name: "refresh_token")
   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  userId             Int       @map(name: "user_id")
 
   @@index([providerAccountId], name: "providerAccountId")
   @@index([providerId], name: "providerId")
@@ -87,23 +85,23 @@ model Account {
 }
 
 model Session {
-  id           Int      @default(autoincrement()) @id
-  userId       Int      @map(name: "user_id")
-  expires      DateTime
-  sessionToken String   @unique @map(name: "session_token")
   accessToken  String   @unique @map(name: "access_token")
   createdAt    DateTime @default(now()) @map(name: "created_at")
+  expires      DateTime
+  id           Int      @default(autoincrement()) @id
+  sessionToken String   @unique @map(name: "session_token")
   updatedAt    DateTime @default(now()) @map(name: "updated_at")
+  userId       Int      @map(name: "user_id")
 
   @@map(name: "sessions")
 }
 
 model VerificationRequest {
+  createdAt  DateTime  @default(now()) @map(name: "created_at")
+  expires    DateTime
   id         Int      @default(autoincrement()) @id
   identifier String
   token      String   @unique
-  expires    DateTime
-  createdAt  DateTime  @default(now()) @map(name: "created_at")
   updatedAt  DateTime  @default(now()) @map(name: "updated_at")
 
   @@map(name: "verification_requests")
