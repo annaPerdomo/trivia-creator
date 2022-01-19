@@ -21,20 +21,21 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const userId = req.body;
-    const userDisplayName = await prisma.user.findUnique({
-      where: {
-        id: Number(userId)
+    const {
+      questions,
+      triviaId,
+    } = req.body;
+
+    const newQuestion = await prisma.round.create({
+      data: {
+        trivia: { connect: { id: triviaId } },
+        questions: {
+          create: questions
+        }
       },
-      select: {
-        displayName: true
-      }
     });
-    res.send(userDisplayName);
+    res.json(newQuestion);
   } catch (err) {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    }
+    if (err) console.log(err);
   }
 }

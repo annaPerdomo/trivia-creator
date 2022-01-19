@@ -13,7 +13,6 @@ const GOOGLE_AUTHORIZATION_URL =
   });
 
   async function refreshAccessToken(token) {
-    console.log("top of refreshAccessToken")
     try {
       const url =
         "https://oauth2.googleapis.com/token?" +
@@ -41,7 +40,7 @@ const GOOGLE_AUTHORIZATION_URL =
         ...token,
         accessToken: refreshedTokens.access_token,
         accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, 
       };
     } catch (error) {
       console.log(error);

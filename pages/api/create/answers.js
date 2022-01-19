@@ -24,10 +24,10 @@ export default async function handle(req, res) {
     const {
       answers
     } = req.body;
-    const newAnswer = await prisma.answer.createMany({
+    const newAnswers = await prisma.answer.createMany({
       data: answers
     });
-    res.json(newAnswer);
+    res.json(newAnswers);
   } catch (err) {
     if (err) console.log(err);
   }

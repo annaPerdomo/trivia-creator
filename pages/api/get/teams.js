@@ -20,20 +20,25 @@ function runMiddleware(req, res, fn) {
 
 export default async function handle(req, res) {
   try {
+    const { triviaId } = req.body
     await runMiddleware(req, res, cors);
-    const userId = req.body;
-    const userDisplayName = await prisma.user.findUnique({
+    const currentGamesTeams = await prisma.triviaGame.findUnique({
       where: {
-        id: Number(userId)
+        id: Number(triviaId)
       },
-      select: {
-        displayName: true
+      include: {
+        teams: {
+          select: {
+            members: true,
+            teamName: true,
+            id: true,
+          }
+        },
       }
-    });
-    res.send(userDisplayName);
+    })
+    res.send(currentGamesTeams)
   } catch (err) {
     if (err) {
-      console.log(err)
       res.send(err)
     }
   }

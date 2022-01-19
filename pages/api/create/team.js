@@ -1,10 +1,10 @@
-import prisma from '../../../lib/prisma.ts';
-import Cors from 'cors';
+import prisma from '../../../lib/prisma'
+import Cors from 'cors'
 
 const cors = Cors({
   origin: '*',
   methods: ['GET', 'POST', 'HEAD'],
-})
+});
 
 function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {
@@ -12,7 +12,6 @@ function runMiddleware(req, res, fn) {
       if (result instanceof Error) {
         return reject(result)
       }
-
       return resolve(result)
     })
   })
@@ -21,19 +20,21 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const userId = req.body;
-    const userDisplayName = await prisma.user.findUnique({
-      where: {
-        id: Number(userId)
-      },
-      select: {
-        displayName: true
+    const { teamName, triviaId, userId } = req.body
+    const newTeam = await prisma.team.create({
+      data: {
+        teamName,
+        members: {
+          connect: [{id: userId}]
+        },
+        triviaGames: {
+          connect: [{id: triviaId}]
+        }
       }
-    });
-    res.send(userDisplayName);
+    })
+    res.json(newTeam)
   } catch (err) {
     if (err) {
-      console.log(err)
       res.send(err)
     }
   }

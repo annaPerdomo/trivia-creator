@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import {closeQuestionModal, createTriviaQuestion} from '../../redux/reducers/createGameSlice';
-import styles from '../../styles/Create.module.css';
-const {backdrop, modal} = styles;
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
+import {
+  closeQuestionModal,
+  createTriviaQuestion,
+} from "../../redux/reducers/createGameSlice";
+import styles from "../../styles/Create.module.css";
+const { backdrop, modal } = styles;
 
 function AddQuestionForm() {
   const dispatch = useAppDispatch();
   const currentQuestion = useAppSelector(
     (state) => state.createGame.currentQuestion
   );
-  const currentAnswer = useAppSelector((state) => state.createGame.currentAnswer);
+  const currentAnswer = useAppSelector(
+    (state) => state.createGame.currentAnswer
+  );
   const currentType = useAppSelector((state) => state.createGame.currentType);
   const [question, setQuestion] = useState(
-    currentQuestion ? currentQuestion : ''
+    currentQuestion ? currentQuestion : ""
   );
-  const [answer, setAnswer] = useState(currentAnswer ? currentAnswer : '');
-  const [type, setType] = useState(currentType ? currentType : '');
+  const [answer, setAnswer] = useState(currentAnswer ? currentAnswer : "");
+  const [type, setType] = useState(currentType ? currentType : "");
   const roundNum = useAppSelector((state) => state.createGame.roundNum);
   const questionNum = useAppSelector((state) => state.createGame.questionNum);
   const triviaId = useAppSelector((state) => state.createGame.triviaId);
@@ -30,21 +35,29 @@ function AddQuestionForm() {
       questionNum,
       roundNum,
       triviaId,
-      type: type || 'text',
+      type: type || "text",
     };
-    dispatch(createTriviaQuestion(newQuestionData));
+    console.log({ newQuestionData });
+    //dispatch(createTriviaQuestion(newQuestionData));
   };
   const closeModal = () => {
     dispatch(closeQuestionModal());
   };
+  const questionInput = useRef(null);
+  useEffect(() => {
+    questionInput.current.focus();
+  }, []);
   return (
     <div className={backdrop}>
       <div className={modal}>
-        <h5>Round {roundNum} Question {questionNum}</h5>
+        <h5>
+          Round {roundNum} Question {questionNum}
+        </h5>
         <form>
           <div>
             <label htmlFor="question">Question: </label>
             <input
+              ref={questionInput}
               type="text"
               name="question"
               value={question}
@@ -90,4 +103,3 @@ function AddQuestionForm() {
 }
 
 export default AddQuestionForm;
-

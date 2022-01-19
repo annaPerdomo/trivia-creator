@@ -4,7 +4,7 @@ import Question from "./Question";
 
 const {} = styles;
 
-export default function Questions(props) {
+export default function QuestionsContainer(props) {
   const { currentRound, questions, questionNumberList } = props;
   const currentRoundQuestions = questions.filter(
     (questionData) => questionData.roundNum === currentRound

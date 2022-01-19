@@ -1,56 +1,38 @@
 // @ts-check
 import * as React from 'react';
-const {useEffect, useState} = React;
-import { signOut, useSession } from "next-auth/client";
-import { io } from "socket.io-client";
-import Link from 'next/link';
+const {useEffect} = React;
+import { signOut } from "next-auth/client";
 import styles from "../../styles/Home.module.css";
-import {logoutUser, fetchUserDisplayName, updateUserDisplayName} from '../../redux/reducers/userSlice';
+import {logoutUser, fetchUserDisplayName} from '../../redux/reducers/userSlice';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
-import {useChat} from './testHook';
+import { DashboardProps } from '../../../pages/dashboard';
+import PlayGameSection from './PlayGameSection'
+import CreateGameSection from './CreateGameSection'
+import DraftGames from './DraftGames'
+import ChangeDisplayNameSection from './ChangeDisplayNameSection'
+
 const {
   buttonContainer,
-  buttonSection,
   container,
   divider,
-  homePageButtons,
   welcomeBanner,
-  signInButtonContainer,
   signOutButtonContainer
 } = styles;
 
-const Dashboard: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const [session, loading] = useSession();
-  const [isJoiningGame, setIsJoiningGame] = useState<boolean>(false);
-  const [joinGameCode, setJoinGameCode] = useState<string>('');
-  const [userIsChangingDisplayName, setUserIsChangingDisplayName] =
-    useState<boolean>(false);
-  const [displayName, setDisplayName] = useState('');
-  const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
-  const userId = useAppSelector((state) => state.user.userId);
-
-  const {roomMembers, sendMessage, joinRoom} = useChat();
-
+const Dashboard: React.FC <DashboardProps> = (props) => {
+  const dispatch = useAppDispatch()
+  const {draftGames, session} = props
+  const userDisplayName = useAppSelector((state) => state.user.userDisplayName)
+  const userId = useAppSelector((state) => state.user.userId)
   useEffect(() => {
     if (session && !userId) {
       dispatch(fetchUserDisplayName(session));
     }
   }, []);
-  const submitNewDisplayName = () => {
-    dispatch(updateUserDisplayName({displayName, userId}));
-    setDisplayName(null);
-    setUserIsChangingDisplayName(false);
-  };
   const initiateSignOut = () => {
     signOut();
     dispatch(logoutUser());
   };
-
-  const connectToSocket = () => {
-    joinRoom(userDisplayName)
-  }
-
   return (
     <div className={container}>
       <div className={welcomeBanner}>
@@ -60,68 +42,24 @@ const Dashboard: React.FC = () => {
         <div>
           <div>
             <h4>
-              You look beautiful today{' '}
+              You look beautiful today{" "}
               {userDisplayName || session.user.name || session.user.email}
             </h4>
           </div>
-          <div>
-            <button
-              type="button"
-              onClick={() => setUserIsChangingDisplayName(true)}
-            >
-              Change display name
-            </button>
-          </div>
-          {userIsChangingDisplayName ? (
-            <div>
-              <label htmlFor="newDisplayName">New Display Name: </label>
-              <input
-                type="text"
-                name="displayName"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-              ></input>
-              <button type="button" onClick={submitNewDisplayName}>
-                Submit new display name
-              </button>
-            </div>
-          ) : null}
+          <ChangeDisplayNameSection />
+
           <div className={signOutButtonContainer}>
             <button type="button" onClick={initiateSignOut}>
               Sign out
             </button>
           </div>
+          
+          {draftGames ? <DraftGames draftGames={draftGames}/> : null}
 
           <div className={buttonContainer}>
-            <div className={buttonSection}>
-              <Link href="/create">
-              <button
-                className={homePageButtons}
-                // onClick={connectToSocket}
-              >
-                Create A Game
-              </button>
-              </Link>
-            </div>
+            <CreateGameSection />
             <div className={divider}></div>
-            <div className={buttonSection}>
-              {isJoiningGame ? (
-                <div>
-                  <input
-                    type="text"
-                    name="joinGameCode"
-                    value={joinGameCode}
-                    onChange={(e) => setJoinGameCode(e.target.value)}
-                  ></input>
-                </div>
-              ) : null}
-              <button
-                className={homePageButtons}
-                onClick={() => setIsJoiningGame(true)}
-              >
-                {isJoiningGame ? 'Enter Game Code' : 'Play A Game'}
-              </button>
-            </div>
+            <PlayGameSection />
           </div>
         </div>
       ) : null}

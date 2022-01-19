@@ -51,3 +51,15 @@ export const useChat = (username) => {
   return { roomMembers, joinRoom, sendMessage };
 
 }
+
+
+//code in other component:
+// import {useChat} from './testHook';
+
+// const functionComponent = () => {
+//   const {roomMembers, sendMessage, joinRoom} = useChat();
+
+//   return (
+//     <div onClick={joinRoom}></div>
+//   )
+// }

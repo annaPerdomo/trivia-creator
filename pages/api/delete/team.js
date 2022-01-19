@@ -21,20 +21,14 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const userId = req.body;
-    const userDisplayName = await prisma.user.findUnique({
+    const { teamId } = req.body
+    const deleteTeam = await prisma.team.delete({
       where: {
-        id: Number(userId)
-      },
-      select: {
-        displayName: true
+        id: teamId
       }
-    });
-    res.send(userDisplayName);
+    })
+    res.json(deleteTeam)
   } catch (err) {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    }
+    if (err) console.log(err)
   }
 }

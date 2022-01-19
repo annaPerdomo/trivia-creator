@@ -9,7 +9,7 @@
     "test": "jest",
     "start": "next start",
     "start-app": "next build && next start",
-    "update-db-schema": "npx prisma db push",
+    "update-db-schema": "npx prisma db push && npx prisma generate",
     "show-db": "npx prisma studio",
     "play-game": "./ngrok http 3000"
   },
@@ -26,7 +26,6 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "safe-json-stringify": "^1.2.0",
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {

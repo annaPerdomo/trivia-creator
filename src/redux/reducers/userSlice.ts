@@ -1,22 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import type { Session } from "next-auth";
 
 interface UserState {
-  userId: string | null,
-  userDisplayName: string | null
+  userId: string | null;
+  userDisplayName: string | null;
 }
 
 const initialState: UserState = {
   userId: null,
   userDisplayName: null
-}
-
-interface NextAuthSession {
-  user?: {
-    email?: string,
-    id?: string, 
-    image?: string,
-    name?: string
-  }
 }
 
 interface UserIdAndDisplayName {
@@ -25,7 +17,7 @@ interface UserIdAndDisplayName {
 }
 
 export const fetchUserDisplayName = createAsyncThunk('user/setUserToState',
-  async (userData: NextAuthSession) => {
+  async (userData: Session) => {
     try {
       const { user } = userData;
       const getUserDisplayName = await fetch('/api/get/userDisplayName', {

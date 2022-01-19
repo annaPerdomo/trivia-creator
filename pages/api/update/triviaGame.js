@@ -21,20 +21,17 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const userId = req.body;
-    const userDisplayName = await prisma.user.findUnique({
+    const { triviaId } = req.body
+    const updatedTriviaGame = await prisma.triviaGame.update({
       where: {
-        id: Number(userId)
+        id: triviaId
       },
-      select: {
-        displayName: true
+      data: {
+        playedAt: new Date()
       }
-    });
-    res.send(userDisplayName);
+    })
+    res.json(updatedTriviaGame)
   } catch (err) {
-    if (err) {
-      console.log(err)
-      res.send(err)
-    }
+    if (err) console.log(err)
   }
 }

@@ -21,17 +21,31 @@ function runMiddleware(req, res, fn) {
 export default async function handle(req, res) {
   try {
     await runMiddleware(req, res, cors);
-    const {displayName, userId} = req.body;
-    const updateDisplayName = await prisma.user.update({
+    const { newTeamId, originalTeamId, userId } = req.body
+    if (originalTeamId) {
+      const updateOldTeam = await prisma.team.update({
+        where: {
+          id: originalTeamId
+        },
+        data: {
+          members: {
+            disconnect: [{id: userId}]
+          }
+        }
+      })
+    }
+    const updateNewTeam = await prisma.team.update({
       where: {
-        id: userId
-      },
+        id: newTeamId
+      }, 
       data: {
-        displayName
+        members: {
+          connect: [{id: userId}]
+        }
       }
     })
-    res.json(updateDisplayName);
+    res.json(updateNewTeam)
   } catch (err) {
-    if (err) console.log(err);
+    if (err) console.log(err)
   }
 }

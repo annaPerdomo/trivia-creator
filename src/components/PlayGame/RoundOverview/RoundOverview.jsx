@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export default function RoundOverview({questions}) {
-  //maybe display a loader until Daniel has everything scored 🤔
   const [roundScore, setRoundScore] = useState(null);
   const [totalScore, setTotalScore] = useState(null);
   const router = useRouter();
-  const roundNum = Number(router.query.round.split('-')[1]);
-
+  const isFinalGameOverview = router?.query?.round === undefined
+  const roundNum = router.query.round ? Number(router.query.round.split('-')[1]) : null;
+  const joinCode = router.query.joinCode;
   useEffect(() => {
     if (questions && !roundScore) {
       const currentRoundQuestions = questions.filter(question => question.roundNum === roundNum);
@@ -18,6 +18,7 @@ export default function RoundOverview({questions}) {
       calculateScores(currentRoundQuestions, setRoundScore);
     }
   }, [])
+
   const calculateScores = async (currentQuestions, setScore) => {
     const roundTeamScores = {};
     currentQuestions.forEach(question => {
@@ -38,9 +39,9 @@ export default function RoundOverview({questions}) {
   const calculateAllScoresInOneLoop = async () => {
     const roundTeamScores = {};
     const allTeamScores = {};
-    questions.forEach((questionData,  index) => {
-      if (questionData.answsers) {
-        questionData.answers.forEach((answerData, index) => {
+    questions.forEach((question,  index) => {
+      if (question?.answsers?.length) {
+        question.answers.forEach((answerData, index) => {
           if (!roundTeamScores[answerData.teamName]) {
             roundTeamScores[answer.teamName] = {
               total: 0,
@@ -49,45 +50,55 @@ export default function RoundOverview({questions}) {
           }
           if (answer.isCorrect) {
             roundTeamScores[answer.teamName].total++
-            if (questionData.roundNum === roundNum) {
+            if (question.roundNum === roundNum) {
               roundTeamScores[answer.teamName].round++
             }
           }
         })
       }
     })
-    console.log('allscoresinoneloop version of roundTeamScores', {roundTeamScores})
   }
-
   return (
     <div>
-      <h3>Round {roundNum} Scores</h3>
-      <div>
-        {roundScore ?
-          Object.keys(roundScore).map(teamName => {
-            const teamScore = roundScore[teamName];
-            return (
-              <div>{teamName}: {teamScore}{' points earned this round'}</div>
-            )
-          })
-        : null}
-      </div>
+      {isFinalGameOverview ? null : (
+        <div>
+          <h3>Round {roundNum} Scores</h3>
+          <div>
+            {roundScore
+              ? Object.keys(roundScore).map((teamName, index) => {
+                  const teamScore = roundScore[teamName];
+                  return (
+                    <div key={index}>
+                      {teamName}: {teamScore}
+                      {" points earned this round"}
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+        </div>
+      )}
       <h3>Total Scores</h3>
       <div>
-        {totalScore ?
-            Object.keys(totalScore).map(teamName => {
+        {totalScore
+          ? Object.keys(totalScore).map((teamName, index) => {
               const teamScore = totalScore[teamName];
               return (
-                <div>{teamName}: {teamScore}{' points earned this game'}</div>
-              )
+                <div key={index}>
+                  {teamName}: {teamScore}
+                  {" points earned this game"}
+                </div>
+              );
             })
           : null}
       </div>
-      <div>
-        <Link href={`/game/1/round-${roundNum + 1}/play`}>
-          <button>Go to Round {roundNum + 1}</button>
-        </Link>
-      </div>
+      {isFinalGameOverview ? null : (
+        <div>
+          <Link href={`/game/${joinCode}/round-${roundNum + 1}/play`}>
+            <button>Go to Round {roundNum + 1}</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
