@@ -1,34 +1,39 @@
 // @ts-check
-import * as React from 'react';
+import * as React from "react";
 import { signOut } from "next-auth/client";
 
-import { DashboardProps } from '../../../pages/dashboard';
-import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import { DashboardProps } from "../../../pages/dashboard";
+import { useAppSelector, useAppDispatch } from "../../../lib/hooks";
 
-import { logoutUser, fetchUserDisplayName } from '../../redux/reducers/userSlice';
+import {
+  logoutUser,
+  fetchUserDisplayName,
+} from "../../redux/reducers/userSlice";
 import styles from "../../styles/Home.module.css";
 
-import ChangeDisplayNameSection from './ChangeDisplayNameSection';
-import CreateGameSection from './CreateGameSection';
-import DraftGames from './DraftGames';
-import PlayGameSection from './PlayGameSection';
+import ChangeDisplayNameSection from "./ChangeDisplayNameSection";
+import CreateGameSection from "./CreateGameSection";
+import DraftGames from "./DraftGames";
+import PlayGameSection from "./PlayGameSection";
 
 const {
   container,
-  dashboardActionsContainer, 
+  createGameContainer,
+  dashboardActionsContainer,
   dashboardContainer,
   dashboardContent,
   divider,
   greetingContainer,
   headerContainer,
+  playGameContainer,
   signOutButtonContainer,
   welcomeBanner,
 } = styles;
 
-const Dashboard: React.FC <DashboardProps> = (props) => {
+const Dashboard: React.FC<DashboardProps> = (props) => {
   const dispatch = useAppDispatch();
 
-  const {draftGames, session} = props;
+  const { draftGames, session } = props;
 
   const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
@@ -78,18 +83,19 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
             {draftGames && <DraftGames draftGames={draftGames} />}
 
             <div className={dashboardActionsContainer}>
-              <CreateGameSection />
+              <div className={createGameContainer}>
+                <CreateGameSection />
+              </div>
 
-              <div className={divider} />
-
-              <PlayGameSection />
+              <div className={playGameContainer}>
+                <PlayGameSection />
+              </div>
             </div>
-
           </div>
         </>
       )}
     </div>
   );
-}
+};
 
 export default Dashboard;

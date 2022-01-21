@@ -9,11 +9,17 @@
   margin: 50px;
 }
 
+.createGameContainer {
+
+}
+
+.playGameContainer {
+
+}
+
 .dashboardActionsContainer {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
-  height: 95vh;
+  width: 70%;
 }
 
 .dashboardContainer {
@@ -25,7 +31,9 @@
 }
 
 .dashboardContent {
+  display: flex;
   height: 70vh;
+  justify-content: space-between;
 }
 
 .divider {
@@ -49,7 +57,6 @@
   justify-content: center;
   text-align: center;
 }
-
 
 .homePageButtons {
   border: none;

@@ -1,15 +1,17 @@
 // @ts-check
 import * as React from 'react';
-const {useState} = React;
 import Link from 'next/link';
+
 import styles from "../../styles/Home.module.css";
+
 const { buttonSection, homePageButtons } = styles;
 
 const PlayGameSection = () => {
-  const [isJoiningGame, setIsJoiningGame] = useState(false)
-  const [joinGameCode, setJoinGameCode] = useState('')
+  const [isJoiningGame, setIsJoiningGame] = React.useState(false);
+  const [joinGameCode, setJoinGameCode] = React.useState('');
+
   return (
-    <div className={buttonSection}>
+    <div>
       {isJoiningGame ? (
         <div>
           <div>
@@ -29,7 +31,6 @@ const PlayGameSection = () => {
         </div>
       ) : (
         <button
-          className={homePageButtons}
           onClick={() => setIsJoiningGame(true)}
         >
           Play A Game

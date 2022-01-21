@@ -41,7 +41,7 @@ const CreateGameSection = () => {
     }
   }, [joinCode]);
   return (
-    <div className={buttonSection}>
+    <div>
       {isCreatingAGame ? (
         <div>
           <div>
@@ -53,14 +53,13 @@ const CreateGameSection = () => {
             ></input>
           </div>
           <div>
-            <button className={homePageButtons} onClick={createGame}>
+            <button onClick={createGame}>
               Create Game
             </button>
           </div>
         </div>
       ) : (
         <button
-          className={homePageButtons}
           onClick={() => setIsCreatingAGame(true)}
         >
           Create A Game
