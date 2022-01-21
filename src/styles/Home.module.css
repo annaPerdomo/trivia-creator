@@ -1,30 +1,26 @@
-.container {
- height: 100%
-}
-.welcomeBanner {
-  position: relative;
-  margin: auto;
-  width: 100%;
-  text-align: center;
-}
-
 .buttonContainer {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
   height: 95vh;
 }
-
-.signInButtonContainer {
-  justify-content: center;
-  margin: 150px;
-  height: 10vh;
-  text-align: center;
+.buttonSection {
+  position: relative;
+  margin-top: 150px;
 }
 
-.signOutButtonContainer {
-  display: flex;
-  justify-content: center;
+.container {
+  height: 100%;
+  width: 100%;
+  margin: 50px;
+}
+
+.dashboardContainer {
+  border: 2px solid black;
+  display: inline-block;
+  height: 100%;
+  margin: 15px;
+  width: 60%;
 }
 
 .divider {
@@ -33,10 +29,22 @@
   background: black;
 }
 
-.buttonSection {
-  position: relative;
-  margin-top: 150px;
+.greetingContainer {
+  background-color: black;
+  color: white;
+  height: 100%;
+  padding: 15px;
+  width: 40%
 }
+
+.headerContainer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-height: 200px;
+  text-align: center;
+}
+
 
 .homePageButtons {
   border: none;
@@ -54,3 +62,18 @@
   border: solid;
 }
 
+.signInButtonContainer {
+  justify-content: center;
+  margin: 150px;
+  height: 10vh;
+  text-align: center;
+}
+
+.signOutButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.welcomeBanner {
+  display: inline-block;
+}

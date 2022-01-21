@@ -14,12 +14,14 @@ import DraftGames from './DraftGames';
 import PlayGameSection from './PlayGameSection';
 
 const {
+  buttonContainer,
   container,
   dashboardContainer,
-  buttonContainer,
   divider,
+  greetingContainer,
+  headerContainer,
+  signOutButtonContainer,
   welcomeBanner,
-  signOutButtonContainer
 } = styles;
 
 const Dashboard: React.FC <DashboardProps> = (props) => {
@@ -43,41 +45,46 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
 
   return (
     <div className={container}>
+      <div className={headerContainer}>
+        <span className={dashboardContainer}>
+          <span className={welcomeBanner}>
+            <h3>Welcome to your&nbsp;</h3>
+          </span>
+          <span className={welcomeBanner}>
+            <h2>DASHBOARD</h2>
+          </span>
+        </span>
 
-      <div>
-        <div className={welcomeBanner}>
-          <h1>Welcome to your Dashboard!</h1>
-        </div>
-
-        <div>
+        <span className={greetingContainer}>
           <h4>
-            You look beautiful today{" "}
+            Hi&nbsp;
             {userDisplayName || session.user.name || session.user.email}
           </h4>
-        </div>
+        </span>
 
         <ChangeDisplayNameSection />
       </div>
 
       {session && (
-        <div>
-
+        <>
           <div className={signOutButtonContainer}>
             <button type="button" onClick={initiateSignOut}>
               Sign out
             </button>
           </div>
-          
-          {draftGames ? <DraftGames draftGames={draftGames}/> : null}
 
-          <div className={buttonContainer}>
-            <CreateGameSection />
+          <div>
+            {draftGames ? <DraftGames draftGames={draftGames} /> : null}
 
-            <div className={divider}></div>
+            <div className={buttonContainer}>
+              <CreateGameSection />
 
-            <PlayGameSection />
+              <div className={divider}></div>
+
+              <PlayGameSection />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
