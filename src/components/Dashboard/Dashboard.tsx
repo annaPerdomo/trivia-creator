@@ -14,9 +14,10 @@ import DraftGames from './DraftGames';
 import PlayGameSection from './PlayGameSection';
 
 const {
-  buttonContainer,
   container,
+  dashboardActionsContainer, 
   dashboardContainer,
+  dashboardContent,
   divider,
   greetingContainer,
   headerContainer,
@@ -73,16 +74,17 @@ const Dashboard: React.FC <DashboardProps> = (props) => {
             </button>
           </div>
 
-          <div>
-            {draftGames ? <DraftGames draftGames={draftGames} /> : null}
+          <div className={dashboardContent}>
+            {draftGames && <DraftGames draftGames={draftGames} />}
 
-            <div className={buttonContainer}>
+            <div className={dashboardActionsContainer}>
               <CreateGameSection />
 
-              <div className={divider}></div>
+              <div className={divider} />
 
               <PlayGameSection />
             </div>
+
           </div>
         </>
       )}

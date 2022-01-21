@@ -1,0 +1,27 @@
+.draftGamesBody {
+  overflow-y: scroll;
+}
+
+.draftGamesContainer {
+  align-items: center;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  justify-content: space-between;
+  overflow-y: scroll;
+  text-align: center;
+  width: 300px;
+}
+
+.draftGamesFooter {
+  background-color: black;
+  height: 100px;
+  width: inherit;
+}
+
+.draftGamesHeader {
+  background-color: black;
+  color: white;
+  width: inherit;
+}

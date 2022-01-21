@@ -1,6 +1,7 @@
 // @ts-check
 import * as React from 'react'
 import Link from 'next/link';
+
 import styles from "../../styles/DraftGames.module.css";
 
 const {
@@ -29,9 +30,7 @@ const DraftGames: React.FC <Props> = ({ draftGames }) => {
         ))}
       </div>
 
-      <div className={draftGamesFooter}>
-
-      </div>
+      <div className={draftGamesFooter} />
 
     </div>
   );
