@@ -1,0 +1,6 @@
+.contentContainer {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-evenly;
+}
