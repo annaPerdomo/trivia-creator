@@ -3,6 +3,13 @@
   margin-top: 150px;
 }
 
+.centeredHeader {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
 .container {
   height: 100%;
   width: 100%;
@@ -24,7 +31,6 @@
 
 .dashboardContainer {
   border: 2px solid black;
-  display: inline-block;
   height: 100%;
   margin: 15px;
   width: 60%;
@@ -74,6 +80,10 @@
   border: solid;
 }
 
+.noMargin {
+  margin: 0
+}
+
 .signInButtonContainer {
   justify-content: center;
   margin: 150px;
@@ -84,8 +94,4 @@
 .signOutButtonContainer {
   display: flex;
   justify-content: center;
-}
-
-.welcomeBanner {
-  display: inline-block;
 }

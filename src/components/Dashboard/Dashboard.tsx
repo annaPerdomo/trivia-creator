@@ -17,6 +17,7 @@ import DraftGames from "./DraftGames";
 import PlayGameSection from "./PlayGameSection";
 
 const {
+  centeredHeader,
   container,
   createGameContainer,
   dashboardActionsContainer,
@@ -25,9 +26,9 @@ const {
   divider,
   greetingContainer,
   headerContainer,
+  noMargin,
   playGameContainer,
   signOutButtonContainer,
-  welcomeBanner,
 } = styles;
 
 const Dashboard: React.FC<DashboardProps> = (props) => {
@@ -52,21 +53,18 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
   return (
     <div className={container}>
       <div className={headerContainer}>
-        <span className={dashboardContainer}>
-          <span className={welcomeBanner}>
-            <h3>Welcome to your&nbsp;</h3>
-          </span>
-          <span className={welcomeBanner}>
-            <h2>DASHBOARD</h2>
-          </span>
-        </span>
 
-        <span className={greetingContainer}>
-          <h4>
+        <div className={`${centeredHeader} ${dashboardContainer}`}>
+            <h3 className={noMargin}>Welcome to your&nbsp;</h3>
+            <h2 className={noMargin}>DASHBOARD</h2>
+        </div>
+
+        <div className={`${centeredHeader} ${greetingContainer}`}>
+          <h4 className={noMargin}>
             Hi&nbsp;
             {userDisplayName || session.user.name || session.user.email}
           </h4>
-        </span>
+        </div>
 
         <ChangeDisplayNameSection />
       </div>
