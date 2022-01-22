@@ -1,0 +1,26 @@
+.centeredHeader {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.contentContainer {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  justify-content: space-evenly;
+  margin: 15px 0;
+}
+
+.headerWithBorder {
+  border: 2px solid black;
+  padding: 15px;
+}
+
+.noMargin {
+  margin: 0
+}
+
+.sectionHeight {
+  height: 50%;
+}
