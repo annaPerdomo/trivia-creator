@@ -54,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
       <div className={headerContainer}>
 
         <div className={`${centeredHeader} ${dashboardContainer}`}>
-            <h3 className={noMargin}>Welcome to your&nbsp;</h3>
+            <h5 className={noMargin}>Welcome to your&nbsp;</h5>
             <h2 className={noMargin}>DASHBOARD</h2>
         </div>
 

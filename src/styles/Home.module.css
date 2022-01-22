@@ -15,7 +15,7 @@
 
 .dashboardContainer {
   border: 2px solid black;
-  flex-flow: column;
+  /* flex-flow: column; */
   height: 100%;
   margin: 15px;
   width: 60%;
