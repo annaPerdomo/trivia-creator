@@ -3,34 +3,19 @@
   margin-top: 150px;
 }
 
-.centeredHeader {
-  align-items: center;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-}
-
 .container {
   height: 100%;
   width: 100%;
-  margin: 50px;
-}
-
-.createGameContainer {
-
-}
-
-.playGameContainer {
-
+  margin: 20px;
 }
 
 .dashboardActionsContainer {
-  display: flex;
   width: 70%;
 }
 
 .dashboardContainer {
   border: 2px solid black;
+  flex-flow: column;
   height: 100%;
   margin: 15px;
   width: 60%;
@@ -51,15 +36,16 @@
 .greetingContainer {
   background-color: black;
   color: white;
+  flex-flow: column;
   height: 100%;
   padding: 15px;
-  width: 40%
+  width: 40%;
 }
 
 .headerContainer {
   align-items: center;
   display: flex;
-  height: 200px;
+  height: 150px;
   justify-content: center;
   text-align: center;
 }

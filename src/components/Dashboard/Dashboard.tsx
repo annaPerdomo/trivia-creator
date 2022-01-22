@@ -9,6 +9,7 @@ import {
   logoutUser,
   fetchUserDisplayName,
 } from "../../redux/reducers/userSlice";
+import commonStyles from "../../styles/CommonStyles.module.css";
 import styles from "../../styles/Home.module.css";
 
 import ChangeDisplayNameSection from "./ChangeDisplayNameSection";
@@ -16,18 +17,16 @@ import CreateGameSection from "./CreateGameSection";
 import DraftGames from "./DraftGames";
 import PlayGameSection from "./PlayGameSection";
 
+const { centeredHeader, noMargin } = commonStyles;
+
 const {
-  centeredHeader,
   container,
-  createGameContainer,
   dashboardActionsContainer,
   dashboardContainer,
   dashboardContent,
   divider,
   greetingContainer,
   headerContainer,
-  noMargin,
-  playGameContainer,
   signOutButtonContainer,
 } = styles;
 
@@ -81,13 +80,9 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
             {draftGames && <DraftGames draftGames={draftGames} />}
 
             <div className={dashboardActionsContainer}>
-              <div className={createGameContainer}>
                 <CreateGameSection />
-              </div>
 
-              <div className={playGameContainer}>
                 <PlayGameSection />
-              </div>
             </div>
           </div>
         </>
