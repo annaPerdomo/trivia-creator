@@ -14,7 +14,7 @@ export interface DraftGames {
   id: number,
   joinCode: string,
   playedAt: null,
-  roundAmount: number | null,
+  rounds: any,
 }
 
 export interface DashboardProps {

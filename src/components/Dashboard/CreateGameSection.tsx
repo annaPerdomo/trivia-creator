@@ -8,11 +8,17 @@ import { createNewTriviaGame } from "../../redux/reducers/createGameSlice";
 import commonStyles from "../../styles/CommonStyles.module.css";
 import styles from "../../styles/CreateGameSection.module.css";
 
-const { centeredHeader, contentContainer, headerWithBorder, noMargin, sectionHeight } = commonStyles;
+const {
+  centeredHeader,
+  contentContainer,
+  headerWithBorder,
+  noMargin,
+  sectionHeight,
+} = commonStyles;
 
 // const {  } = styles;
 
-const CreateGameSection = () => {
+const CreateGameSection: React.FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -20,15 +26,17 @@ const CreateGameSection = () => {
 
   const userId = useAppSelector((state) => Number(state.user.userId));
   const joinCode = useAppSelector((state) => state.createGame.joinCode);
-  console.log({ joinCode });
-  const createGame = async () => {
+
+  const createGame = async (): Promise<void> => {
     try {
       const rounds = [];
+
       for (let i = 0; i < gameRoundAmount; i++) {
         rounds.push({
           roundNum: i + 1,
         });
       }
+
       dispatch(
         createNewTriviaGame({
           userId,
@@ -56,7 +64,13 @@ const CreateGameSection = () => {
         <div>
           <label htmlFor="row-amount">Enter desired amount of rounds:</label>
 
-          <select id="row-amount" name="row-amount" onChange={(): void => {}}>
+          <select
+            id="row-amount"
+            name="row-amount"
+            onChange={(e: any): void =>
+              setGameRoundAmount(Number(e.target.value))
+            }
+          >
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -71,34 +85,8 @@ const CreateGameSection = () => {
             <option value="10">10</option>
           </select>
         </div>
-
-        <div>
-          <button onClick={createGame}>Create Questions</button>
-        </div>
+        <button onClick={createGame}>Create Game</button>
       </div>
-      {/* {isCreatingAGame ? (
-        <div>
-          <div>
-            <input
-              type="number"
-              name="gameRoundAmount"
-              value={gameRoundAmount}
-              onChange={(e) => setGameRoundAmount(gameRoundAmount + 1)}
-            ></input>
-          </div>
-          <div>
-            <button onClick={createGame}>
-              Create Game
-            </button>
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={() => setIsCreatingAGame(true)}
-        >
-          Create A Game
-        </button>
-      )} */}
     </div>
   );
 };
