@@ -71,14 +71,14 @@ const DisplayNameSection: React.FC = () => {
       )}
 
       {userIsChangingDisplayName ? (
-        <div>
+        <div className={contentContainer}>
           <label htmlFor="newDisplayName">New Display Name: </label>
           <input
             type="text"
             name="displayName"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-          ></input>
+          />
           <button type="button" onClick={submitNewDisplayName}>
             Submit new display name
           </button>
