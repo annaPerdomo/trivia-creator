@@ -19,7 +19,7 @@ const DraftGames: React.FC <Props> = ({ draftGames }) => {
   return (
     <div className={draftGamesContainer}>
       <div className={draftGamesHeader}>
-        <h3>Draft Games</h3>
+        <h5>Draft Games</h5>
       </div>
 
       <div className={draftGamesBody}>

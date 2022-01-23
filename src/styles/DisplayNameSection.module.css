@@ -1,0 +1,17 @@
+.greetingContainer {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  flex-flow: column;
+  height: 100%;
+  padding: 15px;
+  width: 40%;
+}
+
+.changeDisplayName {
+  display: none;
+}
+
+.changeDisplayName:hover .showChangeDisplayName { 
+  display: block;
+}

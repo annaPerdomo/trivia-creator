@@ -12,8 +12,8 @@ import {
 import commonStyles from "../../styles/CommonStyles.module.css";
 import styles from "../../styles/Home.module.css";
 
-import ChangeDisplayNameSection from "./ChangeDisplayNameSection";
 import CreateGameSection from "./CreateGameSection";
+import DisplayNameSection from "./DisplayNameSection";
 import DraftGames from "./DraftGames";
 import PlayGameSection from "./PlayGameSection";
 
@@ -30,12 +30,9 @@ const {
   signOutButtonContainer,
 } = styles;
 
-const Dashboard: React.FC<DashboardProps> = (props) => {
+const Dashboard: React.FC<DashboardProps> = ({ draftGames, session }) => {
   const dispatch = useAppDispatch();
 
-  const { draftGames, session } = props;
-
-  const userDisplayName = useAppSelector((state) => state.user.userDisplayName);
   const userId = useAppSelector((state) => state.user.userId);
 
   React.useEffect((): void => {
@@ -52,20 +49,13 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
   return (
     <div className={container}>
       <div className={headerContainer}>
-
         <div className={`${centeredHeader} ${dashboardContainer}`}>
-            <h5 className={noMargin}>Welcome to your&nbsp;</h5>
-            <h2 className={noMargin}>DASHBOARD</h2>
+          <h5 className={noMargin}>Welcome to your&nbsp;</h5>
+          <h2 className={noMargin}>DASHBOARD</h2>
         </div>
 
-        <div className={`${centeredHeader} ${greetingContainer}`}>
-          <h4 className={noMargin}>
-            Hi&nbsp;
-            {userDisplayName || session.user.name || session.user.email}
-          </h4>
-        </div>
+        <DisplayNameSection />
 
-        <ChangeDisplayNameSection />
       </div>
 
       {session && (
@@ -80,9 +70,9 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
             {draftGames && <DraftGames draftGames={draftGames} />}
 
             <div className={dashboardActionsContainer}>
-                <CreateGameSection />
+              <CreateGameSection />
 
-                <PlayGameSection />
+              <PlayGameSection />
             </div>
           </div>
         </>

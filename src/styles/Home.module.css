@@ -32,14 +32,6 @@
   background: black;
 }
 
-.greetingContainer {
-  background-color: black;
-  color: white;
-  flex-flow: column;
-  height: 100%;
-  padding: 15px;
-  width: 40%;
-}
 
 .headerContainer {
   align-items: center;
